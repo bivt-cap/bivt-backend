@@ -1,0 +1,34 @@
+{
+  "name": "bivtbackend",
+  "version": "1.0.0",
+  "description": "BIVT Back-End",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bivt-cap/bivt-backend.git"
+  },
+  "keywords": [
+    "api",
+    "express"
+  ],
+  "author": "BIVT Capstone Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bivt-cap/bivt-backend/issues"
+  },
+  "homepage": "https://github.com/bivt-cap/bivt-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
