@@ -3,6 +3,7 @@ require('dotenv').config();
 
 // Express (https://www.npmjs.com/package/express)
 const express = require('express');
+
 const app = express();
 
 // Body Parser (https://www.npmjs.com/package/body-parser)
@@ -24,15 +25,16 @@ app.use(
 // Use JSON in the Body Parser
 app.use(bodyParser.json());
 
-//*******************************************
+// ******************************************
 // TEST PURPOSE - NEED TO REMOVE
-//*******************************************
+// ******************************************
 app.get('/', (req, res) => res.send('BIVT Back-End'));
-//*******************************************
+// ******************************************
 // TEST PURPOSE - NEED TO REMOVE
-//*******************************************
+// ******************************************
 
 // Start listening
 app.listen(process.env.port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${process.env.port}!`);
 });
