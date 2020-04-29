@@ -55,7 +55,11 @@ nodemon app.js
 
 ## Version Control
 
-Before start, you need to create a **new branch with your name**. Always code inside this branch.
+Before start, you need to create a **new branch with the issue id (issue + issue id)**. Always code inside this branch.
+
+```
+git checkout -b issue1
+```
 
 When you do a commit follow these simple rules:
 
