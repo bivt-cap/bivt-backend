@@ -25,13 +25,8 @@ app.use(
 // Use JSON in the Body Parser
 app.use(bodyParser.json());
 
-// ******************************************
-// TEST PURPOSE - NEED TO REMOVE
-// ******************************************
-app.get('/', (req, res) => res.send('BIVT Back-End'));
-// ******************************************
-// TEST PURPOSE - NEED TO REMOVE
-// ******************************************
+// Routes
+app.use('/user', require('./routes/user'));
 
 // Start listening
 app.listen(process.env.port, () => {

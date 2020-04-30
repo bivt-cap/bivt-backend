@@ -1,0 +1,55 @@
+// Nodemailer (https://www.npmjs.com/package/nodemailer)
+const nodemailer = require('nodemailer');
+
+// Export que query function
+module.exports = async (to, subject, template, keyValueToReplace) => {
+  // create reusable transporter object using the default SMTP transport
+  let transporter;
+
+  // Check if is a test email
+  if (process.env.EMAIL_TEST === 'true') {
+    // Generate test SMTP service account from ethereal.email
+    // Only needed if you don't have a real mail account for testing
+    const testAccount = await nodemailer.createTestAccount();
+
+    // create reusable transporter object using the default SMTP transport
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: testAccount.user, // generated ethereal user
+        pass: testAccount.pass, // generated ethereal password
+      },
+    });
+  } else {
+    // create reusable transporter object using the default SMTP transport
+    transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL_USER, // generated ethereal user
+        pass: process.env.EMAIL_PASS, // generated ethereal password
+      },
+    });
+  }
+
+  // Replace all values in the template
+  let html = template;
+  Object.keys(keyValueToReplace).forEach((objKey) => {
+    html = html.replace(`/${objKey}/gi`, keyValueToReplace[objKey]);
+  });
+
+  // Extract all text from the HTML
+  let text = '';
+
+  // send mail with defined transport object
+  return await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    text,
+    html,
+  });
+};
