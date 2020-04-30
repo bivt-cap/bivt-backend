@@ -11,7 +11,7 @@ const UserService = require('../services/userService');
 const Transport = require('../models/transport/transport');
 
 /**
- * @api {get} /user/create Create a new User
+ * @api {post} /user/create Create a new User
  * @apiName /user/create
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -21,22 +21,21 @@ const Transport = require('../models/transport/transport');
  * @apiParam {string} firstName First Name
  * @apiParam {string} lastName Last Name
  *
- * @apiSuccess {strung} User Id
- * @apiSuccessExample {json} Success-Response
+ * @apiSuccess {null} null There is no return
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
  * {
  *  "status": {
- *    "errors": null,
- *    "id": 200
+ *    "id": 200,
+ *    "errors": null
  *  },
- *  "data": [
- *    {
- *      "extId": "f58a3137-8aa4-11ea-9657-0025907ed630"
- *    }
- *   ]
+ *  "data": null
  * }
  *
- * @apiError (Error) {422} Unprocessable Entity - Validation Error
- * @apiErrorExample {json} 422 Error-422
+ * @apiError (Error) {422} Unprocessable Entity
+ * @apiError (Error) {500} Internal Server Error
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 422 Unprocessable Entity
  * {
  *   "status": {
  *     "errors": [
@@ -48,8 +47,9 @@ const Transport = require('../models/transport/transport');
  *   "data": null
  * }
  *
- * @apiError (Error) {500} Internal Server Error
- * @apiErrorExample {json} 500 Error-500
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
  * {
  *   "status": {
  *     "errors": [
@@ -124,11 +124,7 @@ router.post(
         }
 
         // Success
-        return res.json(
-          new Transport(200, null, {
-            extId,
-          })
-        );
+        return res.json(new Transport(200, null, null));
       })
       .catch((error) => {
         return res

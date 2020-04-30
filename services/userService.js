@@ -1,3 +1,6 @@
+// SHA1 Encrypt
+const sha1 = require('sha1');
+
 // Database
 const query = require('../core/database');
 
@@ -109,7 +112,7 @@ class UserService {
         (email, password, firstName, lastName) 
         VALUES
         (?, ?, ?, ?)`,
-      [email, password, firstName, lastName]
+      [email, sha1(process.env.AUTH_SALT + password), firstName, lastName]
     )
       .then((result) => {
         // Check if has result

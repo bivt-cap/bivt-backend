@@ -80,6 +80,24 @@ An example of your commit description
 feat [#1] - New endpoint returning all Provinces in Canada
 ```
 
+## Documentation
+
+Every endpoint needs to be documented. We are using [APIDOC](https://apidocjs.com/) to help in this process.
+
+Please access the [APIDOC documentation ](https://apidocjs.com/#params) to understand how to use it.
+
+You need to install the APIDOC node package globally.
+
+```
+npm install apidoc -g
+```
+
+To update the documentation you need to execute this command.
+
+```
+apidoc -e node_modules/
+```
+
 ## Built With
 
 - [Node.JS](https://nodejs.org/en/) - JavaScript runtime built on Chrome's V8 JavaScript engine.
@@ -101,3 +119,4 @@ This project is licensed under the GNU GENERAL PUBLIC License - see the [LICENSE
 ## Acknowledgments
 
 - Readme template inspired in [PurpleBooth/README-Template.md](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+- Documentation of our API was generated using [APIDOC](https://apidocjs.com/)

@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.use('/user', require('./routes/user'));
 
 // Start listening
-app.listen(process.env.port, () => {
+app.listen(process.env.SERVER_PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening on port ${process.env.port}!`);
 });
