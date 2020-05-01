@@ -19,6 +19,7 @@ const replaceContent = require('../core/replaceContent');
 
 // Models
 const User = require('../models/user/user');
+const AuthToken = require('../models/auth/authToken');
 
 /*
  * Business Logic related to the User
@@ -227,6 +228,48 @@ class UserService {
 
         // Not Valid
         return false;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Authenticate the user
+   * @param email {string} User Email
+   * @param password {string} User Password
+   * @return {AuthToken} Return the Authorization Token
+   */
+  async authenticate(email, password) {
+    // Find the user using the email as filter
+    return await this.getUserByEmail(email)
+      .then((user) => {
+        // Check if a user was found
+        if (user != null) {
+          // Check if the user is not blocked
+          if (!user.isBlocked) {
+            // Check if password is equals
+            if (user.password === sha1(process.env.AUTH_SALT + password)) {
+              // Generate the token
+              const token = jwt.sign(
+                {
+                  extId: user.extId,
+                },
+                process.env.AUTH_SECRET,
+                {
+                  // Token expires in 1 hour
+                  expiresIn: 3600,
+                }
+              );
+
+              // return the token
+              return new AuthToken(token);
+            }
+          }
+        }
+
+        // 401 Unauthorized
+        return null;
       })
       .catch((error) => {
         throw error;

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "BIVT Back-End API Documentation",
   "title": "BIVT Back-End",
-  "url": "https://github.com/bivt-cap/bivt-backend",
+  "url": "",
   "template": {
     "withCompare": false,
     "withGenerator": true
@@ -13,7 +13,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-04-30T21:20:08.985Z",
+    "time": "2020-05-01T20:34:03.723Z",
     "url": "http://apidocjs.com",
     "version": "0.22.0"
   }
