@@ -14,7 +14,20 @@ content-type: application/json
 GET http://localhost:3500/user/checkEmail?token=522effe398fb7336a367e353f1f098e483f05fa67fa5538b19fbc02e6d9b21026332f6f7abff944b1d2731c2010af416ca4c76be1f35962826547fd3294a7159af812ae0219b014998feba5eb7d2d2a213b450b4bb4941f655771a3aa3059f2dd8997504ff2ed07294f248bd77459a3518dd0251137a4eecbe1fd843eec5e45
 content-type: application/json
 
-### Simulate Check an user email - ERRO
-
-GET http://localhost:3500/user/checkEmail HTTP/1.1
+### Simulate Login
+POST http://localhost:3500/user/auth HTTP/1.1
 content-type: application/json
+
+{
+    "email": "ecarmo@gmail.com",
+    "password": "Test123456"
+}
+
+### Simulate Login - Erro Validation
+POST http://localhost:3500/user/auth HTTP/1.1
+content-type: application/json
+
+{
+    "email": "ecarmo2@gmail.com",
+    "password": "Test123456"
+}

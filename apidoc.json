@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "BIVT Back-End API Documentation",
   "title": "BIVT Back-End",
-  "url": "https://github.com/bivt-cap/bivt-backend",
+  "url": "",
   "template": {
     "withCompare": false,
     "withGenerator": true
