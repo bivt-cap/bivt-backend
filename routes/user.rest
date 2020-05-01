@@ -3,7 +3,7 @@ POST http://localhost:3500/user/create HTTP/1.1
 content-type: application/json
 
 {
-    "email": "ecarmo@gmail.com",
+    "email": "ecarmo@outlook.com",
     "password": "Test123456",
     "firstName": "Eduardo",
     "lastName": "Pereira do Carmo"
@@ -30,4 +30,12 @@ content-type: application/json
 {
     "email": "ecarmo2@gmail.com",
     "password": "Test123456"
+}
+
+### Resend a Validation Email
+POST http://localhost:3500/user/resendValidationEmail HTTP/1.1
+content-type: application/json
+
+{
+    "email": "ecarmo@outlook.com"
 }

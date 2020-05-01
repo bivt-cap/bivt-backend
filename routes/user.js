@@ -163,7 +163,7 @@ router.get(
 
 /**
  * @api {post} /user/auth Authenticate user
- * @apiName /auth
+ * @apiName /user/auth
  * @apiGroup User
  * @apiVersion 1.0.0
  *
@@ -262,6 +262,82 @@ router.post(
 
         // Success
         return res.json(new Transport(200, null, token));
+      })
+      .catch((error) => {
+        return formatError500(res, error);
+      });
+  }
+);
+
+/**
+ * @api {post} /user/resendValidationEmail Resend a Validation Email
+ * @apiName /user/resendValidationEmail
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} email Email
+ *
+ * @apiSuccess {null} null There is no return
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *  "status": {
+ *    "id": 200,
+ *    "errors": null
+ *  }
+ * }
+ *
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "E-mail already in use",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/resendValidationEmail',
+  [
+    check('email')
+      .not()
+      .isEmpty()
+      .isEmail()
+      .withMessage('E-mail must be a valid e-mail.'),
+  ],
+  checkErrors(),
+  (req, res) => {
+    // Get the passwod and email from body
+    const { email } = req.body;
+
+    // Authenticate the User
+    const sUser = new UserService();
+    sUser
+      .resendValidationEmail(email, `${req.protocol}://${req.get('host')}`)
+      .then((emailToken) => {
+        // Internal server erroro
+        if (emailToken == null) {
+          throw new Error('Internal Server Error');
+        }
+
+        // Success
+        return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
         return formatError500(res, error);
