@@ -16,5 +16,6 @@ module.exports = {
     'consistent-return': 'off',
     'class-methods-use-this': 'off',
     'no-return-await': 'off',
+    'no-else-return': 'off',
   },
 };
