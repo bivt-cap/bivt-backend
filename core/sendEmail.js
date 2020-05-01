@@ -2,7 +2,7 @@
 const nodemailer = require('nodemailer');
 
 // Export que query function
-module.exports = async (to, subject, template, keyValueToReplace) => {
+module.exports = async (to, subject, text, html) => {
   // create reusable transporter object using the default SMTP transport
   let transporter;
 
@@ -34,15 +34,6 @@ module.exports = async (to, subject, template, keyValueToReplace) => {
       },
     });
   }
-
-  // Replace all values in the template
-  let html = template;
-  Object.keys(keyValueToReplace).forEach((objKey) => {
-    html = html.replace(`/${objKey}/gi`, keyValueToReplace[objKey]);
-  });
-
-  // Extract all text from the HTML
-  let text = '';
 
   // send mail with defined transport object
   return await transporter.sendMail({

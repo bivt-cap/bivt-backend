@@ -2,7 +2,10 @@
 const router = require('express').Router();
 
 // Express - Validation (https://www.npmjs.com/package/express-validator)
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
+
+// Check if Express-Validtor returned an error
+const { checkErrors, formatError500 } = require('../core/express/errors');
 
 // Business Logic related to the Users
 const UserService = require('../services/userService');
@@ -95,49 +98,68 @@ router.post(
       .withMessage('First name cannot be empty.'),
     check('lastName').not().isEmpty().withMessage('Last name cannot be empty.'),
   ],
+  checkErrors(),
   (req, res) => {
-    // Check for erros
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json(
-        new Transport(
-          422,
-          errors.array().map((e) => {
-            return e.msg;
-          }),
-          null
-        )
-      );
-    }
-
     // Get the values from the body
     const { email, password, firstName, lastName } = req.body;
 
     // Create the new user
     const sUser = new UserService();
     sUser
-      .addNewUser(email, password, firstName, lastName)
-      .then((extId) => {
+      .addNewUser(
+        email,
+        password,
+        firstName,
+        lastName,
+        `${req.protocol}://${req.get('host')}`
+      )
+      .then((emailToken) => {
         // Internal server erroro
-        if (extId == null) {
+        if (emailToken == null) {
           throw new Error('Internal Server Error');
         }
 
         // Success
-        return res.json(new Transport(200, null, null));
+        return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return res
-          .status(500)
-          .json(
-            new Transport(
-              500,
-              error.message !== 'undefined'
-                ? error.message
-                : 'Internal Server Error',
-              null
-            )
-          );
+        return formatError500(res, error);
+      });
+  }
+);
+
+/**
+ * Url: /user/validateEmail
+ * Name /user/validateEmail
+ * Group User
+ * Version: 1.0.0
+ *
+ * Param: {string} token User email validation token
+ *
+ * Success: Success HTML PAGE
+ * Erro: 404 Error HTML PAGE
+ */
+router.get(
+  '/validateEmail',
+  check('token').not().isEmpty().withMessage('Token cannot be empty.'),
+  checkErrors(),
+  (req, res) => {
+    // Get the values from the querystring
+    const { token } = req.query;
+
+    // Execute the validation
+    const sUser = new UserService();
+    return sUser
+      .validateEmail(token)
+      .then((result) => {
+        // Internal server erroro
+        if (result) {
+          return res.render('checkEmail');
+        }
+        return res.render('404');
+      })
+      .catch(() => {
+        return res.render('404');
       });
   }
 );

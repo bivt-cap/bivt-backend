@@ -1,11 +1,21 @@
 // SHA1 Encrypt
 const sha1 = require('sha1');
 
+// Node.JS module
+const path = require('path');
+const crypto = require('crypto');
+
+// JWT
+const jwt = require('jsonwebtoken');
+
 // Database
 const query = require('../core/database');
 
 // Send Email
 const sendEmail = require('../core/sendEmail');
+
+// Replace content from a file
+const replaceContent = require('../core/replaceContent');
 
 // Models
 const User = require('../models/user/user');
@@ -71,6 +81,7 @@ class UserService {
             , U.firstName
             , U.lastName
             , CASE WHEN U.emailValidatedAt IS NULL THEN 1 ELSE 0 END AS isBlocked
+            , U.emailValidationHash
         FROM 
             tb_user AS U
         WHERE 
@@ -88,7 +99,8 @@ class UserService {
             result[0].password,
             result[0].firstName,
             result[0].lastName,
-            parseInt(result[0].isBlocked, 10) === 1
+            parseInt(result[0].isBlocked, 10) === 1,
+            result[0].emailValidationHash
           );
         }
         return null;
@@ -104,15 +116,25 @@ class UserService {
    * @param password {string} Password
    * @param firstName {string} First Name
    * @param lastName {string} Last Name
-   * @return {int} User Id
+   * @param baseUrl {string} Url base for our api
+   * @return {string} Validation Email URL
    */
-  async addNewUser(email, password, firstName, lastName) {
+  async addNewUser(email, password, firstName, lastName, baseUrl) {
+    // Create an email validation Hash
+    const emailValidationHash = crypto.randomBytes(128).toString('hex');
+
     return await query(
       `INSERT INTO tb_user 
-        (email, password, firstName, lastName) 
+        (email, password, firstName, lastName, emailValidationHash, emailValidationExpires) 
         VALUES
-        (?, ?, ?, ?)`,
-      [email, sha1(process.env.AUTH_SALT + password), firstName, lastName]
+        (?, ?, ?, ?, ?, NOW() + INTERVAL 1 DAY)`,
+      [
+        email,
+        sha1(process.env.AUTH_SALT + password),
+        firstName,
+        lastName,
+        emailValidationHash,
+      ]
     )
       .then((result) => {
         // Check if has result
@@ -121,17 +143,28 @@ class UserService {
           return this.getUserById(parseInt(result.insertId, 10))
             .then((user) => {
               if (user !== null && user.id > 0) {
+                // Load the template
+                const emailTemplate = replaceContent(
+                  path.join(
+                    __dirname,
+                    '../public/email/verifyEmailAccount.html'
+                  ),
+                  {
+                    userName: user.firstName,
+                    baseUrl,
+                    emailToken: user.emailValidationHash,
+                  }
+                );
+
                 // Send email to check if is a real email
                 return sendEmail(
                   email,
-                  'Verify account',
-                  '<h1>test</h1><h3>[USER_ID]</h3>',
-                  {
-                    '[USER_ID]': user.extId,
-                  }
+                  'Verify your account',
+                  '',
+                  emailTemplate
                 )
                   .then(() => {
-                    return user.extId;
+                    return `${baseUrl}/user/checkEmail?token=${user.emailValidationHash}`;
                   })
                   .catch((error) => {
                     throw error;
@@ -143,6 +176,57 @@ class UserService {
               throw error;
             });
         }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Validate the User Email
+   * @param hash {string} Email Hash to validate user
+   * @return {bool} Return true if the email validated and false if not
+   */
+  async validateEmail(hash) {
+    return await query(
+      `SELECT 
+            U.id
+            , U.extId
+            , U.email
+            , U.password
+            , U.firstName
+            , U.lastName
+            , CASE WHEN U.emailValidatedAt IS NULL THEN 1 ELSE 0 END AS isBlocked
+        FROM 
+            tb_user AS U
+        WHERE 
+            U.emailValidationHash = ?
+            AND U.emailValidatedAt IS NULL
+            AND U.emailValidationExpires >= NOW()`,
+      [hash]
+    )
+      .then((user) => {
+        // Check if has result
+        if (user != null && user.length > 0) {
+          return query(
+            `UPDATE 
+                tb_user
+              SET 
+                emailValidatedAt = NOW()
+              WHERE	
+                id = ?`,
+            [user[0].id]
+          )
+            .then((result) => {
+              return result != null && result.changedRows > 0;
+            })
+            .catch((error) => {
+              throw error;
+            });
+        }
+
+        // Not Valid
+        return false;
       })
       .catch((error) => {
         throw error;
