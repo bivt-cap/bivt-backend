@@ -11,7 +11,8 @@ class User {
     lastName,
     isBlocked,
     emailValidationHash,
-    emailValidatedAt
+    emailValidatedAt,
+    emailForgotPasswordHash
   ) {
     this.id = id;
     this.extId = extId;
@@ -22,6 +23,7 @@ class User {
     this.isBlocked = isBlocked;
     this.emailValidationHash = emailValidationHash;
     this.emailValidatedAt = emailValidatedAt;
+    this.emailForgotPasswordHash = emailForgotPasswordHash;
   }
 }
 

@@ -26,8 +26,8 @@
           target="_blank"
           >Unsplash</a
         >
-      </figcaption>
-    </figure>
+      </legend>
+    </figcaption>
     <h1>Now you can use your app to log in to our awesome application!</h1>
   </body>
 </html>
