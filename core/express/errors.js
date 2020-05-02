@@ -8,7 +8,10 @@ const Transport = require('../../models/transport/transport');
 const checkErrors = () => {
   return (req, res, next) => {
     const errors = validationResult(req);
+
+    // Check if has error
     if (!errors.isEmpty()) {
+      // Is a Endpoint
       const transport = new Transport(
         422,
         errors.array().map((e) => {
@@ -29,8 +32,8 @@ const checkErrors = () => {
   };
 };
 
-// Format the http error 500
-const formatError500 = (res, error) => {
+// Format the http error 500 - JSON
+const formatError500Json = (res, error) => {
   const transport = new Transport(
     500,
     error.message !== 'undefined' ? error.message : 'Internal Server Error',
@@ -44,4 +47,24 @@ const formatError500 = (res, error) => {
   return res.status(500).json(transport);
 };
 
-module.exports = { checkErrors, formatError500 };
+// Format the http error 500 - HTML
+const formatError500Html = (res, error) => {
+  let feedbackError;
+  if (error.message === undefined && Array.isArray(error.array())) {
+    feedbackError = `<ul>${error
+      .array()
+      .map((e) => {
+        return `<li>${e.msg}</li>`;
+      })
+      .join('')}</ul>`;
+  } else {
+    feedbackError =
+      error.message !== 'undefined' ? error.message : 'Internal Server Error';
+  }
+
+  return res.render('500', {
+    feedbackError,
+  });
+};
+
+module.exports = { checkErrors, formatError500Json, formatError500Html };

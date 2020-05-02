@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="#baseUrl#/css/theme.css" />
     <script src="#baseUrl#/js/main.js" defer></script>
-    <title>Verify your account</title>
+    <title>Forgot Email</title>
   </head>
   <body>
     <figcaption>
@@ -28,12 +28,11 @@
         >
       </legend>
     </figcaption>
-    <p>Thank you, #userName# !</p>
-    <h1>
-      Click on the link below to validate your email, this will allow you to use
-      our amazing app.
-    </h1>
-    <a href="#baseUrl#/user/checkEmail?&token=#emailToken#" target="_blank"
+    <p>Hello, #userEmail#!</p>
+    <h1>Click on the link below to change your password.</h1>
+    <a
+      href="#baseUrl#/user/forgotPasswordForm?&token=#emailToken#"
+      target="_blank"
       >Click here</a
     >
   </body>
