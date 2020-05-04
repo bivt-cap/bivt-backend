@@ -11,6 +11,9 @@ const {
   formatError500Html,
 } = require('../core/express/errors');
 
+// utility
+const { checkIfIsValidEmail } = require('../core/util');
+
 // Business Logic related to the Users
 const UserService = require('../services/userService');
 
@@ -82,16 +85,7 @@ router.post(
       })
       .withMessage('E-mail must be a valid e-mail.'),
     check('password').custom((value) => {
-      // Password expresion that requires one lower case letter,
-      // one upper case letter, one digit, 6-13 length, and no spaces.
-      if (!value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,13}$/gm)) {
-        return Promise.reject(
-          new Error(
-            'Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces'
-          )
-        );
-      }
-      return true;
+      return checkIfIsValidEmail(value);
     }),
     check('firstName')
       .not()
@@ -241,16 +235,7 @@ router.post(
       .isEmail()
       .withMessage('E-mail must be a valid e-mail.'),
     check('password').custom((value) => {
-      // Password expresion that requires one lower case letter,
-      // one upper case letter, one digit, 6-13 length, and no spaces.
-      if (!value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,13}$/gm)) {
-        return Promise.reject(
-          new Error(
-            'Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces'
-          )
-        );
-      }
-      return true;
+      return checkIfIsValidEmail(value);
     }),
   ],
   checkErrors(),
@@ -274,7 +259,7 @@ router.post(
         return res.json(new Transport(200, null, token));
       })
       .catch((error) => {
-        return formatError500(res, error);
+        return formatError500Json(res, error);
       });
   }
 );
@@ -350,7 +335,7 @@ router.post(
         return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return formatError500(res, error);
+        return formatError500Json(res, error);
       });
   }
 );
@@ -426,7 +411,7 @@ router.post(
         return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return formatError500(res, error);
+        return formatError500Json(res, error);
       });
   }
 );
@@ -497,16 +482,7 @@ router.post(
       .isEmail()
       .withMessage('E-mail must be a valid e-mail.'),
     check('password').custom((value) => {
-      // Password expresion that requires one lower case letter,
-      // one upper case letter, one digit, 6-13 length, and no spaces.
-      if (!value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,13}$/gm)) {
-        return Promise.reject(
-          new Error(
-            'Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces'
-          )
-        );
-      }
-      return true;
+      return checkIfIsValidEmail(value);
     }),
   ],
   (req, res) => {
