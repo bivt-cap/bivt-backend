@@ -1,8 +1,16 @@
 // Express - Router
 const router = require('express').Router();
 
+// Password + JWT
+const passport = require('passport');
+
 // Express - Validation (https://www.npmjs.com/package/express-validator)
 const { check, validationResult } = require('express-validator');
+
+// JWT Strategy
+const jwtStrategy = require('../core/jwtStrategy');
+
+passport.use(jwtStrategy);
 
 // Check if Express-Validtor returned an error
 const {
@@ -12,7 +20,7 @@ const {
 } = require('../core/express/errors');
 
 // utility
-const { checkIfIsValidEmail } = require('../core/util');
+const { checkIfIsValidEmail } = require('../core/express/customValidation');
 
 // Business Logic related to the Users
 const UserService = require('../services/userService');
@@ -506,7 +514,7 @@ router.post(
     // Execute the validation
     const sUser = new UserService();
     sUser
-      .changeForgotPassword(token, email, password)
+      .changeForgotPasswordByHash(token, email, password)
       .then((result) => {
         if (result) {
           return res.render('forgotPasswordSuccess', { token });
@@ -516,6 +524,89 @@ router.post(
       })
       .catch((error) => {
         return formatError500Html(res, error);
+      });
+  }
+);
+
+/**
+ * @api {post} /user/chagePassword Change user password
+ * @apiName /user/chagePassword
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization Bearer Authorization token.
+ *
+ * @apiParam {String} password Password
+ *
+ * @apiSuccess {null} null There is no return
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *  "status": {
+ *    "id": 200,
+ *    "errors": null
+ *  }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/chagePassword',
+  passport.authenticate('jwt', { session: false }),
+  check('password').custom((value) => {
+    return checkIfIsValidEmail(value);
+  }),
+  (req, res) => {
+    // Get the passwod and email from body
+    const { password } = req.body;
+
+    // Change the password
+    const sUser = new UserService();
+    sUser
+      .changeForgotPasswordById(req.user.id, password)
+      .then(() => {
+        const transport = new Transport(200, null, null);
+        delete transport.data;
+        return res.json(transport);
+      })
+      .catch((error) => {
+        return formatError500Json(res, error);
       });
   }
 );

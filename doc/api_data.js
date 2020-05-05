@@ -115,6 +115,98 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/user/chagePassword",
+    "title": "Change user password",
+    "name": "/user/chagePassword",
+    "group": "User",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer Authorization token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "null",
+            "optional": false,
+            "field": "null",
+            "description": "<p>There is no return</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/user.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
     "url": "/user/create",
     "title": "Create a new user",
     "name": "/user/create",

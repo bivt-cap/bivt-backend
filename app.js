@@ -4,9 +4,6 @@ require('dotenv').config();
 // Node.JS module
 const path = require('path');
 
-// Load a file and replace its content
-const replaceContent = require('./core/replaceContent');
-
 // Express (https://www.npmjs.com/package/express)
 const express = require('express');
 
@@ -17,6 +14,9 @@ const bodyParser = require('body-parser');
 
 // Cors (https://www.npmjs.com/package/cors)
 const cors = require('cors');
+
+// Load a file and replace its content
+const replaceContent = require('./core/replaceContent');
 
 // Enable cors in Express
 app.use(cors());

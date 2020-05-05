@@ -20,7 +20,7 @@ content-type: application/json
 
 {
     "email": "ecarmo@gmail.com",
-    "password": "Test123456"
+    "password": "Test12345678"
 }
 
 ### Simulate Login - Erro Validation
@@ -46,4 +46,13 @@ content-type: application/json
 
 {
     "email": "ecarmo@outlook.com"
+}
+
+### Change Use Password
+POST http://localhost:3500/user/chagePassword HTTP/1.1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHRJZCI6ImJmYmVhMjJiLThiZGEtMTFlYS05NjU3LTAwMjU5MDdlZDYzMCIsImlhdCI6MTU4ODYzODk2MSwiZXhwIjoxNTg4NjQyNTYxfQ.ixXLdlEhyCvtz5D3cK5AU1OGEFlKIl78UnK2DeP19gg
+
+{
+    "password": "Test12345678"
 }
