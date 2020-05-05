@@ -3,15 +3,40 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 
+// Business Logic related to the Users
+const UserService = require('../services/userService');
+
 // Options => Passport
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = process.env.SECRET;
+opts.secretOrKey = process.env.AUTH_SECRET;
 
 // Create the Strategy
 module.exports = new JwtStrategy(opts, (jwtPayload, done) => {
   if (jwtPayload.extId !== 'undefined') {
-    return done(null, true, jwtPayload.extId);
+    const sUser = new UserService();
+    return new Promise((resolve) => {
+      return sUser
+        .getUserByExtId(jwtPayload.extId)
+        .then((user) => {
+          if (!user.isBlocked) {
+            return resolve(
+              done(null, {
+                id: user.id,
+                extId: user.extId,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+              })
+            );
+          } else {
+            return resolve(done(null, false));
+          }
+        })
+        .catch(() => {
+          return resolve(done(null, false));
+        });
+    });
   }
   return done(null, false);
 });

@@ -116,6 +116,32 @@ class UserService {
   }
 
   /*
+   * Find an user by External Id
+   * @param extId {string} Find an user using the external id
+   * @return {User} User
+   */
+  async getUserByExtId(extId) {
+    return await query(
+      `${this.defaultSelectUser}
+        WHERE 
+            U.extId = ?`,
+      [extId]
+    )
+      .then((result) => {
+        // Check if has result
+        if (result != null && result.length > 0) {
+          // Return the User
+          return this.defaultSelectUserResult(result);
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
    * Add an new user
    * @param email {string} Email
    * @param password {string} Password
@@ -423,7 +449,7 @@ class UserService {
    * @param password {string} User Password
    * @return {bool}  Return true if the email validated and false if not
    */
-  async changeForgotPassword(hash, email, password) {
+  async changeForgotPasswordByHash(hash, email, password) {
     return await query(
       `${this.defaultSelectUser}
         WHERE 
@@ -455,6 +481,30 @@ class UserService {
         } else {
           throw new Error('Internal Server Error');
         }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Validate if the recived has is valid and existsd
+   * @param id {int} User Id
+   * @param password {string} User Password
+   * @return {bool}  Return true if id was updated
+   */
+  async changeForgotPasswordById(id, password) {
+    return await query(
+      `UPDATE 
+              tb_user
+            SET 
+              password = ?
+            WHERE	
+              id = ?`,
+      [sha1(process.env.AUTH_SALT + password), id]
+    )
+      .then((result) => {
+        return result != null && result.changedRows > 0;
       })
       .catch((error) => {
         throw error;
