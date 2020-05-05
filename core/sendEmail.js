@@ -22,15 +22,23 @@ module.exports = async (to, subject, text, html) => {
         pass: testAccount.pass, // generated ethereal password
       },
     });
+  } else if (process.env.EMAIL_SERVICE === 'gmail') {
+    transporter = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
   } else {
     // create reusable transporter object using the default SMTP transport
     transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
-      secure: true, // true for 465, false for other ports
+      secure: true,
       auth: {
-        user: process.env.EMAIL_USER, // generated ethereal user
-        pass: process.env.EMAIL_PASS, // generated ethereal password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
   }
