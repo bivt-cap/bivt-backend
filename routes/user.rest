@@ -1,4 +1,4 @@
-### Simulate Create a new User
+### Simulate Create a new User - JSON 
 POST http://localhost:3500/user/create HTTP/1.1
 content-type: application/json
 
@@ -8,6 +8,27 @@ content-type: application/json
     "firstName": "Eduardo",
     "lastName": "Pereira do Carmo"
 }
+
+### Simulate Create a new User - JSON Erro
+POST http://localhost:3500/user/create HTTP/1.1
+content-type: application/json
+
+{
+    "email": "ecarmo@outlook.com",
+    "password": "",
+    "firstName": "Eduardo",
+    "lastName": "Pereira do Carmo"
+}
+
+### Simulate Create a new User - urlencoded 
+POST http://localhost:3500/user/create HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+email=ecarmo@outlook.com
+&password=Test123456
+&firstName=Eduardo
+&lastName=Pereira do Carmo
+
 
 ### Simulate Check an user email
 
@@ -19,8 +40,8 @@ POST http://localhost:3500/user/auth HTTP/1.1
 content-type: application/json
 
 {
-    "email": "ecarmo@gmail.com",
-    "password": "Test12345678"
+    "email": "ecarmo@outlook.com",
+    "password": "Test123456"
 }
 
 ### Simulate Login - Erro Validation

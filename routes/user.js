@@ -78,7 +78,7 @@ const Transport = require('../models/transport/transport');
 router.post(
   '/create',
   [
-    check('email')
+    check('email', 'E-mail must be a valid e-mail.')
       .not()
       .isEmpty()
       .isEmail()
@@ -90,16 +90,12 @@ router.post(
           }
           return true;
         });
-      })
-      .withMessage('E-mail must be a valid e-mail.'),
+      }),
     check('password').custom((value) => {
       return checkIfIsValidEmail(value);
     }),
-    check('firstName')
-      .not()
-      .isEmpty()
-      .withMessage('First name cannot be empty.'),
-    check('lastName').not().isEmpty().withMessage('Last name cannot be empty.'),
+    check('firstName', 'First name cannot be empty.').not().isEmpty(),
+    check('lastName', 'Last name cannot be empty.').not().isEmpty(),
   ],
   checkErrors(),
   (req, res) => {
@@ -145,7 +141,7 @@ router.post(
  */
 router.get(
   '/validateEmail',
-  check('token').not().isEmpty().withMessage('Token cannot be empty.'),
+  check('token', 'Token cannot be empty.').not().isEmpty(),
   (req, res) => {
     // Check for erros Custom because is a web page
     const errors = validationResult(req);
@@ -237,11 +233,7 @@ router.get(
 router.post(
   '/auth',
   [
-    check('email')
-      .not()
-      .isEmpty()
-      .isEmail()
-      .withMessage('E-mail must be a valid e-mail.'),
+    check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail(),
     check('password').custom((value) => {
       return checkIfIsValidEmail(value);
     }),
@@ -317,13 +309,7 @@ router.post(
  */
 router.post(
   '/resendValidationEmail',
-  [
-    check('email')
-      .not()
-      .isEmpty()
-      .isEmail()
-      .withMessage('E-mail must be a valid e-mail.'),
-  ],
+  [check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail()],
   checkErrors(),
   (req, res) => {
     // Get the passwod and email from body
@@ -393,13 +379,7 @@ router.post(
  */
 router.post(
   '/forgotPassword',
-  [
-    check('email')
-      .not()
-      .isEmpty()
-      .isEmail()
-      .withMessage('E-mail must be a valid e-mail.'),
-  ],
+  [check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail()],
   checkErrors(),
   (req, res) => {
     // Get the passwod and email from body
@@ -438,7 +418,7 @@ router.post(
  */
 router.get(
   '/forgotPasswordForm',
-  check('token').not().isEmpty().withMessage('Token cannot be empty.'),
+  check('token', 'Token cannot be empty.').not().isEmpty(),
   (req, res) => {
     // Check for erros Custom because is a web page
     const errors = validationResult(req);
@@ -482,13 +462,8 @@ router.get(
 router.post(
   '/forgotPasswordChange',
   [
-    check('token').not().isEmpty().withMessage('Token cannot be empty.'),
-    check('email')
-      .not()
-      .isEmpty()
-      .withMessage('E-mail cannot be empty.')
-      .isEmail()
-      .withMessage('E-mail must be a valid e-mail.'),
+    check('token', 'Token cannot be empty.').not().isEmpty(),
+    check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail(),
     check('password').custom((value) => {
       return checkIfIsValidEmail(value);
     }),
@@ -500,12 +475,19 @@ router.post(
     // Check for erros Custom because is a web page
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      const errorUnique = [
+        ...new Set(
+          errors.array().map((e) => {
+            return e.msg;
+          })
+        ),
+      ];
+
       return res.render('forgotPasswordForm', {
         token,
-        feedbackError: `<ul>${errors
-          .array()
+        feedbackError: `<ul>${errorUnique
           .map((e) => {
-            return `<li>${e.msg}</li>`;
+            return `<li>${e}</li>`;
           })
           .join('')}</ul>`,
       });

@@ -14,9 +14,13 @@ const checkErrors = () => {
       // Is a Endpoint
       const transport = new Transport(
         422,
-        errors.array().map((e) => {
-          return e.msg;
-        }),
+        [
+          ...new Set(
+            errors.array().map((e) => {
+              return e.msg;
+            })
+          ),
+        ],
         null
       );
 
@@ -51,10 +55,17 @@ const formatError500Json = (res, error) => {
 const formatError500Html = (res, error) => {
   let feedbackError;
   if (error.message === undefined && Array.isArray(error.array())) {
-    feedbackError = `<ul>${error
-      .array()
+    const errorUnique = [
+      ...new Set(
+        error.array().map((e) => {
+          return e.msg;
+        })
+      ),
+    ];
+
+    feedbackError = `<ul>${errorUnique
       .map((e) => {
-        return `<li>${e.msg}</li>`;
+        return `<li>${e}</li>`;
       })
       .join('')}</ul>`;
   } else {

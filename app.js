@@ -28,13 +28,13 @@ app.use(
   })
 );
 
+// Use JSON in the Body Parser
+app.use(bodyParser.json());
+
 // We don't want to serve all folder inside public so we specify which one we want to
 app.use('/css', express.static(path.join(__dirname, './public/css')));
 app.use('/images', express.static(path.join(__dirname, './public/images')));
 app.use('/js', express.static(path.join(__dirname, './public/js')));
-
-// Use JSON in the Body Parser
-app.use(bodyParser.json());
 
 // Custom Template engine
 app.engine('thtml', (file, options, callback) => {
@@ -46,6 +46,7 @@ app.set('view engine', 'thtml');
 
 // Routes
 app.use('/user', require('./routes/user'));
+app.use('/circle', require('./routes/circle'));
 
 // Start listening
 app.listen(process.env.SERVER_PORT, () => {
