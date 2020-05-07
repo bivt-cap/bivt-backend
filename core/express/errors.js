@@ -78,4 +78,20 @@ const formatError500Html = (res, error) => {
   });
 };
 
-module.exports = { checkErrors, formatError500Json, formatError500Html };
+// Format the http error 404 - JSON Not Found
+const formatError404Json = (res) => {
+  const transport = new Transport(404, 'Not Found', null);
+
+  // Remove the property data
+  delete transport.data;
+
+  // Return the error
+  return res.status(404).json(transport);
+};
+
+module.exports = {
+  checkErrors,
+  formatError500Json,
+  formatError500Html,
+  formatError404Json,
+};

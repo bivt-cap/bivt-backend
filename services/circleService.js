@@ -63,6 +63,42 @@ class CircleService {
         throw error;
       });
   }
+
+  /*
+   * Return the list of all Circles that the user belongs (invited or owner)
+   * @param userId {id} User Id
+   * @return List of Circles
+   */
+  async GetCircleByUser(userId) {
+    return await query(
+      `SELECT 
+          C.id,
+          C.name,
+          CASE WHEN C.createdBy = CM.userId THEN 1 ELSE 0 END AS isOwner,
+          CM.joinedAt
+      FROM 
+        tb_circle_member AS CM
+          INNER JOIN tb_circle AS C ON CM.circleId = C.id
+      WHERE
+        CM.userId = ?
+          AND CM.leftAt IS NULL
+          AND C.active = 1`,
+      [userId]
+    ).then((result) => {
+      if (result != null && result.length > 0) {
+        return result.map((e) => {
+          return {
+            id: e.id,
+            name: e.name,
+            isOwner: e.isOwner,
+            joinedAt: e.joinedAt,
+          };
+        });
+      } else {
+        return null;
+      }
+    });
+  }
 }
 
 // Export the service class
