@@ -14,10 +14,13 @@ passport.use(jwtStrategy);
 
 // Check if Express-Validtor returned an error
 const {
-  checkErrors,
-  formatError500Json,
-  formatError404Json,
+  mdwHasErrors,
+  formatReturnError,
+  ErrorReturnType,
 } = require('../core/express/errors');
+
+// Error Exception
+const BvitError = require('../core/express/bvitError');
 
 // Business Logic related to the Circle
 const CircleService = require('../services/circleService');
@@ -105,7 +108,7 @@ router.post(
       'The name must have a minimum of 3 characters and a maximum of 56 characters'
     ).isLength({ min: 3, max: 56 }),
   ],
-  checkErrors(),
+  mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
     const { name } = req.body;
@@ -124,7 +127,7 @@ router.post(
         if (result < 2) {
           return result;
         } else {
-          throw new Error('You reached the free account limit.');
+          throw new BvitError(422, 'You reached the free account limit.');
         }
       })
       .then(() => sCircle.addNewCircle(authUser.id, authUser.email, name))
@@ -132,18 +135,7 @@ router.post(
         return res.json(new Transport(200, null, { circleId }));
       })
       .catch((error) => {
-        if (error.message === 'You reached the free account limit.') {
-          // Is a Endpoint
-          const transport = new Transport(422, [error.message], null);
-
-          // Remove the property data
-          delete transport.data;
-
-          // Return the error
-          return res.status(422).json(transport);
-        } else {
-          return formatError500Json(res, error);
-        }
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );
@@ -254,13 +246,13 @@ router.get(
       .GetCircleByUser(authUser.id)
       .then((result) => {
         if (result === null) {
-          return formatError404Json(res);
+          throw new BvitError(404, 'There is no Circle related to this user.');
         } else {
           return res.json(new Transport(200, null, { circles: result }));
         }
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );

@@ -21,6 +21,9 @@ const replaceContent = require('../core/replaceContent');
 const User = require('../models/user/user');
 const AuthToken = require('../models/auth/authToken');
 
+// Error Exception
+const BvitError = require('../core/express/bvitError');
+
 /*
  * Business Logic related to the User
  */
@@ -168,24 +171,21 @@ class UserService {
       ]
     )
       .then((result) => {
-        // Check if has result
         if (result != null) {
-          // Obtem os dados do usario
-          return this.getUserById(parseInt(result.insertId, 10))
-            .then((user) => {
-              if (user !== null && user.id > 0) {
-                return this.sendValidationEmail(user, baseUrl);
-              } else {
-                throw new Error('Internal Server Error');
-              }
-            })
-            .catch((error) => {
-              throw error;
-            });
+          return parseInt(result.insertId);
         } else {
-          throw new Error('Internal Server Error');
+          throw new BvitError(500, 'Internal Server Error');
         }
       })
+      .then((userId) => this.getUserById(userId))
+      .then((user) => {
+        if (user !== null && user.id > 0) {
+          return user;
+        } else {
+          throw new BvitError(500, 'Internal Server Error');
+        }
+      })
+      .then((user) => this.sendValidationEmail(user, baseUrl))
       .catch((error) => {
         throw error;
       });
@@ -208,7 +208,7 @@ class UserService {
     );
 
     // Send email to check if is a real email
-    return sendEmail(user.email, 'Verify your account', '', emailTemplate)
+    return await sendEmail(user.email, 'Verify your account', '', emailTemplate)
       .then(() => {
         return `${baseUrl}/user/validateEmail?token=${user.emailValidationHash}`;
       })
@@ -228,37 +228,41 @@ class UserService {
         // Check if the user was found
         // Check if the email was already validated
         if (user !== null && user.emailValidatedAt === null) {
-          // Create an email validation Hash
-          // eslint-disable-next-line no-param-reassign
-          user.emailValidationHash = crypto.randomBytes(50).toString('hex');
+          return user;
+        } else {
+          throw new BvitError(
+            404,
+            'User not found or already validated in the past.'
+          );
+        }
+      })
+      .then(async (user) => {
+        // Create an email validation Hash
+        // eslint-disable-next-line no-param-reassign
+        user.emailValidationHash = crypto.randomBytes(50).toString('hex');
 
-          // Update the user with a new hash and expiration date
-          return query(
-            `UPDATE 
+        // Update the user with a new hash and expiration date
+        const result = await query(
+          `UPDATE 
                 tb_user
               SET 
                 emailValidationHash = ?
                 , emailValidationExpires = NOW() + INTERVAL 1 DAY
               WHERE
                 id = ?`,
-            [user.emailValidationHash, user.id]
-          )
-            .then((result) => {
-              if (result != null && result.changedRows > 0) {
-                return this.sendValidationEmail(user, baseUrl);
-              } else {
-                // User not found or already validated in the past
-                return null;
-              }
-            })
-            .catch((error) => {
-              throw error;
-            });
+          [user.emailValidationHash, user.id]
+        );
+
+        if (result != null && result.changedRows > 0) {
+          return user;
         } else {
-          // User not found or already validated in the past
-          return null;
+          throw new BvitError(
+            404,
+            'User not found or already validated in the past.'
+          );
         }
       })
+      .then((user) => this.sendValidationEmail(user, baseUrl))
       .catch((error) => {
         throw error;
       });
@@ -272,7 +276,7 @@ class UserService {
   async validateEmail(hash) {
     return await query(
       `${this.defaultSelectUser}
-        WHERE 
+        WHERE
             U.emailValidationHash = ?
             AND U.emailValidatedAt IS NULL
             AND U.emailValidationExpires >= NOW()`,
@@ -281,25 +285,28 @@ class UserService {
       .then((user) => {
         // Check if has result
         if (user != null && user.length > 0) {
-          return query(
-            `UPDATE 
+          return user[0].id;
+        } else {
+          throw new BvitError(404, 'The token is invalid or has expired');
+        }
+      })
+      .then(async (userId) => {
+        return await query(
+          `UPDATE
                 tb_user
-              SET 
+              SET
                 emailValidatedAt = NOW()
                 , emailValidationExpires = NOW()
-              WHERE	
+              WHERE
                 id = ?`,
-            [user[0].id]
-          )
-            .then((result) => {
-              return result != null && result.changedRows > 0;
-            })
-            .catch((error) => {
-              throw error;
-            });
+          [userId]
+        );
+      })
+      .then((result) => {
+        if (result != null && result.changedRows > 0) {
+          return true;
         } else {
-          // Not Valid
-          return false;
+          throw new BvitError(404, 'The token is invalid or has expired');
         }
       })
       .catch((error) => {
@@ -332,15 +339,15 @@ class UserService {
             },
             process.env.AUTH_SECRET,
             {
-              // Token expires in 1 hour
-              expiresIn: 3600,
+              // Token expires in 24 hour
+              expiresIn: 3600 * 24,
             }
           );
 
           // return the token
           return new AuthToken(token);
         } else {
-          return null;
+          throw new BvitError(401, 'Unauthorized');
         }
       })
       .catch((error) => {
@@ -360,59 +367,55 @@ class UserService {
         // Check if a user was found
         // Check if the user is not blocked
         if (user != null && !user.isBlocked) {
-          // Create an email validation Hash
-          // eslint-disable-next-line no-param-reassign
-          const emailForgotPasswordHash = crypto
-            .randomBytes(50)
-            .toString('hex');
+          return user;
+        } else {
+          throw new BvitError(404, 'User not found.');
+        }
+      })
+      .then(async (user) => {
+        // Create an email validation Hash
+        // eslint-disable-next-line no-param-reassign
+        const emailForgotPasswordHash = crypto.randomBytes(50).toString('hex');
 
-          // Update the user with a new hash and expiration date
-          return query(
-            `UPDATE 
+        // Update the user with a new hash and expiration date
+        const result = await query(
+          `UPDATE 
                   tb_user
               SET 
                 emailForgotPasswordHash = ?
                 , emailForgotPasswordExpires = NOW() + INTERVAL 1 DAY
               WHERE
                   id = ?`,
-            [emailForgotPasswordHash, user.id]
-          )
-            .then((result) => {
-              if (result != null && result.changedRows > 0) {
-                // Load the template
-                const emailTemplate = replaceContent(
-                  path.join(__dirname, '../public/email/forgotEmail.html'),
-                  {
-                    userEmail: user.email,
-                    baseUrl,
-                    emailToken: emailForgotPasswordHash,
-                  }
-                );
+          [emailForgotPasswordHash, user.id]
+        );
 
-                // Send email to check if is a real email
-                return sendEmail(
-                  user.email,
-                  'Forgot Password',
-                  '',
-                  emailTemplate
-                )
-                  .then(() => {
-                    return `${baseUrl}/user/forgotPasswordForm?token=${emailForgotPasswordHash}`;
-                  })
-                  .catch((error) => {
-                    throw error;
-                  });
-              } else {
-                throw new Error('Internal Server Error');
-              }
-            })
-            .catch((error) => {
-              throw error;
-            });
+        // Check if was executed
+        if (result != null && result.changedRows > 0) {
+          return { user, emailForgotPasswordHash };
         } else {
-          // User not found or already validated in the past
-          return null;
+          throw new BvitError(404, 'User not found.');
         }
+      })
+      .then(async (result) => {
+        // Load the template
+        const emailTemplate = replaceContent(
+          path.join(__dirname, '../public/email/forgotEmail.html'),
+          {
+            userEmail: result.user.email,
+            baseUrl,
+            emailToken: result.emailForgotPasswordHash,
+          }
+        );
+
+        // Send email to check if is a real email
+        await sendEmail(
+          result.user.email,
+          'Forgot Password',
+          '',
+          emailTemplate
+        );
+
+        return `${baseUrl}/user/forgotPasswordForm?token=${result.emailForgotPasswordHash}`;
       })
       .catch((error) => {
         throw error;
@@ -462,25 +465,25 @@ class UserService {
       .then((user) => {
         // Check if has result
         if (user != null && user.length > 0) {
-          return query(
-            `UPDATE 
-              tb_user
-            SET 
-              password = ?
-              , emailForgotPasswordExpires = NOW()
-            WHERE	
-              id = ?`,
-            [sha1(process.env.AUTH_SALT + password), user[0].id]
-          )
-            .then((result) => {
-              return result != null && result.changedRows > 0;
-            })
-            .catch((error) => {
-              throw error;
-            });
+          return user[0];
         } else {
-          throw new Error('Internal Server Error');
+          throw new BvitError(404, 'The token is invalid or has expired');
         }
+      })
+      .then(async (user) => {
+        return await query(
+          `UPDATE 
+            tb_user
+          SET 
+            password = ?
+            , emailForgotPasswordExpires = NOW()
+          WHERE	
+            id = ?`,
+          [sha1(process.env.AUTH_SALT + password), user.id]
+        );
+      })
+      .then((result) => {
+        return result != null && result.changedRows > 0;
       })
       .catch((error) => {
         throw error;

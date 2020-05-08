@@ -14,13 +14,16 @@ passport.use(jwtStrategy);
 
 // Check if Express-Validtor returned an error
 const {
-  checkErrors,
-  formatError500Json,
-  formatError500Html,
+  mdwHasErrors,
+  formatReturnError,
+  ErrorReturnType,
 } = require('../core/express/errors');
 
+// Error Exception
+const BvitError = require('../core/express/bvitError');
+
 // utility
-const { checkIfIsValidEmail } = require('../core/express/customValidation');
+const { checkIfIsValidPassword } = require('../core/express/validations');
 
 // Business Logic related to the Users
 const UserService = require('../services/userService');
@@ -30,14 +33,26 @@ const Transport = require('../models/transport/transport');
 
 /**
  * @api {post} /user/create Create a new user
+ * @apiDescription Create a new user with the received information
  * @apiName /user/create
  * @apiGroup User
  * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} content-type application/json
+ * @apiHeaderExample Header-Example:
+ * content-type: application/json
  *
  * @apiParam {string} email Email
  * @apiParam {string} password Password
  * @apiParam {string} firstName First Name
  * @apiParam {string} lastName Last Name
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "email": "email@email.com",
+ *  "password": "1234567890",
+ *  "firstName": "Ozzy",
+ *  "lastName": "Osbourne"
+ * }
  *
  * @apiSuccess {null} null There is no return
  * @apiSuccessExample {json} Example
@@ -92,12 +107,12 @@ router.post(
         });
       }),
     check('password').custom((value) => {
-      return checkIfIsValidEmail(value);
+      return checkIfIsValidPassword(value);
     }),
     check('firstName', 'First name cannot be empty.').not().isEmpty(),
     check('lastName', 'Last name cannot be empty.').not().isEmpty(),
   ],
-  checkErrors(),
+  mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
     const { email, password, firstName, lastName } = req.body;
@@ -115,14 +130,14 @@ router.post(
       .then((emailToken) => {
         // Internal server erroro
         if (emailToken == null) {
-          throw new Error('Internal Server Error');
+          throw new BvitError(500, 'Internal Server Error');
         }
 
         // Success
         return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );
@@ -146,7 +161,7 @@ router.get(
     // Check for erros Custom because is a web page
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return formatError500Html(res, errors);
+      return formatReturnError(res, errors, ErrorReturnType.HTML);
     }
 
     // Get the values from the querystring
@@ -156,27 +171,33 @@ router.get(
     const sUser = new UserService();
     sUser
       .validateEmail(token)
-      .then((result) => {
-        // Internal server erroro
-        if (result) {
-          return res.render('checkEmail');
-        }
-        return res.render('404');
+      .then(() => {
+        return res.render('checkEmail');
       })
       .catch((error) => {
-        return formatError500Html(res, error);
+        return formatReturnError(res, error, ErrorReturnType.HTML);
       });
   }
 );
 
 /**
  * @api {post} /user/auth Authenticate user
+ * @apiDescription Authenticate user through received email (username) and password
  * @apiName /user/auth
  * @apiGroup User
  * @apiVersion 1.0.0
  *
+ * @apiHeader {String} content-type application/json
+ * @apiHeaderExample Header-Example:
+ * content-type: application/json
+ *
  * @apiParam {String} email Email
  * @apiParam {String} password Password
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "email": "email@email.com",
+ *  "password": "1234567890"
+ * }
  *
  * @apiSuccess {string} token Authorization Token
  * @apiSuccessExample {json} Success-Response
@@ -191,8 +212,8 @@ router.get(
  *   }
  * }
  *
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
  * @apiError {401} UNAUTHORIZED Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
  * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
  * @apiErrorExample {json} Example
  * HTTP/1.1 422 Unprocessable Entity
@@ -235,10 +256,10 @@ router.post(
   [
     check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail(),
     check('password').custom((value) => {
-      return checkIfIsValidEmail(value);
+      return checkIfIsValidPassword(value);
     }),
   ],
-  checkErrors(),
+  mdwHasErrors(),
   (req, res) => {
     // Get the passwod and email from body
     const { email, password } = req.body;
@@ -248,29 +269,31 @@ router.post(
     sUser
       .authenticate(email, password)
       .then((token) => {
-        // Unauthorized
-        if (token == null) {
-          const transport = new Transport(401, 'Unauthorized', null);
-          delete transport.data;
-          return res.status(401).json(transport);
-        }
-
         // Success
         return res.json(new Transport(200, null, token));
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );
 
 /**
  * @api {post} /user/resendValidationEmail Resend a Validation Email
+ * @apiDescription Resend a Validation Email so the user can validate their email
  * @apiName /user/resendValidationEmail
  * @apiGroup User
  * @apiVersion 1.0.0
  *
+ * @apiHeader {String} content-type application/json
+ * @apiHeaderExample Header-Example:
+ * content-type: application/json
+ *
  * @apiParam {String} email Email
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "email": "email@email.com"
+ * }
  *
  * @apiSuccess {null} null There is no return
  * @apiSuccessExample {json} Example
@@ -310,7 +333,7 @@ router.post(
 router.post(
   '/resendValidationEmail',
   [check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail()],
-  checkErrors(),
+  mdwHasErrors(),
   (req, res) => {
     // Get the passwod and email from body
     const { email } = req.body;
@@ -320,27 +343,30 @@ router.post(
     sUser
       .resendValidationEmail(email, `${req.protocol}://${req.get('host')}`)
       .then((emailToken) => {
-        // Internal server erroro
-        if (emailToken == null) {
-          throw new Error('Internal Server Error');
-        }
-
-        // Success
         return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );
 
 /**
  * @api {post} /user/forgotPassword Forgot Password
+ * @apiDescription Send an email to the user with a hash that allows user to change their password
  * @apiName /user/forgotPassword
  * @apiGroup User
  * @apiVersion 1.0.0
  *
+ * @apiHeader {String} content-type application/json
+ * @apiHeaderExample Header-Example:
+ * content-type: application/json
+ *
  * @apiParam {String} email Email
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "email": "email@email.com"
+ * }
  *
  * @apiSuccess {null} null There is no return
  * @apiSuccessExample {json} Example
@@ -380,7 +406,7 @@ router.post(
 router.post(
   '/forgotPassword',
   [check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail()],
-  checkErrors(),
+  mdwHasErrors(),
   (req, res) => {
     // Get the passwod and email from body
     const { email } = req.body;
@@ -390,16 +416,11 @@ router.post(
     sUser
       .forgotPassword(email, `${req.protocol}://${req.get('host')}`)
       .then((emailToken) => {
-        // Internal server erroro
-        if (emailToken == null) {
-          throw new Error('Internal Server Error');
-        }
-
         // Success
         return res.json(new Transport(200, null, { emailToken }));
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );
@@ -423,7 +444,7 @@ router.get(
     // Check for erros Custom because is a web page
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return formatError500Html(res, errors);
+      return formatReturnError(res, errors, ErrorReturnType.HTML);
     }
 
     // Get the values from the querystring
@@ -440,7 +461,7 @@ router.get(
         return res.render('404');
       })
       .catch((error) => {
-        return formatError500Html(res, error);
+        return formatReturnError(res, error, ErrorReturnType.HTML);
       });
   }
 );
@@ -464,9 +485,18 @@ router.post(
   [
     check('token', 'Token cannot be empty.').not().isEmpty(),
     check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail(),
-    check('password').custom((value) => {
-      return checkIfIsValidEmail(value);
-    }),
+    check('password')
+      .custom((value) => {
+        return checkIfIsValidPassword(value);
+      })
+      .custom((value, { req }) => {
+        if (value !== req.body.confpassword) {
+          // trow error if passwords do not match
+          throw new Error("Passwords don't match");
+        } else {
+          return value;
+        }
+      }),
   ],
   (req, res) => {
     // Get the values from the querystring
@@ -505,20 +535,32 @@ router.post(
         }
       })
       .catch((error) => {
-        return formatError500Html(res, error);
+        return formatReturnError(res, error, ErrorReturnType.HTML);
       });
   }
 );
 
 /**
  * @api {post} /user/chagePassword Change user password
+ * @apiDescription Allows an authenticated user to change their password
  * @apiName /user/chagePassword
  * @apiGroup User
  * @apiVersion 1.0.0
  *
- * @apiHeader {String} authorization Bearer Authorization token.
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
  *
  * @apiParam {String} password Password
+ * @apiParam {String} confpassword Password
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "password": "1234567890",
+ *  "confpassword": "1234567890"
+ * }
  *
  * @apiSuccess {null} null There is no return
  * @apiSuccessExample {json} Example
@@ -571,9 +613,18 @@ router.post(
 router.post(
   '/chagePassword',
   passport.authenticate('jwt', { session: false }),
-  check('password').custom((value) => {
-    return checkIfIsValidEmail(value);
-  }),
+  check('password')
+    .custom((value) => {
+      return checkIfIsValidPassword(value);
+    })
+    .custom((value, { req }) => {
+      if (value !== req.body.confpassword) {
+        // trow error if passwords do not match
+        throw new Error("Passwords don't match");
+      } else {
+        return value;
+      }
+    }),
   (req, res) => {
     // Get the passwod and email from body
     const { password } = req.body;
@@ -588,7 +639,7 @@ router.post(
         return res.json(transport);
       })
       .catch((error) => {
-        return formatError500Json(res, error);
+        return formatReturnError(res, error, ErrorReturnType.JSON);
       });
   }
 );

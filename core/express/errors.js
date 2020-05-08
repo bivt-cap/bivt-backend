@@ -4,31 +4,92 @@ const { validationResult } = require('express-validator');
 // Transportation Class
 const Transport = require('../../models/transport/transport');
 
-// Check if Express-Validtor returned an error
-const checkErrors = () => {
+// BVIT error class
+const BvitError = require('./bvitError');
+
+// "Enum": since are not supported in JavaScript natively,
+// I will create a const and freeze the object so nothing
+// can be add to the object
+const ErrorReturnType = {
+  JSON: 1,
+  HTML: 2,
+};
+Object.freeze(ErrorReturnType);
+
+/*
+ * Format and return an error in a fancy way
+ */
+const formatReturnError = (res, error, returnType) => {
+  // Transport object to return an error
+  let transportError;
+
+  // Check the type of the erro
+  if (error instanceof BvitError) {
+    transportError = new Transport(error.code, error.message, null);
+  } else if (Array.isArray(error)) {
+    // Error returned from Express-validator
+    transportError = new Transport(
+      422,
+      [
+        ...new Set(
+          error.map((e) => {
+            return e;
+          })
+        ),
+      ],
+      null
+    );
+  } else if (error.message !== undefined) {
+    transportError = new Transport(500, error.message, null);
+  } else {
+    transportError = new Transport(500, 'Internal Server Error', null);
+  }
+
+  // Remove the property data
+  delete transportError.data;
+
+  // return the error according to its type
+  if (returnType === ErrorReturnType.JSON) {
+    // Return the error
+    return res.status(transportError.status.id).json(transportError);
+  } else {
+    let htmlFeedback;
+    // If is a list of errors
+    if (Array.isArray(transportError.status.errors)) {
+      htmlFeedback = `<ul>${transportError.status.errors
+        .map((e) => {
+          return `<li>${e}</li>`;
+        })
+        .join('')}</ul>`;
+    } else {
+      htmlFeedback = `<ul><li>${transportError.status.errors}</li></ul>`;
+    }
+
+    // Return the error
+    return res.render(transportError.status.id.toString(), {
+      feedbackError: htmlFeedback,
+    });
+  }
+};
+
+/*
+ * Express-Validatior Middleware responsable to
+ * Return an error when is present in the validationResult
+ * function
+ */
+const mdwHasErrors = () => {
   return (req, res, next) => {
     const errors = validationResult(req);
 
     // Check if has error
     if (!errors.isEmpty()) {
-      // Is a Endpoint
-      const transport = new Transport(
-        422,
-        [
-          ...new Set(
-            errors.array().map((e) => {
-              return e.msg;
-            })
-          ),
-        ],
-        null
+      return formatReturnError(
+        res,
+        errors.array().map((e) => {
+          return e.msg;
+        }),
+        ErrorReturnType.JSON
       );
-
-      // Remove the property data
-      delete transport.data;
-
-      // Return the error
-      return res.status(422).json(transport);
     }
 
     // Continue to next Express middleware
@@ -36,62 +97,8 @@ const checkErrors = () => {
   };
 };
 
-// Format the http error 500 - JSON
-const formatError500Json = (res, error) => {
-  const transport = new Transport(
-    500,
-    error.message !== 'undefined' ? error.message : 'Internal Server Error',
-    null
-  );
-
-  // Remove the property data
-  delete transport.data;
-
-  // Return the error
-  return res.status(500).json(transport);
-};
-
-// Format the http error 500 - HTML
-const formatError500Html = (res, error) => {
-  let feedbackError;
-  if (error.message === undefined && Array.isArray(error.array())) {
-    const errorUnique = [
-      ...new Set(
-        error.array().map((e) => {
-          return e.msg;
-        })
-      ),
-    ];
-
-    feedbackError = `<ul>${errorUnique
-      .map((e) => {
-        return `<li>${e}</li>`;
-      })
-      .join('')}</ul>`;
-  } else {
-    feedbackError =
-      error.message !== 'undefined' ? error.message : 'Internal Server Error';
-  }
-
-  return res.render('500', {
-    feedbackError,
-  });
-};
-
-// Format the http error 404 - JSON Not Found
-const formatError404Json = (res) => {
-  const transport = new Transport(404, 'Not Found', null);
-
-  // Remove the property data
-  delete transport.data;
-
-  // Return the error
-  return res.status(404).json(transport);
-};
-
 module.exports = {
-  checkErrors,
-  formatError500Json,
-  formatError500Html,
-  formatError404Json,
+  mdwHasErrors,
+  formatReturnError,
+  ErrorReturnType,
 };

@@ -246,9 +246,30 @@
     "type": "post",
     "url": "/user/auth",
     "title": "Authenticate user",
+    "description": "<p>Authenticate user through received email (username) and password</p>",
     "name": "/user/auth",
     "group": "User",
     "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -267,7 +288,14 @@
             "description": "<p>Password</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\": \"email@email.com\",\n \"password\": \"1234567890\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "fields": {
@@ -294,17 +322,17 @@
         "Error 4xx": [
           {
             "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          },
-          {
-            "group": "Error 4xx",
             "type": "401",
             "optional": false,
             "field": "UNAUTHORIZED",
             "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
           }
         ],
         "Error 5xx": [
@@ -332,6 +360,7 @@
     "type": "post",
     "url": "/user/chagePassword",
     "title": "Change user password",
+    "description": "<p>Allows an authenticated user to change their password</p>",
     "name": "/user/chagePassword",
     "group": "User",
     "version": "1.0.0",
@@ -343,10 +372,24 @@
             "type": "String",
             "optional": false,
             "field": "authorization",
-            "description": "<p>Bearer Authorization token.</p>"
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
     },
     "parameter": {
       "fields": {
@@ -357,9 +400,23 @@
             "optional": false,
             "field": "password",
             "description": "<p>Password</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confpassword",
+            "description": "<p>Password</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"password\": \"1234567890\",\n \"confpassword\": \"1234567890\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "fields": {
@@ -424,9 +481,30 @@
     "type": "post",
     "url": "/user/create",
     "title": "Create a new user",
+    "description": "<p>Create a new user with the received information</p>",
     "name": "/user/create",
     "group": "User",
     "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -459,7 +537,14 @@
             "description": "<p>Last Name</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\": \"email@email.com\",\n \"password\": \"1234567890\",\n \"firstName\": \"Ozzy\",\n \"lastName\": \"Osbourne\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "fields": {
@@ -517,9 +602,30 @@
     "type": "post",
     "url": "/user/forgotPassword",
     "title": "Forgot Password",
+    "description": "<p>Send an email to the user with a hash that allows user to change their password</p>",
     "name": "/user/forgotPassword",
     "group": "User",
     "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -531,7 +637,14 @@
             "description": "<p>Email</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\": \"email@email.com\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "fields": {
@@ -589,9 +702,30 @@
     "type": "post",
     "url": "/user/resendValidationEmail",
     "title": "Resend a Validation Email",
+    "description": "<p>Resend a Validation Email so the user can validate their email</p>",
     "name": "/user/resendValidationEmail",
     "group": "User",
     "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -603,7 +737,14 @@
             "description": "<p>Email</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\": \"email@email.com\"\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "fields": {
