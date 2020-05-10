@@ -25,6 +25,9 @@ const BvitError = require('../core/express/bvitError');
 // Business Logic related to the Circle
 const CircleService = require('../services/circleService');
 
+// Business Logic related to the User
+const UserService = require('../services/userService');
+
 // Transportation Class
 const Transport = require('../models/transport/transport');
 
@@ -168,12 +171,14 @@ router.post(
  *         "id": 1,
  *         "name": "Circle 1",
  *         "isOwner": 1,
+ *         "isAdmin": 1,
  *         "joinedAt": "2020-05-07T17:20:15.000Z"
  *       },
  *       {
  *         "id": 2,
  *         "name": "Circle 2",
  *         "isOwner": 0,
+ *         "isAdmin": 1,
  *         "joinedAt": null
  *       }
  *     ]
@@ -243,13 +248,134 @@ router.get(
 
     // Create a new Circle
     sCircle
-      .GetCircleByUser(authUser.id)
+      .getCirclesByUser(authUser.id)
       .then((result) => {
-        if (result === null) {
-          throw new BvitError(404, 'There is no Circle related to this user.');
-        } else {
-          return res.json(new Transport(200, null, { circles: result }));
-        }
+        return res.json(new Transport(200, null, { circles: result }));
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {get} /circle/inviteUser Invite an email to join a Circle
+ * @apiDescription Invite an email to join a Circle
+ * @apiName /circle/inviteUser
+ * @apiGroup Circle
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiSuccess {null} null There is no return
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *  "status": {
+ *    "id": 200,
+ *    "errors": null
+ *  }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/inviteUser',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('email', 'E-mail must be a valid e-mail.').not().isEmpty().isEmail(),
+    check('circleId', 'Circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { email, circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sCircle = new CircleService();
+    const sUser = new UserService();
+
+    // Try to find the invited user by email
+    sUser
+      .getUserByEmail(email)
+      .then(async (user) => {
+        const userId = authUser.id;
+        const userIdToInvite = user != null ? user.id : null;
+        const userEmailToInvite = email;
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        return await sCircle.AddUserToCircle(
+          userId,
+          userIdToInvite,
+          userEmailToInvite,
+          circleId,
+          baseUrl
+        );
+      })
+      .then(() => {
+        const transport = new Transport(200, null, null);
+        delete transport.data;
+        return res.json(transport);
       })
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);

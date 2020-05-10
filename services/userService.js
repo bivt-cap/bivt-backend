@@ -8,6 +8,9 @@ const crypto = require('crypto');
 // JWT
 const jwt = require('jsonwebtoken');
 
+// Configuration
+const config = require('../core/config');
+
 // Database
 const query = require('../core/database');
 
@@ -21,7 +24,7 @@ const replaceContent = require('../core/replaceContent');
 const User = require('../models/user/user');
 const AuthToken = require('../models/auth/authToken');
 
-// Error Exception
+// Custom Exception
 const BvitError = require('../core/express/bvitError');
 
 /*
@@ -37,9 +40,9 @@ class UserService {
         , U.password
         , U.firstName
         , U.lastName
-        , CASE WHEN U.emailValidatedAt IS NULL THEN 1 ELSE 0 END AS isBlocked
+        , CASE WHEN U.emailValidatedOn IS NULL THEN 1 ELSE 0 END AS isBlocked
         , U.emailValidationHash
-        , U.emailValidatedAt
+        , U.emailValidatedOn
         , U.emailForgotPasswordHash
     FROM 
         tb_user AS U`;
@@ -61,7 +64,7 @@ class UserService {
       resultDB[0].lastName,
       parseInt(resultDB[0].isBlocked, 10) === 1,
       resultDB[0].emailValidationHash,
-      resultDB[0].emailValidatedAt,
+      resultDB[0].emailValidatedOn,
       resultDB[0].emailForgotPasswordHash
     );
   }
@@ -164,7 +167,7 @@ class UserService {
         (?, ?, ?, ?, ?, NOW() + INTERVAL 1 DAY)`,
       [
         email,
-        sha1(process.env.AUTH_SALT + password),
+        sha1(config.authorization.salt + password),
         firstName,
         lastName,
         emailValidationHash,
@@ -278,7 +281,7 @@ class UserService {
       `${this.defaultSelectUser}
         WHERE
             U.emailValidationHash = ?
-            AND U.emailValidatedAt IS NULL
+            AND U.emailValidatedOn IS NULL
             AND U.emailValidationExpires >= NOW()`,
       [hash]
     )
@@ -295,7 +298,7 @@ class UserService {
           `UPDATE
                 tb_user
               SET
-                emailValidatedAt = NOW()
+              emailValidatedOn = NOW()
                 , emailValidationExpires = NOW()
               WHERE
                 id = ?`,
@@ -330,14 +333,14 @@ class UserService {
         if (
           user != null &&
           !user.isBlocked &&
-          user.password === sha1(process.env.AUTH_SALT + password)
+          user.password === sha1(config.authorization.salt + password)
         ) {
           // Generate the token
           const token = jwt.sign(
             {
               extId: user.extId,
             },
-            process.env.AUTH_SECRET,
+            config.authorization.secret,
             {
               // Token expires in 24 hour
               expiresIn: 3600 * 24,
@@ -432,7 +435,7 @@ class UserService {
       `${this.defaultSelectUser}
         WHERE 
             U.emailForgotPasswordHash = ?
-            AND U.emailValidatedAt IS NOT NULL
+            AND U.emailValidatedOn IS NOT NULL
             AND U.emailForgotPasswordExpires >= NOW()`,
       [hash]
     )
@@ -458,7 +461,7 @@ class UserService {
         WHERE 
             U.emailForgotPasswordHash = ?
             AND U.email = ?
-            AND U.emailValidatedAt IS NOT NULL
+            AND U.emailValidatedOn IS NOT NULL
             AND U.emailForgotPasswordExpires >= NOW()`,
       [hash, email]
     )
@@ -479,7 +482,7 @@ class UserService {
             , emailForgotPasswordExpires = NOW()
           WHERE	
             id = ?`,
-          [sha1(process.env.AUTH_SALT + password), user.id]
+          [sha1(config.authorization.salt + password), user.id]
         );
       })
       .then((result) => {
@@ -504,7 +507,7 @@ class UserService {
               password = ?
             WHERE	
               id = ?`,
-      [sha1(process.env.AUTH_SALT + password), id]
+      [sha1(config.authorization.salt + password), id]
     )
       .then((result) => {
         return result != null && result.changedRows > 0;

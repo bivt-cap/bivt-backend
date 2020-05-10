@@ -1,13 +1,16 @@
 // Load MySQL
 const mysql = require('mysql');
 
+// Configuration
+const config = require('./config');
+
 // Create the pool connection
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE,
+  host: config.database.host,
+  user: config.database.user,
+  password: config.database.pass,
+  database: config.database.name,
 });
 
 // Export que query function
