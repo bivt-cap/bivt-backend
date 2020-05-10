@@ -1,6 +1,3 @@
-// Environment Variables (https://www.npmjs.com/package/dotenv)
-require('dotenv').config();
-
 // Node.JS module
 const path = require('path');
 
@@ -14,6 +11,9 @@ const bodyParser = require('body-parser');
 
 // Cors (https://www.npmjs.com/package/cors)
 const cors = require('cors');
+
+// Configuration
+const config = require('./core/config');
 
 // Load a file and replace its content
 const replaceContent = require('./core/replaceContent');
@@ -49,7 +49,7 @@ app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
 
 // Start listening
-app.listen(process.env.SERVER_PORT, () => {
+app.listen(config.port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Listening on port ${process.env.SERVER_PORT}!`);
+  console.log(`Listening on port ${config.port}!`);
 });

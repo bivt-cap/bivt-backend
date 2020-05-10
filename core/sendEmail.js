@@ -1,13 +1,16 @@
 // Nodemailer (https://www.npmjs.com/package/nodemailer)
 const nodemailer = require('nodemailer');
 
+// Configuration
+const config = require('./config');
+
 // Export que query function
 module.exports = async (to, subject, text, html) => {
   // create reusable transporter object using the default SMTP transport
   let transporter;
 
   // Check if is a test email
-  if (process.env.EMAIL_TEST === 'true') {
+  if (config.email.test === 'true') {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     const testAccount = await nodemailer.createTestAccount();
@@ -22,30 +25,30 @@ module.exports = async (to, subject, text, html) => {
         pass: testAccount.pass, // generated ethereal password
       },
     });
-  } else if (process.env.EMAIL_SERVICE === 'gmail') {
+  } else if (config.email.service === 'gmail') {
     transporter = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE,
+      service: config.email.service,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: config.email.user,
+        pass: config.email.pass,
       },
     });
   } else {
     // create reusable transporter object using the default SMTP transport
     transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: config.email.host,
+      port: config.email.port,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: config.email.user,
+        pass: config.email.pass,
       },
     });
   }
 
   // send mail with defined transport object
   return await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+    from: config.email.user,
     to,
     subject,
     text,
