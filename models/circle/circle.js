@@ -117,6 +117,79 @@ class Circle {
         throw error;
       });
   }
+
+  /*
+   * Set all Invited member with the same email to set the new user id
+   * @param email {string} Email to use as a filter
+   * @param userId {int} The user (id) to be set
+   * @return void
+   */
+  async updateInviteWithUserIdByEmail(email, userId) {
+    return await query(
+      `UPDATE tb_circle_member SET userId = ? WHERE email = ? AND userId IS NULL AND joinedOn IS NULL AND leftOn IS NULL`,
+      [userId, email]
+    )
+      .then((result) => {
+        // Check if has result
+        return result != null && result.changedRows > 0;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Confirm a User (member) in a Circle
+   * @param userId {int} The user Id
+   * @param circleId {int} Circle Id
+   * @return void
+   */
+  async confirmMemberOfCircle(userId, circleId) {
+    return await query(
+      `UPDATE tb_circle_member 
+        SET 
+          joinedOn = now()
+        WHERE
+          circleId = ?
+          AND userId = ?
+          AND joinedOn IS NULL
+          AND leftOn IS NULL`,
+      [circleId, userId]
+    )
+      .then((result) => {
+        // Check if has result
+        return result != null && result.changedRows > 0;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Remove a User (member) from a Circle
+   * @param userId {int} The user Id
+   * @param circleId {int} Circle Id
+   * @return void
+   */
+  async removeMemberFromCircle(userId, circleId) {
+    return await query(
+      `UPDATE tb_circle_member 
+        SET 
+          leftOn = now()
+        WHERE
+          circleId = ?
+          AND userId = ?
+          AND leftOn IS NULL`,
+      [circleId, userId]
+    )
+      .then((result) => {
+        // Check if has result
+        return result != null && result.changedRows > 0;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export

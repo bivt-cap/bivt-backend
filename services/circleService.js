@@ -172,6 +172,54 @@ class CircleService {
 
     return true;
   }
+
+  /*
+   * Set all Invited member with the same email to set the new user id
+   * @param email {string} Email to use as a filter
+   * @param userId {int} The user (id) to be set
+   * @return void
+   */
+  async updateInviteWithUserIdByEmail(email, userId) {
+    return await this.CircleModel.updateInviteWithUserIdByEmail(email, userId)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Confirm a User (member) of a Circle
+   * @param userId {int} The user Id
+   * @param circleId {int} Circle Id
+   * @return void
+   */
+  async confirmMemberOfCircle(userId, circleId) {
+    return await this.CircleModel.confirmMemberOfCircle(userId, circleId)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Remove a User (member) from a Circle
+   * @param userId {int} The user Id
+   * @param circleId {int} Circle Id
+   * @return void
+   */
+  async removeMemberFromCircle(userId, circleId) {
+    return await this.CircleModel.removeMemberFromCircle(userId, circleId)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export the service class

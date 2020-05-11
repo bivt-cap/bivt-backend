@@ -27,6 +27,9 @@ const AuthToken = require('../models/auth/authToken');
 // Custom Exception
 const BvitError = require('../core/express/bvitError');
 
+// Business Logic related to the Circle
+const CircleService = require('./circleService');
+
 /*
  * Business Logic related to the User
  */
@@ -187,6 +190,11 @@ class UserService {
         } else {
           throw new BvitError(500, 'Internal Server Error');
         }
+      })
+      .then(async (user) => {
+        const sCircle = new CircleService();
+        await sCircle.updateInviteWithUserIdByEmail(user.email, user.id);
+        return user;
       })
       .then((user) => this.sendValidationEmail(user, baseUrl))
       .catch((error) => {
