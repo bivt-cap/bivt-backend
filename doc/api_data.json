@@ -1,5 +1,226 @@
 [
   {
+    "type": "post",
+    "url": "/auth/google",
+    "title": "Google authenticate user",
+    "description": "<p>Authenticate user through google</p>",
+    "name": "/auth/google",
+    "group": "Auth",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Google Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"token\": \"eyJhbGciOiJIUzI1NiIsInR5...\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIU...\",\n    \"user\": {\n      \"email\": \"email@email.com\",\n      \"firstName\": \"First Name\",\n      \"lastName\": \"Last Name\",\n      \"photoUrl\": \"Profile Photo URL\",\n      \"dateOfBirth\": \"2014-01-01T23:28:56.782Z\",\n      \"type\": 1\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"id\": 422,\n    \"errors\": [\n      \"Google Token is required.\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/auth.js",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
+    "url": "/auth/local",
+    "title": "Authenticate user",
+    "description": "<p>Authenticate user through received email (username) and password</p>",
+    "name": "/auth/local",
+    "group": "Auth",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "content-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"email\": \"email@email.com\",\n \"password\": \"1234567890\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIU...\",\n    \"user\": {\n      \"email\": \"email@email.com\",\n      \"firstName\": \"First Name\",\n      \"lastName\": \"Last Name\",\n      \"photoUrl\": \"Profile Photo URL\",\n      \"dateOfBirth\": \"2014-01-01T23:28:56.782Z\",\n      \"type\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/auth.js",
+    "groupTitle": "Auth"
+  },
+  {
     "type": "get",
     "url": "/circle/byUser",
     "title": "List of Circles by User",
@@ -611,120 +832,6 @@
     "group": "D:\\Projects\\bivt-backend\\doc\\main.js",
     "groupTitle": "D:\\Projects\\bivt-backend\\doc\\main.js",
     "name": ""
-  },
-  {
-    "type": "post",
-    "url": "/user/auth",
-    "title": "Authenticate user",
-    "description": "<p>Authenticate user through received email (username) and password</p>",
-    "name": "/user/auth",
-    "group": "User",
-    "version": "1.0.0",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "content-type",
-            "description": "<p>application/json</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header-Example:",
-          "content": "content-type: application/json",
-          "type": "json"
-        }
-      ]
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Email</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>Password</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"email\": \"email@email.com\",\n \"password\": \"1234567890\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "token",
-            "description": "<p>Authorization Token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response",
-          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"errors\": null,\n    \"id\": 200\n  },\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5...\"\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "./routes/user.js",
-    "groupTitle": "User"
   },
   {
     "type": "post",

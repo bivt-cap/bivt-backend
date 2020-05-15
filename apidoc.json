@@ -8,5 +8,5 @@
     "withCompare": false,
     "withGenerator": true
   },
-  "order": ["User", "Circle"]
+  "order": ["Auth", "User", "Circle"]
 }
