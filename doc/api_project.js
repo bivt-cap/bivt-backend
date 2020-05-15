@@ -9,6 +9,7 @@ define({
     "withGenerator": true
   },
   "order": [
+    "Auth",
     "User",
     "Circle"
   ],
@@ -17,7 +18,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-05-11T22:41:12.710Z",
+    "time": "2020-05-15T02:10:30.074Z",
     "url": "http://apidocjs.com",
     "version": "0.22.0"
   }

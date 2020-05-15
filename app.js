@@ -47,6 +47,7 @@ app.set('view engine', 'thtml');
 // Routes
 app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
+app.use('/auth', require('./routes/auth'));
 
 // Start listening
 app.listen(config.port, () => {

@@ -1,18 +1,5 @@
-// SHA1 Encrypt
-const sha1 = require('sha1');
-
 // Node.JS module
 const path = require('path');
-const crypto = require('crypto');
-
-// JWT
-const jwt = require('jsonwebtoken');
-
-// Configuration
-const config = require('../core/config');
-
-// Database
-const query = require('../core/database');
 
 // Send Email
 const sendEmail = require('../core/sendEmail');
@@ -21,8 +8,7 @@ const sendEmail = require('../core/sendEmail');
 const replaceContent = require('../core/replaceContent');
 
 // Models
-const User = require('../models/user/user');
-const AuthToken = require('../models/auth/authToken');
+const { User, UserType } = require('../models/user/user');
 
 // Custom Exception
 const BvitError = require('../core/express/bvitError');
@@ -35,93 +21,25 @@ const CircleService = require('./circleService');
  */
 class UserService {
   constructor() {
-    // Default Select for User information
-    this.defaultSelectUser = `SELECT 
-        U.id
-        , U.extId
-        , U.email
-        , U.password
-        , U.firstName
-        , U.lastName
-        , CASE WHEN U.emailValidatedOn IS NULL THEN 1 ELSE 0 END AS isBlocked
-        , U.emailValidationHash
-        , U.emailValidatedOn
-        , U.emailForgotPasswordHash
-    FROM 
-        tb_user AS U`;
-  }
-
-  /*
-   * Convert the Database Result to the User Entity
-   * @param result {Array} Result returned from database
-   * @return {User} User
-   */
-  defaultSelectUserResult(resultDB) {
-    // Return the User
-    return new User(
-      parseInt(resultDB[0].id, 10),
-      resultDB[0].extId,
-      resultDB[0].email,
-      resultDB[0].password,
-      resultDB[0].firstName,
-      resultDB[0].lastName,
-      parseInt(resultDB[0].isBlocked, 10) === 1,
-      resultDB[0].emailValidationHash,
-      resultDB[0].emailValidatedOn,
-      resultDB[0].emailForgotPasswordHash
-    );
+    this.UserModel = new User();
   }
 
   /*
    * Find an user by email
    * @param email {string} Find an user using this email to filter
-   * @return {User} User
+   * @return {object} User
    */
   async getUserByEmail(email) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE 
-            U.email = ?`,
-      [email]
-    )
-      .then((result) => {
-        // Check if has result
-        if (result != null && result.length > 0) {
-          // Return the User
-          return this.defaultSelectUserResult(result);
-        } else {
-          return null;
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return await this.UserModel.getUserByEmail(email);
   }
 
   /*
    * Find an user by Id
    * @param id {int} Find an user using the id to filter
-   * @return {User} User
+   * @return {object} User
    */
   async getUserById(id) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE 
-            U.id = ?`,
-      [id]
-    )
-      .then((result) => {
-        // Check if has result
-        if (result != null && result.length > 0) {
-          // Return the User
-          return this.defaultSelectUserResult(result);
-        } else {
-          return null;
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return await this.UserModel.getUserById(id);
   }
 
   /*
@@ -130,24 +48,7 @@ class UserService {
    * @return {User} User
    */
   async getUserByExtId(extId) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE 
-            U.extId = ?`,
-      [extId]
-    )
-      .then((result) => {
-        // Check if has result
-        if (result != null && result.length > 0) {
-          // Return the User
-          return this.defaultSelectUserResult(result);
-        } else {
-          return null;
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return await this.UserModel.getUserByExtId(extId);
   }
 
   /*
@@ -160,29 +61,14 @@ class UserService {
    * @return {string} Validation Email URL
    */
   async addNewUser(email, password, firstName, lastName, baseUrl) {
-    // Create an email validation Hash
-    const emailValidationHash = crypto.randomBytes(50).toString('hex');
-
-    return await query(
-      `INSERT INTO tb_user 
-        (email, password, firstName, lastName, emailValidationHash, emailValidationExpires) 
-        VALUES
-        (?, ?, ?, ?, ?, NOW() + INTERVAL 1 DAY)`,
-      [
-        email,
-        sha1(config.authorization.salt + password),
-        firstName,
-        lastName,
-        emailValidationHash,
-      ]
+    return await this.UserModel.addNewUser(
+      email,
+      password,
+      firstName,
+      lastName,
+      null,
+      UserType.Local
     )
-      .then((result) => {
-        if (result != null) {
-          return parseInt(result.insertId);
-        } else {
-          throw new BvitError(500, 'Internal Server Error');
-        }
-      })
       .then((userId) => this.getUserById(userId))
       .then((user) => {
         if (user !== null && user.id > 0) {
@@ -238,7 +124,7 @@ class UserService {
       .then((user) => {
         // Check if the user was found
         // Check if the email was already validated
-        if (user !== null && user.emailValidatedAt === null) {
+        if (user !== null && user.emailValidatedOn === null) {
           return user;
         } else {
           throw new BvitError(
@@ -248,23 +134,7 @@ class UserService {
         }
       })
       .then(async (user) => {
-        // Create an email validation Hash
-        // eslint-disable-next-line no-param-reassign
-        user.emailValidationHash = crypto.randomBytes(50).toString('hex');
-
-        // Update the user with a new hash and expiration date
-        const result = await query(
-          `UPDATE 
-                tb_user
-              SET 
-                emailValidationHash = ?
-                , emailValidationExpires = NOW() + INTERVAL 1 DAY
-              WHERE
-                id = ?`,
-          [user.emailValidationHash, user.id]
-        );
-
-        if (result != null && result.changedRows > 0) {
+        if (this.UserModel.regenerateEmailValidationHash(user.id)) {
           return user;
         } else {
           throw new BvitError(
@@ -285,80 +155,20 @@ class UserService {
    * @return {bool} Return true if the email validated and false if not
    */
   async validateEmail(hash) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE
-            U.emailValidationHash = ?
-            AND U.emailValidatedOn IS NULL
-            AND U.emailValidationExpires >= NOW()`,
-      [hash]
-    )
+    return await this.UserModel.getUserByEmailValidationHash(hash)
       .then((user) => {
         // Check if has result
-        if (user != null && user.length > 0) {
-          return user[0].id;
+        if (user != null) {
+          return user.id;
         } else {
           throw new BvitError(404, 'The token is invalid or has expired');
         }
       })
       .then(async (userId) => {
-        return await query(
-          `UPDATE
-                tb_user
-              SET
-              emailValidatedOn = NOW()
-                , emailValidationExpires = NOW()
-              WHERE
-                id = ?`,
-          [userId]
-        );
-      })
-      .then((result) => {
-        if (result != null && result.changedRows > 0) {
+        if (await this.UserModel.setUserEmailAsValid(userId)) {
           return true;
         } else {
           throw new BvitError(404, 'The token is invalid or has expired');
-        }
-      })
-      .catch((error) => {
-        throw error;
-      });
-  }
-
-  /*
-   * Authenticate the user
-   * @param email {string} User Email
-   * @param password {string} User Password
-   * @return {AuthToken} Return the Authorization Token
-   */
-  async authenticate(email, password) {
-    // Find the user using the email as filter
-    return await this.getUserByEmail(email)
-      .then((user) => {
-        // Check if a user was found
-        // Check if the user is not blocked
-        // Check if password is equals
-        if (
-          user != null &&
-          !user.isBlocked &&
-          user.password === sha1(config.authorization.salt + password)
-        ) {
-          // Generate the token
-          const token = jwt.sign(
-            {
-              extId: user.extId,
-            },
-            config.authorization.secret,
-            {
-              // Token expires in 24 hour
-              expiresIn: 3600 * 24,
-            }
-          );
-
-          // return the token
-          return new AuthToken(token);
-        } else {
-          throw new BvitError(401, 'Unauthorized');
         }
       })
       .catch((error) => {
@@ -384,24 +194,13 @@ class UserService {
         }
       })
       .then(async (user) => {
-        // Create an email validation Hash
-        // eslint-disable-next-line no-param-reassign
-        const emailForgotPasswordHash = crypto.randomBytes(50).toString('hex');
-
         // Update the user with a new hash and expiration date
-        const result = await query(
-          `UPDATE 
-                  tb_user
-              SET 
-                emailForgotPasswordHash = ?
-                , emailForgotPasswordExpires = NOW() + INTERVAL 1 DAY
-              WHERE
-                  id = ?`,
-          [emailForgotPasswordHash, user.id]
+        const emailForgotPasswordHash = await this.UserModel.generateForgotPasswordHash(
+          user.id
         );
 
         // Check if was executed
-        if (result != null && result.changedRows > 0) {
+        if (emailForgotPasswordHash != null) {
           return { user, emailForgotPasswordHash };
         } else {
           throw new BvitError(404, 'User not found.');
@@ -434,22 +233,15 @@ class UserService {
   }
 
   /*
-   * Validate if the recived has is valid and existsd
+   * Validate if the recived hash is valid and existsd
    * @param hash {string} Hash to user as filter
    * @return {bool}  Return true if the email validated and false if not
    */
   async validateForgotPassword(hash) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE 
-            U.emailForgotPasswordHash = ?
-            AND U.emailValidatedOn IS NOT NULL
-            AND U.emailForgotPasswordExpires >= NOW()`,
-      [hash]
-    )
+    return await this.UserModel.getUserByForgotEmailHash(hash)
       .then((user) => {
         // Check if has result
-        return user != null && user.length > 0;
+        return user != null;
       })
       .catch((error) => {
         throw error;
@@ -464,37 +256,20 @@ class UserService {
    * @return {bool}  Return true if the email validated and false if not
    */
   async changeForgotPasswordByHash(hash, email, password) {
-    return await query(
-      `${this.defaultSelectUser}
-        WHERE 
-            U.emailForgotPasswordHash = ?
-            AND U.email = ?
-            AND U.emailValidatedOn IS NOT NULL
-            AND U.emailForgotPasswordExpires >= NOW()`,
-      [hash, email]
-    )
+    return await this.UserModel.getUserByEmailAndForgotEmailHash(email, hash)
       .then((user) => {
         // Check if has result
-        if (user != null && user.length > 0) {
-          return user[0];
+        if (user != null) {
+          return user;
         } else {
           throw new BvitError(404, 'The token is invalid or has expired');
         }
       })
       .then(async (user) => {
-        return await query(
-          `UPDATE 
-            tb_user
-          SET 
-            password = ?
-            , emailForgotPasswordExpires = NOW()
-          WHERE	
-            id = ?`,
-          [sha1(config.authorization.salt + password), user.id]
+        return await this.UserModel.updatePasswordAndSetHasExpiresByUserId(
+          user.id,
+          password
         );
-      })
-      .then((result) => {
-        return result != null && result.changedRows > 0;
       })
       .catch((error) => {
         throw error;
@@ -508,17 +283,9 @@ class UserService {
    * @return {bool}  Return true if id was updated
    */
   async changeForgotPasswordById(id, password) {
-    return await query(
-      `UPDATE 
-              tb_user
-            SET 
-              password = ?
-            WHERE	
-              id = ?`,
-      [sha1(config.authorization.salt + password), id]
-    )
+    return await this.UserModel.updatePasswordByUserId(id, password)
       .then((result) => {
-        return result != null && result.changedRows > 0;
+        return result;
       })
       .catch((error) => {
         throw error;
