@@ -19,6 +19,7 @@ const { checkIfIsValidPassword } = require('../core/express/validations');
 
 // Business Logic related to the Users
 const AuthorizationService = require('../services/authorizationService');
+const UserService = require('../services/userService');
 
 // Transportation Class
 const Transport = require('../models/transport/transport');
@@ -280,9 +281,28 @@ router.post(
   '/check',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    const transport = new Transport(200, null, null);
-    delete transport.data;
-    return res.json(transport);
+    //  Authenticated user
+    const authUser = req.user;
+
+    //
+    const sUser = new UserService();
+    sUser
+      .getUserByExtId(authUser.extId)
+      .then((user) => {
+        return res.json(
+          new Transport(200, null, {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            photoUrl: user.photoUrl,
+            dateOfBirth: user.dateOfBirth,
+            type: user.type,
+          })
+        );
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
   }
 );
 
