@@ -1,6 +1,9 @@
 // Express - Router
 const router = require('express').Router();
 
+// Password + JWT
+const passport = require('passport');
+
 // Express - Validation (https://www.npmjs.com/package/express-validator)
 const { check } = require('express-validator');
 
@@ -221,6 +224,65 @@ router.post(
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);
       });
+  }
+);
+
+/**
+ * @api {post} /auth/check Check if a Token is valid
+ * @apiDescription Check if a Token is valid
+ * @apiName /auth/check
+ * @apiGroup Auth
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...
+ * content-type: application/json
+ *
+ * @apiSuccess {string} token Authorization Token
+ * @apiSuccessExample {json} Success-Response
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized"
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/check',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const transport = new Transport(200, null, null);
+    delete transport.data;
+    return res.json(transport);
   }
 );
 

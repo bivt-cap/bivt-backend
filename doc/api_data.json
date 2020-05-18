@@ -1,6 +1,93 @@
 [
   {
     "type": "post",
+    "url": "/auth/check",
+    "title": "Check if a Token is valid",
+    "description": "<p>Check if a Token is valid</p>",
+    "name": "/auth/check",
+    "group": "Auth",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Authorization Token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/auth.js",
+    "groupTitle": "Auth"
+  },
+  {
+    "type": "post",
     "url": "/auth/google",
     "title": "Google authenticate user",
     "description": "<p>Authenticate user through google</p>",
