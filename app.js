@@ -44,6 +44,10 @@ app.engine('thtml', (file, options, callback) => {
 app.set('views', './public/template');
 app.set('view engine', 'thtml');
 
+app.get('/', (req, res) => {
+  res.send('BIVT - Test');
+});
+
 // Routes
 app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
