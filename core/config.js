@@ -21,6 +21,7 @@ module.exports = {
   },
   database: {
     host: process.env.DB_HOST,
+    socketpath: process.env.SOCKETPATH,
     user: process.env.DB_USER,
     pass: process.env.DB_PASS,
     name: process.env.DB_NAME,

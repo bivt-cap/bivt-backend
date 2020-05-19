@@ -5,13 +5,26 @@ const mysql = require('mysql');
 const config = require('./config');
 
 // Create the pool connection
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: config.database.host,
-  user: config.database.user,
-  password: config.database.pass,
-  database: config.database.name,
-});
+let pool;
+
+// Host connection or Socket Path connection
+if (config.database.host) {
+  pool = mysql.createPool({
+    connectionLimit: 10,
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.pass,
+    database: config.database.name,
+  });
+} else {
+  pool = mysql.createPool({
+    connectionLimit: 10,
+    user: config.database.user,
+    password: config.database.pass,
+    database: config.database.name,
+    socketPath: config.database.socketpath,
+  });
+}
 
 // Export que query function
 module.exports = async (q, params) =>
