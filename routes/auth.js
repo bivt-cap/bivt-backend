@@ -229,7 +229,7 @@ router.post(
 );
 
 /**
- * @api {post} /auth/check Check if a Token is valid
+ * @api {get} /auth/check Check if a Token is valid
  * @apiDescription Check if a Token is valid
  * @apiName /auth/check
  * @apiGroup Auth
@@ -277,14 +277,14 @@ router.post(
  *   }
  * }
  */
-router.post(
+router.get(
   '/check',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     //  Authenticated user
     const authUser = req.user;
 
-    //
+    // User information
     const sUser = new UserService();
     sUser
       .getUserByExtId(authUser.extId)
