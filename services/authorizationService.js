@@ -81,15 +81,12 @@ class AuthorizationService {
    * @return {object} Ticket Payload
    */
   async gTokenVerify(tokenId) {
-    const clientIdIOS =
-      '606724632843-hsu9fj935f7oc86djo5e24ptidiv0lf0.apps.googleusercontent.com';
-    const clientIdAndroid =
-      '606724632843-n4jfggbm51q6th2j45lrieiaetd7fndu.apps.googleusercontent.com';
-    const client = new OAuth2Client([clientIdIOS, clientIdAndroid]);
+    const audienceId = config.authorization.googleClientId;
+    const client = new OAuth2Client(audienceId);
     return await client
       .verifyIdToken({
         idToken: tokenId,
-        audience: [clientIdIOS, clientIdAndroid],
+        audience: audienceId,
       })
       .then((ticket) => {
         const payload = ticket.getPayload();

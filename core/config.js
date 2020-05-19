@@ -6,6 +6,10 @@ module.exports = {
   authorization: {
     salt: process.env.AUTH_SALT,
     secret: process.env.AUTH_SECRET,
+    googleClientId: [
+      process.env.AUTH_GOOGLE_IOS_CLIENT_ID,
+      process.env.AUTH_GOOGLE_WEB_CLIENT_ID,
+    ],
   },
   email: {
     test: process.env.EMAIL_TEST,
