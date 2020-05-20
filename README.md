@@ -108,6 +108,8 @@ apidoc -e node_modules/
 
 - **Arshdeep Singh** - Full Stack Web Developer - [Linkedin](https://www.linkedin.com/in/arsh-uppal/) / [GitHub](https://github.com/Singh-Arshdeep)
 - **Eduardo Pereira do Carmo** - Full Stack Web Developer - [Linkedin](https://www.linkedin.com/in/eduardopereiradocarmo/) / [GitHub](https://github.com/eduardopcarmo)
+- **Sae Bom Pak** - Front End Developer - [Linkedin](https://www.linkedin.com/in/saebompak/) / [GitHub](https://github.com/saebomp)
+- **Sae Byeol Pak** - Front End Developer - [Linkedin](https://www.linkedin.com/in/saebyeolpak/) / [GitHub](https://github.com/saebyeolp)
 - **Yalcin Tatar** - Software Developer - [Linkedin](https://www.linkedin.com/in/yalcin-tatar/) / [GitHub](https://github.com/yalcinos)
 
 See also the list of [contributors](https://github.com/bivt-cap/bivt-backend/contributors) who participated in this project.
