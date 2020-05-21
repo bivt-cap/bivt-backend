@@ -220,6 +220,34 @@ class CircleService {
         throw error;
       });
   }
+
+  /*
+   * Get types of circle and which Plugin is a suggestion for it
+   * @return {array} Types and Plugins
+   */
+  async getCircleTypesAndPluginSuggestions() {
+    return await this.CircleModel.getCircleTypesAndPluginSuggestions()
+      .then((circleType) => {
+        if (circleType !== null) {
+          return circleType.reduce((result, currentValue) => {
+            // Group By Circle Type Name
+            // eslint-disable-next-line no-param-reassign
+            (result[currentValue.circleTypeNane] =
+              result[currentValue.circleTypeNane] || []).push({
+              id: currentValue.pluginId,
+              name: currentValue.pluginName,
+              price: currentValue.pluginPrice,
+            });
+            return result;
+          }, {});
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export the service class
