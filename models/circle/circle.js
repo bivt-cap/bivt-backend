@@ -190,6 +190,42 @@ class Circle {
         throw error;
       });
   }
+
+  /*
+   * Get types of circle and which Plugin is a suggestion for it
+   * @return {array} Types and Plugins
+   */
+  async getCircleTypesAndPluginSuggestions() {
+    return await query(
+      `SELECT 
+          CTP.id
+          , CT.id AS circleTypeId
+          , CT.Name AS circleTypeNane
+          , P.id AS pluginId
+          , P.name AS pluginName
+          , P.price AS pluginPrice
+      FROM 
+          tb_circle_type_plugin AS CTP 
+          INNER JOIN tb_circle_type AS CT ON CTP.circleTypeId = CT.id
+          INNER JOIN tb_plugin AS P ON CTP.pluginId = P.id
+      WHERE 
+          CTP.inactivatedOn IS NULL
+          AND CT.inactivatedOn IS NULL
+          AND P.inactivatedOn IS NULL`
+    )
+      .then((result) => {
+        if (result != null && result.length > 0) {
+          return result.map((e) => {
+            return { ...e };
+          });
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export
