@@ -647,7 +647,7 @@ define({ "api": [
     "type": "get",
     "url": "/circle/getCircleTypesAndPluginSuggestions",
     "title": "Circle Type and Plugin",
-    "description": "<p>Get types of circle and which Plugin is a suggestion for it</p>",
+    "description": "<p>List of active Plugins and Type of groups (and each plugins suggestion for this group)</p>",
     "name": "/circle/getCircleTypesAndPluginSuggestions",
     "group": "Circle",
     "version": "1.0.0",
@@ -683,17 +683,17 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "null",
+            "type": "object",
             "optional": false,
-            "field": "null",
-            "description": "<p>There is no return</p>"
+            "field": "List",
+            "description": "<p>of active Plugins and Type of groups (and each plugins suggestion for this group)</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Example",
-          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"plugins\": [\n      {\n        \"id\": 1,\n        \"name\": \"Calendar\",\n        \"price\": 0\n      },\n      {\n        \"id\": 2,\n        \"name\": \"To-do List\",\n        \"price\": 0\n      },\n    ],\n    \"circleType\": [\n      {\n        \"id\": 1,\n        \"name\": \"Family\",\n        \"plugins\": [\n          1,\n          3,\n          4,\n          6\n        ]\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Homestay\",\n        \"plugins\": [\n          1,\n          2,\n          3,\n          5,\n          6,\n          7\n        ]\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Small business\",\n        \"plugins\": [\n          1,\n          2,\n          5,\n          6\n        ]\n      }\n    ]\n  }\n}",
           "type": "json"
         }
       ]
@@ -1013,6 +1013,100 @@ define({ "api": [
     "group": "D:\\Projects\\bivt-backend\\doc\\main.js",
     "groupTitle": "D:\\Projects\\bivt-backend\\doc\\main.js",
     "name": ""
+  },
+  {
+    "type": "get",
+    "url": "/plugin/getAll",
+    "title": "All active Plguins",
+    "description": "<p>Get all active Plguins</p>",
+    "name": "/plugin/getAll",
+    "group": "Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of all active plugins</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Calendar\",\n      \"price\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"To-do List\",\n      \"price\": 0\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Shopping list\",\n      \"price\": 0\n    },\n    {\n      \"id\": 4,\n      \"name\": \"User Tracking\",\n      \"price\": 6.66\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Poll\",\n      \"price\": 0\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Group Chat\",\n      \"price\": 8.25\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Expenses\",\n      \"price\": 3\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NOT_FOUND",
+            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugin.js",
+    "groupTitle": "Plugin"
   },
   {
     "type": "post",

@@ -35,6 +35,7 @@ app.use(bodyParser.json());
 app.use('/css', express.static(path.join(__dirname, './public/css')));
 app.use('/images', express.static(path.join(__dirname, './public/images')));
 app.use('/js', express.static(path.join(__dirname, './public/js')));
+app.use('/doc', express.static(path.join(__dirname, './doc')));
 
 // Custom Template engine
 app.engine('thtml', (file, options, callback) => {
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
 app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
 app.use('/auth', require('./routes/auth'));
+app.use('/plugin', require('./routes/plugin'));
 
 // Start listening
 app.listen(config.port, () => {
