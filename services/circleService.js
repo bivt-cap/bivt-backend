@@ -123,7 +123,7 @@ class CircleService {
             throw new BvitError(401, 'Unauthorized');
           }
         } else {
-          throw new BvitError(404, 'There is no circle related to this user.');
+          throw new BvitError(404, 'There are no circle related to this user.');
         }
       })
       .then(async (circle) => {
@@ -229,17 +229,34 @@ class CircleService {
     return await this.CircleModel.getCircleTypesAndPluginSuggestions()
       .then((circleType) => {
         if (circleType !== null) {
-          return circleType.reduce((result, currentValue) => {
-            // Group By Circle Type Name
-            // eslint-disable-next-line no-param-reassign
-            (result[currentValue.circleTypeNane] =
-              result[currentValue.circleTypeNane] || []).push({
-              id: currentValue.pluginId,
-              name: currentValue.pluginName,
-              price: currentValue.pluginPrice,
-            });
+          // Group the result
+          const group = circleType.reduce((result, currentValue) => {
+            if (!result[currentValue.circleTypeId]) {
+              // eslint-disable-next-line no-param-reassign
+              result[currentValue.circleTypeId] = {
+                id: currentValue.circleTypeId,
+                name: currentValue.circleTypeNane,
+                plugins: [currentValue.pluginId],
+              };
+            } else {
+              result[currentValue.circleTypeId].plugins.push(
+                currentValue.pluginId
+              );
+            }
+
             return result;
           }, {});
+
+          // Create a array
+          let gReturn = null;
+          if (group) {
+            gReturn = [];
+            Object.keys(group).forEach((item) => {
+              gReturn.push(group[item]);
+            });
+          }
+
+          return gReturn;
         } else {
           return null;
         }

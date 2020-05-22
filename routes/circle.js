@@ -22,11 +22,10 @@ const {
 // Error Exception
 const BvitError = require('../core/express/bvitError');
 
-// Business Logic related to the Circle
+// Business Logic Layers
 const CircleService = require('../services/circleService');
-
-// Business Logic related to the User
 const UserService = require('../services/userService');
+const PluginService = require('../services/pluginService');
 
 // Transportation Class
 const Transport = require('../models/transport/transport');
@@ -657,7 +656,7 @@ router.post(
 
 /**
  * @api {get} /circle/getCircleTypesAndPluginSuggestions Circle Type and Plugin
- * @apiDescription Get types of circle and which Plugin is a suggestion for it
+ * @apiDescription List of active Plugins and Type of groups (and each plugins suggestion for this group)
  * @apiName /circle/getCircleTypesAndPluginSuggestions
  * @apiGroup Circle
  * @apiVersion 1.0.0
@@ -669,14 +668,62 @@ router.post(
  * Authorization: bearer eyJhbGc...token
  * content-type: application/json
  *
- * @apiSuccess {null} null There is no return
+ * @apiSuccess {object} List of active Plugins and Type of groups (and each plugins suggestion for this group)
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
  * {
- *  "status": {
- *    "id": 200,
- *    "errors": null
- *  }
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   },
+ *   "data": {
+ *     "plugins": [
+ *       {
+ *         "id": 1,
+ *         "name": "Calendar",
+ *         "price": 0
+ *       },
+ *       {
+ *         "id": 2,
+ *         "name": "To-do List",
+ *         "price": 0
+ *       },
+ *     ],
+ *     "circleType": [
+ *       {
+ *         "id": 1,
+ *         "name": "Family",
+ *         "plugins": [
+ *           1,
+ *           3,
+ *           4,
+ *           6
+ *         ]
+ *       },
+ *       {
+ *         "id": 2,
+ *         "name": "Homestay",
+ *         "plugins": [
+ *           1,
+ *           2,
+ *           3,
+ *           5,
+ *           6,
+ *           7
+ *         ]
+ *       },
+ *       {
+ *         "id": 3,
+ *         "name": "Small business",
+ *         "plugins": [
+ *           1,
+ *           2,
+ *           5,
+ *           6
+ *         ]
+ *       }
+ *     ]
+ *   }
  * }
  *
  * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
@@ -723,16 +770,23 @@ router.get(
   (req, res) => {
     // Service Layer
     const sCircle = new CircleService();
+    const sPlugin = new PluginService();
 
-    // Try to find the invited user by email
-    sCircle
-      .getCircleTypesAndPluginSuggestions()
-      .then(async (circles) => {
-        const transport = new Transport(200, null, circles);
-        if (circles === null) {
-          delete transport.data;
+    // Find all active plugins
+    sPlugin
+      .getAllActivePlugins()
+      .then(async (plugins) => {
+        const circleTypeAndSuggestions = await sCircle.getCircleTypesAndPluginSuggestions();
+        if (circleTypeAndSuggestions === null) {
+          throw new BvitError(404, 'There are no circle type.');
+        } else {
+          return res.json(
+            new Transport(200, null, {
+              plugins,
+              circleType: circleTypeAndSuggestions,
+            })
+          );
         }
-        return res.json(transport);
       })
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);
