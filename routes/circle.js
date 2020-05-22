@@ -717,7 +717,7 @@ router.post(
  *   }
  * }
  */
-router.post(
+router.get(
   '/getCircleTypesAndPluginSuggestions',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
