@@ -50,7 +50,7 @@ class AuthorizationService {
             config.authorization.secret,
             {
               // Token expires in 24 hour
-              expiresIn: 3600 * 24,
+              expiresIn: 3600 * 24 * 31,
             }
           );
 
@@ -152,7 +152,7 @@ class AuthorizationService {
             config.authorization.secret,
             {
               // Token expires in 24 hour
-              expiresIn: 3600 * 24,
+              expiresIn: 3600 * 24 * 31,
             }
           );
 
