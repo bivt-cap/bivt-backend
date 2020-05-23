@@ -1015,6 +1015,276 @@
     "name": ""
   },
   {
+    "type": "post",
+    "url": "/plugin/addPluginFromCircle",
+    "title": "Add a Plugin to a Circle",
+    "description": "<p>Add a Plugin to a Circle</p>",
+    "name": "/plugin/addPluginFromCircle",
+    "group": "Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Plugin Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "null",
+            "optional": false,
+            "field": "There",
+            "description": "<p>is no result</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "400",
+            "optional": false,
+            "field": "BAD_REQUEST",
+            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NOT_FOUND",
+            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "409",
+            "optional": false,
+            "field": "CONFLICT",
+            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugin.js",
+    "groupTitle": "Plugin"
+  },
+  {
+    "type": "delete",
+    "url": "/plugin/deletePluginFromCircle",
+    "title": "Remove a Plugin From a Circle",
+    "description": "<p>Remove a Plugin From a Circle</p>",
+    "name": "/plugin/deletePluginFromCircle",
+    "group": "Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Plugin Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "null",
+            "optional": false,
+            "field": "There",
+            "description": "<p>is no result</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "400",
+            "optional": false,
+            "field": "BAD_REQUEST",
+            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NOT_FOUND",
+            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "409",
+            "optional": false,
+            "field": "CONFLICT",
+            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugin.js",
+    "groupTitle": "Plugin"
+  },
+  {
     "type": "get",
     "url": "/plugin/getAll",
     "title": "All active Plguins",
@@ -1101,6 +1371,134 @@
         {
           "title": "Example",
           "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugin.js",
+    "groupTitle": "Plugin"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/getPluginOnACircle",
+    "title": "Active plugins on a Circle",
+    "description": "<p>Get all active plugins on a Circle</p>",
+    "name": "/plugin/getPluginOnACircle",
+    "group": "Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of plugin ID's</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "400",
+            "optional": false,
+            "field": "BAD_REQUEST",
+            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "404",
+            "optional": false,
+            "field": "NOT_FOUND",
+            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "409",
+            "optional": false,
+            "field": "CONFLICT",
+            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
