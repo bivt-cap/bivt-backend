@@ -150,5 +150,419 @@ router.get(
   }
 );
 
+/**
+ * @api {get} /plugin/getPluginOnACircle Active plugins on a Circle
+ * @apiDescription Get all active plugins on a Circle
+ * @apiName /plugin/getPluginOnACircle
+ * @apiGroup Plugin
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} circleId Circle id
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "circleId": 1
+ * }
+ *
+ * @apiSuccess {array} List of plugin ID's
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {400} BAD_REQUEST The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {409} CONFLICT Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 400 Bad Request
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Bad Request",
+ *     ],
+ *     "id": 400
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 409 Conflict
+ * {
+ *   "status": {
+ *     "id": 409,
+ *     "errors": [
+ *       "Conflict"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.get(
+  '/getPluginOnACircle',
+  [
+    check('circleId', 'Circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    // Get the values from the body
+    const { circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sPlugin = new PluginService();
+
+    // Add the Plugin to the Circle
+    sPlugin
+      .getAllPluginsOnCircle(circleId, authUser.id)
+      .then((plugins) => {
+        if (!plugins) {
+          throw new BvitError(
+            404,
+            'There are no active plugins on the circle.'
+          );
+        } else {
+          return res.json(
+            new Transport(
+              200,
+              null,
+              plugins.map((p) => {
+                return p.id;
+              })
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {post} /plugin/addPluginFromCircle Add a Plugin to a Circle
+ * @apiDescription Add a Plugin to a Circle
+ * @apiName /plugin/addPluginFromCircle
+ * @apiGroup Plugin
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} id Plugin Id
+ * @apiParam {int} circleId Circle id
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "id": 1,
+ *  "circleId": 1
+ * }
+ *
+ * @apiSuccess {null} There is no result
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {400} BAD_REQUEST The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {409} CONFLICT Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 400 Bad Request
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Bad Request",
+ *     ],
+ *     "id": 400
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 409 Conflict
+ * {
+ *   "status": {
+ *     "id": 409,
+ *     "errors": [
+ *       "Conflict"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/addPluginFromCircle',
+  [
+    check('id', 'Plugin Id is required').not().isEmpty().isNumeric().toInt(),
+    check('circleId', 'Circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    // Get the values from the body
+    const { id, circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sPlugin = new PluginService();
+
+    // Add the Plugin to the Circle
+    sPlugin
+      .addPluginToCircle(id, circleId, authUser.id)
+      .then((resultId) => {
+        if (resultId <= 0) {
+          throw new BvitError(400, 'Plugin not added to the circle.');
+        } else {
+          const transport = new Transport(200, null);
+          delete transport.data;
+          return res.json(transport);
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {delete} /plugin/deletePluginFromCircle Remove a Plugin From a Circle
+ * @apiDescription Remove a Plugin From a Circle
+ * @apiName /plugin/deletePluginFromCircle
+ * @apiGroup Plugin
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} id Plugin Id
+ * @apiParam {int} circleId Circle id
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "id": 1,
+ *  "circleId": 1
+ * }
+ *
+ * @apiSuccess {null} There is no result
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {400} BAD_REQUEST The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {409} CONFLICT Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 400 Bad Request
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Bad Request",
+ *     ],
+ *     "id": 400
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 409 Conflict
+ * {
+ *   "status": {
+ *     "id": 409,
+ *     "errors": [
+ *       "Conflict"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.delete(
+  '/deletePluginFromCircle',
+  [
+    check('id', 'Plugin Id is required').not().isEmpty().isNumeric().toInt(),
+    check('circleId', 'Circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    // Get the values from the body
+    const { id, circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sPlugin = new PluginService();
+
+    // Add the Plugin to the Circle
+    sPlugin
+      .deletePluginToCircle(id, circleId, authUser.id)
+      .then((resultId) => {
+        if (resultId <= 0) {
+          throw new BvitError(400, 'Plugin not removed from circle.');
+        } else {
+          const transport = new Transport(200, null);
+          delete transport.data;
+          return res.json(transport);
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
 // Export this router
 module.exports = router;
