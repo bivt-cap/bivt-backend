@@ -68,7 +68,7 @@ class CircleService {
         if (result != null && result.length > 0) {
           return result;
         } else {
-          throw new BvitError(404, 'There is no circle related to this user.');
+          return null;
         }
       })
       .catch(() => {

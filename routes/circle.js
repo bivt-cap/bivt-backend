@@ -249,6 +249,9 @@ router.get(
     sCircle
       .getCirclesByUser(authUser.id)
       .then((result) => {
+        if (result === null) {
+          throw new BvitError(404, 'There is no circle related to this user.');
+        }
         return res.json(new Transport(200, null, { circles: result }));
       })
       .catch((error) => {
