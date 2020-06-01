@@ -54,6 +54,7 @@ app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
 app.use('/auth', require('./routes/auth'));
 app.use('/plugin', require('./routes/plugin'));
+app.use('/plugin/expenses', require('./routes/expenses'));
 
 // Start listening
 app.listen(config.port, () => {
