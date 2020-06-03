@@ -12,6 +12,44 @@ class ExpensesService {
     this.ExpensesModel = new Expenses();
   }
 
+  /*
+   * Return the list of all the available bill categories
+   * @return List of Categories
+   */
+  async getBillCategories() {
+    return await this.ExpensesModel.getBillCategories()
+      .then((result) => {
+        if (result != null && result.length > 0) {
+          return result;
+        } else {
+          return null;
+        }
+      })
+      .catch(() => {
+        throw new BvitError(500, 'An error occurred, please try again later.');
+      });
+  }
+
+  /*
+   * Return the list of all the available bills belonging to the group
+   * @param circleId {int} Circle Id
+   * @param userId {int} User Id
+   * @return List of bills
+   */
+  async getBills(userId, circleId) {
+    return await this.ExpensesModel.getBills(userId, circleId)
+      .then((result) => {
+        if (result != null && result.length > 0) {
+          return result;
+        } else {
+          return null;
+        }
+      })
+      .catch(() => {
+        throw new BvitError(500, 'An error occurred, please try again later.');
+      });
+  }
+
   /**
    * Adds a new bill
    * @param  circleId

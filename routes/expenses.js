@@ -29,10 +29,246 @@ const ExpensesService = require('../services/expensesService');
 const Transport = require('../models/transport/transport');
 
 /**
+ * @api {get} /billCategories List of all the bill categories
+ * @apiDescription Return the list of all the available bill categories
+ * @apiName /billCategories
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiSuccess {array} categories List of Categories
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   },
+ *   "data": {
+ *     "categories": [
+ *       {
+ *         "id": 1,
+ *         "name": "Food",
+ *       },
+ *       {
+ *         "id": 2,
+ *         "name": "Other",
+ *       }
+ *     ]
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.get(
+  '/billCategories',
+  passport.authenticate('jwt', { session: false }),
+  mdwHasErrors(),
+  (req, res) => {
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // get all bill categories
+    sExpensesService
+      .getBillCategories()
+      .then((result) => {
+        if (result === null) {
+          throw new BvitError(400, 'There was a problem fetching categories.');
+        }
+        return res.json(new Transport(200, null, { categories: result }));
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {post} /bills List of all the bill bills
+ * @apiDescription Return the list of all the available bills
+ * @apiName /bills
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ * @apiParam {id} circleId circle ID
+ * @apiParamExample {json} Request-Example:
+ * {
+    circleId: 1,
+  }
+ * @apiSuccess {array} bills List of bills
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   },
+ *   "data": {
+ *     "bills": [
+ *       {
+ *         "id": 1,
+ *         "billName": "Car repair",
+ *         "billAmount": 100,
+ *         "billCategory": 5,
+ *         "billDate": "2020-06-02T01:57:24.000Z"
+ *       },
+ *     ]
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/bills',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('circleId', 'A valid circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // get all bill categories
+    sExpensesService
+      .getBills(authUser.id, circleId)
+      .then((result) => {
+        if (result === null) {
+          throw new BvitError(400, 'There was a problem fetching bills.');
+        }
+        return res.json(new Transport(200, null, { bills: result }));
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
  * @api {post} expenses/addBill Adds a new Bill
  * @apiDescription Adds a Bill
  * @apiName expenses/addBill
- * @apiGroup expenses
+ * @apiGroup Expenses
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -45,14 +281,14 @@ const Transport = require('../models/transport/transport');
  * @apiParam {int} circleId Circle Id
  * @apiParam {string} billName Name of the bill
  * @apiParam {int} billAmount Amount off the bill
- * @apiParam {string} billCategory Category of the bill
+ * @apiParam {id} billCategory Category of the bill
  * @apiParam {date} billDate date of the bill
  * @apiParamExample {json} Request-Example:
  * {
     circleId: 1,
     billName: Lunch,
     billAmount: 100,
-    billCategory: Food,
+    billCategory: 1,
     billDate: 2015-03-25,
   }
  *
@@ -142,15 +378,16 @@ router.post(
       'billName',
       'The bill must have a minimum of 3 characters and a maximum of 56 characters'
     ).isLength({ min: 3, max: 56 }),
-    check('billAmount', 'A valid bill amount in CAD $ is required')
+    check('billAmount', 'A valid bill amount in is required')
       .not()
       .isEmpty()
       .isNumeric()
       .toInt(),
-    check('billCategory', 'Bill category is not valid').isLength({
-      min: 3,
-      max: 10,
-    }),
+    check('billCategory', 'Bill category is not valid')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
     check('billDate').custom((value) => {
       if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
         throw new Error('Enter a valid date');
@@ -171,7 +408,7 @@ router.post(
     // Service Layer
     const sExpensesService = new ExpensesService();
 
-    // Add the Plugin to the Circle
+    // Add the bill to DB
     sExpensesService
       .addBill(
         circleId,

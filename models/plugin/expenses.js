@@ -3,6 +3,58 @@ const query = require('../../core/database');
 
 class Expenses {
   /*
+   * Get all bill categories
+   * @return {object} Bill categories
+   */
+  async getBillCategories() {
+    return await query(
+      `SELECT 
+          PE.id, PE.categoryName
+        FROM 
+        tb_plugin_expenses_categories AS PE`
+    )
+      .then((result) => {
+        // Check if has result
+        if (result != null && result.length > 0) {
+          // Return the categories
+          return result;
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Get all the available bills for the group
+   * @return {object} List of Bills
+   */
+  async getBills(userId, circleId) {
+    return await query(
+      `SELECT 
+              PE.id, PE.billName, PE.billAmount, PE.billCategory, PE.billDate
+              FROM 
+              tb_plugin_expenses AS PE INNER JOIN tb_circle_member AS CM 
+              on PE.circleId = CM.circleId where CM.userId = ? AND CM.circleId = ?   `,
+      [userId, circleId]
+    )
+      .then((bills) => {
+        // Check if has result
+        if (bills != null && bills.length > 0) {
+          // Return the bills
+          return bills;
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
    * Add a Plugin to a Circle
    * @param id {int} Plugin Id
    * @param circleId {int} Circle Id
