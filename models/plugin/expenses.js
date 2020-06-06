@@ -34,10 +34,10 @@ class Expenses {
   async getBills(userId, circleId) {
     return await query(
       `SELECT 
-              PE.id, PE.billName, PE.billAmount, PE.billCategory, PE.billDate
+              PE.id, PE.billName, PE.billAmount, PE.billCategoryId, EC.categoryNAme, PE.billDate
               FROM 
               tb_plugin_expenses AS PE INNER JOIN tb_circle_member AS CM 
-              on PE.circleId = CM.circleId where CM.userId = ? AND CM.circleId = ?   `,
+              on PE.circleId = CM.circleId INNER JOIN tb_plugin_expenses_categories AS EC  on PE.billCategoryId = EC.id where CM.userId = ? AND CM.circleId = ? order by PE.billDate DESC`,
       [userId, circleId]
     )
       .then((bills) => {
@@ -66,7 +66,7 @@ class Expenses {
     userId,
     billName,
     billAmount,
-    billCategory,
+    billCategoryId,
     billDate
   ) {
     return await query(
@@ -75,11 +75,11 @@ class Expenses {
             userId,
             billName,
             billAmount,
-            billCategory,
+            billCategoryId,
             billDate) 
         VALUES 
           (?, ?, ?, ?, ?, ?)`,
-      [circleId, userId, billName, billAmount, billCategory, billDate]
+      [circleId, userId, billName, billAmount, billCategoryId, billDate]
     )
       .then((result) => {
         if (result != null) {

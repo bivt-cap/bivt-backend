@@ -78,12 +78,8 @@ class ExpensesService {
       .then((result) => {
         return result;
       })
-      .catch((error) => {
-        if (error.sqlMessage.includes('a foreign key constraint fails')) {
-          throw new BvitError(404, 'Circle not found');
-        } else {
-          throw new BvitError(500, 'Error occured, please try again');
-        }
+      .catch(() => {
+        throw new BvitError(500, 'Error occured, please try again');
       });
   }
 }

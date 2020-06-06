@@ -382,7 +382,7 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toFloat(),
     check('billCategory', 'Bill category is not valid')
       .not()
       .isEmpty()
