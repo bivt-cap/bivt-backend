@@ -1,3 +1,10 @@
+/**
+ * Business Logic related to the Todo Plugin
+ *
+ * @version 0.0.1
+ * @author Eduardo Pereira do Carmo (https://github.com/eduardopcarmo)
+ */
+
 // Model
 const Todo = require('../../models/plugin/todo');
 
@@ -81,6 +88,27 @@ class TodoService {
    */
   async remove(id, userId) {
     return await this.TodoModel.remove(id, userId)
+      .then((result) => {
+        if (result) {
+          return result;
+        } else {
+          throw new BvitError(500, 'Internal Server Error');
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
+   * Update a Todo
+   * @param id {int} Todo Id
+   * @param userId {int} User Id
+   * @param description {string} Description of the to-do
+   * @return {bool} Updated or Not
+   */
+  async update(id, userId, description) {
+    return await this.TodoModel.update(id, userId, description)
       .then((result) => {
         if (result) {
           return result;

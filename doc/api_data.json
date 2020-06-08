@@ -1508,6 +1508,787 @@
   },
   {
     "type": "post",
+    "url": "/plugin/shoppingList/add",
+    "title": "Add",
+    "description": "<p>Create a new Shopping List item</p>",
+    "name": "/plugin/shoppingList/add",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle of the Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the Shopping List Item</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n \"description\": Bread\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>of the New Todo</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n },\n \"data\": {\n   \"id\": 1\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/shoppingList/list",
+    "title": "List",
+    "description": "<p>Get all active shopping list itens</p>",
+    "name": "/plugin/shoppingList/list",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"description\": \"Bread\",\n      \"photoUrl\": null,\n      \"createdOn\": \"2020-06-05T05:17:25.000Z\",\n      \"createdBy\": \"User 1\",\n      \"purchasedOn\": null,\n      \"purchasedBy\": null,\n      \"purchasedPrice\": null,\n      \"removedOn\": \"2020-06-09T05:24:25.000Z\",\n      \"removedBy\": \"User 2\"\n    },\n    {\n      \"id\": 2,\n      \"description\": \"Banana\",\n      \"photoUrl\": null,\n      \"createdOn\": \"2020-06-05T05:18:18.000Z\",\n      \"createdBy\": \"User 2\",\n      \"purchasedOn\": \"2020-06-09T05:18:25.000Z\",\n      \"purchasedBy\": \"User 1\",\n      \"purchasedPrice\": 1.52,\n      \"removedOn\": null,\n      \"removedBy\": null\n    },\n    {\n      \"id\": 3,\n      \"description\": \"Cake\",\n      \"photoUrl\": \"http://fakeurl.ca/plugin/shoppingList/photo/3e6803d1-a9d9-11ea-bc5b-42010a80028b\",\n      \"createdOn\": \"2020-06-09T03:36:01.000Z\",\n      \"createdBy\": \"User 3\",\n      \"purchasedOn\": null,\n      \"purchasedBy\": null,\n      \"purchasedPrice\": null,\n      \"removedOn\": null,\n      \"removedBy\": null\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/shoppingList/markAsPurchased",
+    "title": "Mark as purchased",
+    "description": "<p>Mark an existing item as purchased</p>",
+    "name": "/plugin/shoppingList/markAsPurchased",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Shoppint list Item Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "decimal",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price (0 if the user doesn't want to inform the price)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1\n \"circleId\": 1,\n \"price\": 1.51\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/shoppingList/photo",
+    "title": "Photo",
+    "description": "<p>Return a photo &quot;file&quot;</p>",
+    "name": "/plugin/shoppingList/photo",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK",
+          "type": "file"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "delete",
+    "url": "/plugin/shoppingList/remove",
+    "title": "Delete",
+    "description": "<p>Delete an existing item</p>",
+    "name": "/plugin/shoppingList/remove",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Shoppint list Item Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1\n \"circleId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/shoppingList/setPhotoPath?circleId=??&id=??",
+    "title": "Set Photo",
+    "description": "<p>Set a photo to an existing item</p>",
+    "name": "/plugin/shoppingList/setPhotoPath?circleId",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>multipart/form-data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: multipart/form-data",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Shoppint list Item Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "photo",
+            "description": "<p>Photo (File)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/shoppingList/update",
+    "title": "Update",
+    "description": "<p>Update an existing item</p>",
+    "name": "/plugin/shoppingList/update",
+    "group": "PluginShoppingList",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Shoppint list Item Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the Shopping List Item</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1\n \"circleId\": 1,\n \"description\": \"Cake\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/shoppingList.js",
+    "groupTitle": "PluginShoppingList"
+  },
+  {
+    "type": "post",
     "url": "/plugin/todo/add",
     "title": "Add a new To-do",
     "description": "<p>Create a new To-do item</p>",
@@ -1884,6 +2665,116 @@
         {
           "title": "Request-Example:",
           "content": "{\n \"id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "401",
+            "optional": false,
+            "field": "UNAUTHORIZED",
+            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "422",
+            "optional": false,
+            "field": "UNPROCESSABLE_ENTITY",
+            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+          }
+        ],
+        "Error 5xx": [
+          {
+            "group": "Error 5xx",
+            "type": "500",
+            "optional": false,
+            "field": "INTERNAL_SERVER_ERROR",
+            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/todo.js",
+    "groupTitle": "PluginTodo"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/todo/update",
+    "title": "Update",
+    "description": "<p>Update an existing to-do</p>",
+    "name": "/plugin/todo/update",
+    "group": "PluginTodo",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>To-do id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the to-do</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"description\": \"Play soccer with my son\"\n}",
           "type": "json"
         }
       ]

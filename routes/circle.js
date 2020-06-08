@@ -19,6 +19,9 @@ const {
   ErrorReturnType,
 } = require('../core/express/errors');
 
+// utility
+const { checkIfUserBelongsCircle } = require('../core/express/validations');
+
 // Error Exception
 const BvitError = require('../core/express/bvitError');
 
@@ -352,7 +355,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {
@@ -482,7 +486,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {
@@ -497,24 +502,8 @@ router.post(
 
     // Try to find the invited user by email
     sCircle
-      .getCirclesByUser(authUser.id)
-      .then(async (circles) => {
-        // Check if the user has a circle
-        if (circles != null && circles.length > 0) {
-          // Find in the list of Circles the circle
-          const circle = circles.find((c) => {
-            return c.id === circleId;
-          });
-
-          if (circle !== null) {
-            return circle;
-          } else {
-            throw new BvitError(401, 'Unauthorized');
-          }
-        }
-      })
-      .then(async (circle) => {
-        await sCircle.confirmMemberOfCircle(authUser.id, circle.id);
+      .confirmMemberOfCircle(authUser.id, circleId)
+      .then(() => {
         const transport = new Transport(200, null, null);
         delete transport.data;
         return res.json(transport);
@@ -614,7 +603,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {
@@ -629,24 +619,8 @@ router.post(
 
     // Try to find the invited user by email
     sCircle
-      .getCirclesByUser(authUser.id)
-      .then(async (circles) => {
-        // Check if the user has a circle
-        if (circles != null && circles.length > 0) {
-          // Find in the list of Circles the circle
-          const circle = circles.find((c) => {
-            return c.id === circleId && c.isAdmin === 1;
-          });
-
-          if (circle !== null) {
-            return circle;
-          } else {
-            throw new BvitError(401, 'Unauthorized');
-          }
-        }
-      })
-      .then(async (circle) => {
-        await sCircle.removeMemberFromCircle(authUser.id, circle.id);
+      .removeMemberFromCircle(authUser.id, circleId)
+      .then(() => {
         const transport = new Transport(200, null, null);
         delete transport.data;
         return res.json(transport);

@@ -19,6 +19,9 @@ const {
   ErrorReturnType,
 } = require('../core/express/errors');
 
+// utility
+const { checkIfUserBelongsCircle } = require('../core/express/validations');
+
 // Error Exception
 const BvitError = require('../core/express/bvitError');
 
@@ -246,15 +249,16 @@ router.get(
  */
 router.get(
   '/getPluginOnACircle',
+  passport.authenticate('jwt', { session: false }),
   [
     check('circleId', 'Circle Id is required')
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
-  passport.authenticate('jwt', { session: false }),
   (req, res) => {
     // Get the values from the body
     const { circleId } = req.body;
@@ -390,16 +394,17 @@ router.get(
  */
 router.post(
   '/addPluginFromCircle',
+  passport.authenticate('jwt', { session: false }),
   [
     check('id', 'Plugin Id is required').not().isEmpty().isNumeric().toInt(),
     check('circleId', 'Circle Id is required')
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
-  passport.authenticate('jwt', { session: false }),
   (req, res) => {
     // Get the values from the body
     const { id, circleId } = req.body;
@@ -526,16 +531,17 @@ router.post(
  */
 router.delete(
   '/deletePluginFromCircle',
+  passport.authenticate('jwt', { session: false }),
   [
     check('id', 'Plugin Id is required').not().isEmpty().isNumeric().toInt(),
     check('circleId', 'Circle Id is required')
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
-  passport.authenticate('jwt', { session: false }),
   (req, res) => {
     // Get the values from the body
     const { id, circleId } = req.body;
