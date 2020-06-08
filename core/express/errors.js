@@ -28,17 +28,23 @@ const formatReturnError = (res, error, returnType) => {
     transportError = new Transport(error.code, error.message, null);
   } else if (Array.isArray(error)) {
     // Error returned from Express-validator
-    transportError = new Transport(
-      422,
-      [
-        ...new Set(
-          error.map((e) => {
-            return e;
-          })
-        ),
-      ],
-      null
-    );
+
+    // Check if has a message "Unauthorized"
+    if (error.includes('Unauthorized')) {
+      transportError = new Transport(401, 'Unauthorized', null);
+    } else {
+      transportError = new Transport(
+        422,
+        [
+          ...new Set(
+            error.map((e) => {
+              return e;
+            })
+          ),
+        ],
+        null
+      );
+    }
   } else if (error.message !== undefined) {
     transportError = new Transport(500, error.message, null);
   } else {

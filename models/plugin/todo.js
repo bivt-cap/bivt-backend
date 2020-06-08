@@ -74,6 +74,27 @@ class Todo {
   }
 
   /*
+   * Update a Todo
+   * @param id {int} Todo Id
+   * @param userId {int} User Id
+   * @param description {string} Description of the to-do
+   * @return void
+   */
+  async update(id, userId, description) {
+    return await query(
+      `UPDATE tb_plugin_todo SET description = ? WHERE id = ? AND createdBy = ? `,
+      [description, id, userId]
+    )
+      .then((result) => {
+        // Check if has result
+        return result != null && result.changedRows > 0;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /*
    * Get all todos
    * @param circleId {int} Circle Id
    * @param userId {int} User Id

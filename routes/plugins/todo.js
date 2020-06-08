@@ -19,6 +19,9 @@ const {
   ErrorReturnType,
 } = require('../../core/express/errors');
 
+// utility
+const { checkIfUserBelongsCircle } = require('../../core/express/validations');
+
 // Business Logic Layers
 const TodoService = require('../../services/plugins/todoService');
 
@@ -106,7 +109,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
     check(
       'description',
       'The description must have a minimum of 3 characters and a maximum of 254 characters'
@@ -328,6 +332,108 @@ router.delete(
 );
 
 /**
+ * @api {put} /plugin/todo/update Update
+ * @apiDescription Update an existing to-do
+ * @apiName /plugin/todo/update
+ * @apiGroup PluginTodo
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} id To-do id
+ * @apiParam {string} description Description of the to-do
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "id": 1,
+ *  "description": "Play soccer with my son"
+ * }
+ *
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *  "status": {
+ *    "id": 200,
+ *    "errors": null
+ *  }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "To-do Id is required",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.put(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  [check('id', 'To-do Id is required').not().isEmpty().isNumeric().toInt()],
+  check(
+    'description',
+    'The description must have a minimum of 3 characters and a maximum of 254 characters'
+  ).isLength({ min: 3, max: 254 }),
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { id, description } = req.body;
+
+    // Service Layer
+    const sTodo = new TodoService();
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Deleting an existing to-do
+    sTodo
+      .update(id, authUser.id, description)
+      .then(() => {
+        const transport = new Transport(200, null, null);
+        delete transport.data;
+        return res.json(transport);
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
  * @api {get} /plugin/todo/list Get all to-dos
  * @apiDescription Get a list of actives to-dos
  * @apiName /plugin/todo/list
@@ -422,7 +528,7 @@ router.get(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {

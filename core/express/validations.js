@@ -14,4 +14,16 @@ const checkIfIsValidPassword = (password) => {
   return true;
 };
 
-module.exports = { checkIfIsValidPassword };
+/*
+ * Check if an user belongs to a circle
+ */
+const checkIfUserBelongsCircle = (circleId, user) => {
+  // Check if the user belongs to a circle
+  if (Array.isArray(user.circles) && user.circles.includes(circleId)) {
+    return true;
+  } else {
+    throw new Error('Unauthorized');
+  }
+};
+
+module.exports = { checkIfIsValidPassword, checkIfUserBelongsCircle };
