@@ -30,11 +30,11 @@ class ExpensesService {
       });
   }
 
-  /*
-   * Return the list of all the available bills belonging to the group
-   * @param circleId {int} Circle Id
-   * @param userId {int} User Id
-   * @return List of bills
+  /**
+   * Get all the available bills for the group
+   * @param userId
+   * @param circleId
+   * @return List of Bills
    */
   async getBills(userId, circleId) {
     return await this.ExpensesModel.getBills(userId, circleId)

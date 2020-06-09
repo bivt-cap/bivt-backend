@@ -7,6 +7,9 @@ const passport = require('passport');
 // Express - Validation (https://www.npmjs.com/package/express-validator)
 const { check } = require('express-validator');
 
+// utility
+const { checkIfUserBelongsCircle } = require('../../core/express/validations');
+
 // JWT Strategy
 const jwtStrategy = require('../../core/jwtStrategy');
 
@@ -139,7 +142,7 @@ router.get(
 );
 
 /**
- * @api {post} /bills List of all the bill bills
+ * @api {post} /bills List of all the bills
  * @apiDescription Return the list of all the available bills
  * @apiName /bills
  * @apiGroup Expenses
@@ -236,7 +239,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {
@@ -525,7 +529,8 @@ router.post(
       .not()
       .isEmpty()
       .isNumeric()
-      .toInt(),
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
   ],
   mdwHasErrors(),
   (req, res) => {

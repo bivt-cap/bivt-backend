@@ -27,8 +27,10 @@ class Expenses {
       });
   }
 
-  /*
+  /**
    * Get all the available bills for the group
+   * @param userId
+   * @param circleId
    * @return {object} List of Bills
    */
   async getBills(userId, circleId) {
