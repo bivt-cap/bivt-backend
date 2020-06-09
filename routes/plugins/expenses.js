@@ -32,9 +32,9 @@ const ExpensesService = require('../../services/plugins/expensesService');
 const Transport = require('../../models/transport/transport');
 
 /**
- * @api {get} /billCategories List of all the bill categories
+ * @api {get}  /plugin/expenses/billCategories List of all the bill categories
  * @apiDescription Return the list of all the available bill categories
- * @apiName /billCategories
+ * @apiName /plugin/expenses/billCategories
  * @apiGroup Expenses
  * @apiVersion 1.0.0
  *
@@ -142,9 +142,9 @@ router.get(
 );
 
 /**
- * @api {post} /bills List of all the bills
+ * @api {post}  /plugin/expenses/bills List of all the bills
  * @apiDescription Return the list of all the available bills
- * @apiName /bills
+ * @apiName /plugin/expenses/bills
  * @apiGroup Expenses
  * @apiVersion 1.0.0
  *
@@ -269,9 +269,9 @@ router.post(
 );
 
 /**
- * @api {post} addBill Adds a new Bill
+ * @api {post} /plugin/expenses/addBill Adds a new Bill
  * @apiDescription Adds a Bill
- * @apiName expenses/addBill
+ * @apiName  /plugin/expenses/addBill
  * @apiGroup Expenses
  * @apiVersion 1.0.0
  *
@@ -438,9 +438,9 @@ router.post(
 );
 
 /**
- * @api {post} /removeBill Removes bill
+ * @api {post}  /plugin/expenses/removeBill Removes bill
  * @apiDescription Removes a bill based on the bill id
- * @apiName /removeBill
+ * @apiName /plugin/expenses/removeBill
  * @apiGroup Expenses
  * @apiVersion 1.0.0
  *

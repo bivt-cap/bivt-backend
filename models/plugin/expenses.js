@@ -13,11 +13,13 @@ class Expenses {
         FROM 
         tb_plugin_expenses_categories AS PE`
     )
-      .then((result) => {
+      .then((categories) => {
         // Check if has result
-        if (result != null && result.length > 0) {
+        if (categories != null && categories.length > 0) {
           // Return the categories
-          return result;
+          return categories.map((item) => {
+            return { ...item };
+          });
         } else {
           return null;
         }
@@ -46,7 +48,9 @@ class Expenses {
         // Check if has result
         if (bills != null && bills.length > 0) {
           // Return the bills
-          return bills;
+          return bills.map((item) => {
+            return { ...item };
+          });
         } else {
           return null;
         }
