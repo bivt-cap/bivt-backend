@@ -54,6 +54,7 @@ app.use('/user', require('./routes/user'));
 app.use('/circle', require('./routes/circle'));
 app.use('/auth', require('./routes/auth'));
 app.use('/plugin', require('./routes/plugin'));
+app.use('/plugin/expenses', require('./routes/plugins/expenses'));
 app.use('/plugin/todo', require('./routes/plugins/todo'));
 app.use('/plugin/shoppingList', require('./routes/plugins/shoppingList'));
 
