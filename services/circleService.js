@@ -265,6 +265,21 @@ class CircleService {
         throw error;
       });
   }
+
+  /*
+   * Get all active (didn't leave) members in a Circle
+   * @param circleId {int} Circle Id
+   * @return {array} List of active members in a Circle
+   */
+  async getMemberOfACircle(circleId) {
+    return await this.CircleMemberModel.getMemberOfACircle(circleId)
+      .then((circles) => {
+        return circles;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export the service class
