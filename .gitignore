@@ -106,4 +106,8 @@ dist
 # Extension: REST Client https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 *.rest
 
+# YAML
 *.yaml
+
+# Upload Image
+public/images/shoppingList/

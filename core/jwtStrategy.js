@@ -8,6 +8,7 @@ const config = require('./config');
 
 // Business Logic related to the Users
 const UserService = require('../services/userService');
+const CircleService = require('../services/circleService');
 
 // Options => Passport
 const opts = {};
@@ -21,8 +22,10 @@ module.exports = new JwtStrategy(opts, (jwtPayload, done) => {
     return new Promise((resolve) => {
       return sUser
         .getUserByExtId(jwtPayload.extId)
-        .then((user) => {
+        .then(async (user) => {
           if (!user.isBlocked) {
+            const sCircle = new CircleService();
+            const circles = await sCircle.getCirclesByUser(user.id);
             return resolve(
               done(null, {
                 id: user.id,
@@ -30,6 +33,12 @@ module.exports = new JwtStrategy(opts, (jwtPayload, done) => {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                circles:
+                  circles != null
+                    ? circles.map((circle) => {
+                        return circle.id;
+                      })
+                    : null,
               })
             );
           } else {
