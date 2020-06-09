@@ -8,7 +8,7 @@ const passport = require('passport');
 const { check } = require('express-validator');
 
 // JWT Strategy
-const jwtStrategy = require('../core/jwtStrategy');
+const jwtStrategy = require('../../core/jwtStrategy');
 
 passport.use(jwtStrategy);
 
@@ -17,16 +17,16 @@ const {
   mdwHasErrors,
   formatReturnError,
   ErrorReturnType,
-} = require('../core/express/errors');
+} = require('../../core/express/errors');
 
 // Error Exception
-const BvitError = require('../core/express/bvitError');
+const BvitError = require('../../core/express/bvitError');
 
 // Business Logic Layers
-const ExpensesService = require('../services/expensesService');
+const ExpensesService = require('../../services/plugins/expensesService');
 
 // Transportation Class
-const Transport = require('../models/transport/transport');
+const Transport = require('../../models/transport/transport');
 
 /**
  * @api {get} /billCategories List of all the bill categories
@@ -265,7 +265,7 @@ router.post(
 );
 
 /**
- * @api {post} expenses/addBill Adds a new Bill
+ * @api {post} addBill Adds a new Bill
  * @apiDescription Adds a Bill
  * @apiName expenses/addBill
  * @apiGroup Expenses
@@ -432,5 +432,129 @@ router.post(
       });
   }
 );
+
+/**
+ * @api {post} /removeBill Removes bill
+ * @apiDescription Removes a bill based on the bill id
+ * @apiName /removeBill
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ * @apiParamExample {json} Request-Example:
+ * {
+    circleId: 1,
+    billId: 1,
+  }
+ * @apiSuccess {array} 
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/removebill',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('billId', 'A valid Bill Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+    check('circleId', 'A valid circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+  ],
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { billId, circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // delete a bill
+    sExpensesService
+      .removeBill(authUser.id, billId, circleId)
+      .then((resultId) => {
+        if (resultId <= 0) {
+          throw new BvitError(400, 'There was a problem deleting the bill');
+        } else {
+          const transport = new Transport(200, null);
+          delete transport.data;
+          return res.json(transport);
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
 // Export this router
 module.exports = router;

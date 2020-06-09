@@ -1,8 +1,8 @@
 // Model
-const Expenses = require('../models/plugin/expenses');
+const Expenses = require('../../models/plugin/expenses');
 
 // Custom Exception
-const BvitError = require('../core/express/bvitError');
+const BvitError = require('../../core/express/bvitError');
 
 /*
  * Business Logic
@@ -75,6 +75,22 @@ class ExpensesService {
       billCategory,
       billDate
     )
+      .then((result) => {
+        return result;
+      })
+      .catch(() => {
+        throw new BvitError(500, 'Error occured, please try again');
+      });
+  }
+
+  /**
+   * removes a bill
+   * @param userId
+   * @param billId
+   * @param circleId
+   */
+  async removeBill(userId, billId, circleId) {
+    return await this.ExpensesModel.removeBill(userId, billId, circleId)
       .then((result) => {
         return result;
       })
