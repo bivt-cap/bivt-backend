@@ -771,5 +771,130 @@ router.get(
   }
 );
 
+/**
+ * @api {get} /circle/getMemberOfACircle Circle Members
+ * @apiDescription Get all active (didn't leave) members in a Circle
+ * @apiName /circle/getMemberOfACircle
+ * @apiGroup Circle
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} circleId Circle of the Id
+ * @apiParamExample {json} Request-Example:
+ * {
+ *  "circleId": 1,
+ * }
+ *
+ * @apiSuccess {object} List Members
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   },
+ *   "data": [
+ *     {
+ *       "id": 1,
+ *       "extId": "99999999-aaaa-99aa-aa9a-99999a99999a",
+ *       "email": "email@email.com",
+ *       "userFirstName": "First",
+ *       "userLastName": "Last",
+ *       "photoUrl": null,
+ *       "isOwner": 1,
+ *       "joinedOn": "2000-01-17T08:00:00.000Z",
+ *       "isAdmin": 1
+ *     },
+ *     {
+ *       "id": 2,
+ *       "extId": "99999999-aaaa-99aa-aa9a-99999a99999a",
+ *       "email": "email@email.com",
+ *       "userFirstName": "First",
+ *       "userLastName": "Last",
+ *       "photoUrl": "https://fake.url.ca/photo.jpg",
+ *       "isOwner": 0,
+ *       "joinedOn": null,
+ *       "isAdmin": 0
+ *     }
+ *   ]
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.get(
+  '/getMemberOfACircle',
+  passport.authenticate('jwt', { session: false }),
+  check('circleId', 'Circle Id is required')
+    .not()
+    .isEmpty()
+    .isNumeric()
+    .toInt()
+    .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { circleId } = req.body;
+
+    // Service Layer
+    const sCircle = new CircleService();
+
+    // Get all active (didn't leave) members in a Circle
+    sCircle
+      .getMemberOfACircle(circleId)
+      .then((circles) => {
+        if (circles === null) {
+          throw new BvitError(404, 'There are no members in this circle.');
+        } else {
+          return res.json(new Transport(200, null, circles));
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
 // Export this router
 module.exports = router;
