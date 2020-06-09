@@ -154,11 +154,13 @@ router.get(
  * @apiHeaderExample Header-Example:
  * Authorization: bearer eyJhbGc...token
  * content-type: application/json
+ *
  * @apiParam {id} circleId circle ID
  * @apiParamExample {json} Request-Example:
  * {
-    circleId: 1,
-  }
+ *   circleId: 1,
+ * }
+ *
  * @apiSuccess {array} bills List of bills
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
@@ -289,12 +291,12 @@ router.post(
  * @apiParam {date} billDate date of the bill
  * @apiParamExample {json} Request-Example:
  * {
-    circleId: 1,
-    billName: Lunch,
-    billAmount: 100,
-    billCategory: 1,
-    billDate: 2015-03-25,
-  }
+ *   circleId: 1,
+ *   billName: Lunch,
+ *   billAmount: 100,
+ *   billCategory: 1,
+ *   billDate: 2015-03-25,
+ * }
  *
  * @apiSuccess {null} There is no result
  * @apiSuccessExample {json} Example
@@ -450,12 +452,13 @@ router.post(
  * @apiHeaderExample Header-Example:
  * Authorization: bearer eyJhbGc...token
  * content-type: application/json
+ *
  * @apiParamExample {json} Request-Example:
  * {
-    circleId: 1,
-    billId: 1,
-  }
- * @apiSuccess {array} 
+ *   circleId: 1,
+ *   billId: 1,
+ * }
+ *
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
  * {
