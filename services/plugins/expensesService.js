@@ -39,7 +39,7 @@ class ExpensesService {
   async getBills(userId, circleId) {
     return await this.ExpensesModel.getBills(userId, circleId)
       .then((result) => {
-        if (result != null && result.length > 0) {
+        if (result != null && result.length >= 0) {
           return result;
         } else {
           return null;
