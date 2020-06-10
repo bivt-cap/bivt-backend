@@ -46,7 +46,7 @@ class Expenses {
     )
       .then((bills) => {
         // Check if has result
-        if (bills != null && bills.length > 0) {
+        if (bills != null && bills.length >= 0) {
           // Return the bills
           return bills.map((item) => {
             return { ...item };
