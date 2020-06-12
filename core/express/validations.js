@@ -15,6 +15,20 @@ const checkIfIsValidPassword = (password) => {
 };
 
 /*
+ * Check if a string is a valid datetime
+ */
+const checkIfIsValidDatetime = (password) => {
+  // Password expresion that requires one lower case letter,
+  // one upper case letter, one digit, 6-13 length, and no spaces.
+  if (!password.match(/^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/)) {
+    return Promise.reject(
+      new Error('Datetime is not a valid datetime format (yyyy-MM-dd HH:MM:SS)')
+    );
+  }
+  return true;
+};
+
+/*
  * Check if an user belongs to a circle
  */
 const checkIfUserBelongsCircle = (circleId, user) => {
@@ -26,4 +40,8 @@ const checkIfUserBelongsCircle = (circleId, user) => {
   }
 };
 
-module.exports = { checkIfIsValidPassword, checkIfUserBelongsCircle };
+module.exports = {
+  checkIfIsValidPassword,
+  checkIfIsValidDatetime,
+  checkIfUserBelongsCircle,
+};

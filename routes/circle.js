@@ -65,44 +65,6 @@ const Transport = require('../models/transport/transport');
  *    "id": 1
  *  }
  * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.post(
   '/create',
@@ -186,57 +148,6 @@ router.post(
  *     ]
  *   }
  * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.get(
   '/byUser',
@@ -293,57 +204,6 @@ router.get(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(
@@ -426,57 +286,6 @@ router.post(
  *    "errors": null
  *  }
  * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.post(
   '/confirmUserAsMember',
@@ -542,57 +351,6 @@ router.post(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(
@@ -702,44 +460,6 @@ router.post(
  *     ]
  *   }
  * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.get(
   '/getCircleTypesAndPluginSuggestions',
@@ -823,44 +543,6 @@ router.get(
  *       "isAdmin": 0
  *     }
  *   ]
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 404 Not Found
- * {
- *   "status": {
- *     "id": 404,
- *     "errors": [
- *       "Not Found"
- *     ]
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.get(
