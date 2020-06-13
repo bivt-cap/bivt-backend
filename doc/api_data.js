@@ -54,35 +54,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/auth.js",
     "groupTitle": "Auth"
   },
@@ -150,42 +121,6 @@ define({ "api": [
         {
           "title": "Success-Response",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIU...\",\n    \"user\": {\n      \"email\": \"email@email.com\",\n      \"firstName\": \"First Name\",\n      \"lastName\": \"Last Name\",\n      \"photoUrl\": \"Profile Photo URL\",\n      \"dateOfBirth\": \"2014-01-01T23:28:56.782Z\",\n      \"type\": 1\n    }\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"id\": 422,\n    \"errors\": [\n      \"Google Token is required.\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -268,42 +203,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\"\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/auth.js",
     "groupTitle": "Auth"
   },
@@ -358,49 +257,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"circles\": [\n      {\n        \"id\": 1,\n        \"name\": \"Circle 1\",\n        \"isOwner\": 1,\n        \"isAdmin\": 1,\n        \"joinedAt\": \"2020-05-07T17:20:15.000Z\"\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Circle 2\",\n        \"isOwner\": 0,\n        \"isAdmin\": 1,\n        \"joinedAt\": null\n      }\n    ]\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -483,49 +339,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/circle.js",
     "groupTitle": "Circle"
   },
@@ -604,42 +417,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/circle.js",
     "groupTitle": "Circle"
   },
@@ -694,42 +471,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"plugins\": [\n      {\n        \"id\": 1,\n        \"name\": \"Calendar\",\n        \"price\": 0\n      },\n      {\n        \"id\": 2,\n        \"name\": \"To-do List\",\n        \"price\": 0\n      },\n    ],\n    \"circleType\": [\n      {\n        \"id\": 1,\n        \"name\": \"Family\",\n        \"plugins\": [\n          1,\n          3,\n          4,\n          6\n        ]\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Homestay\",\n        \"plugins\": [\n          1,\n          2,\n          3,\n          5,\n          6,\n          7\n        ]\n      },\n      {\n        \"id\": 3,\n        \"name\": \"Small business\",\n        \"plugins\": [\n          1,\n          2,\n          5,\n          6\n        ]\n      }\n    ]\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -808,42 +549,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"extId\": \"99999999-aaaa-99aa-aa9a-99999a99999a\",\n      \"email\": \"email@email.com\",\n      \"userFirstName\": \"First\",\n      \"userLastName\": \"Last\",\n      \"photoUrl\": null,\n      \"isOwner\": 1,\n      \"joinedOn\": \"2000-01-17T08:00:00.000Z\",\n      \"isAdmin\": 1\n    },\n    {\n      \"id\": 2,\n      \"extId\": \"99999999-aaaa-99aa-aa9a-99999a99999a\",\n      \"email\": \"email@email.com\",\n      \"userFirstName\": \"First\",\n      \"userLastName\": \"Last\",\n      \"photoUrl\": \"https://fake.url.ca/photo.jpg\",\n      \"isOwner\": 0,\n      \"joinedOn\": null,\n      \"isAdmin\": 0\n    }\n  ]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -933,49 +638,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/circle.js",
     "groupTitle": "Circle"
   },
@@ -1050,49 +712,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -1687,56 +1306,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "400",
-            "optional": false,
-            "field": "BAD_REQUEST",
-            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "409",
-            "optional": false,
-            "field": "CONFLICT",
-            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugin.js",
     "groupTitle": "Plugin"
   },
@@ -1822,56 +1391,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "400",
-            "optional": false,
-            "field": "BAD_REQUEST",
-            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "409",
-            "optional": false,
-            "field": "CONFLICT",
-            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugin.js",
     "groupTitle": "Plugin"
   },
@@ -1926,42 +1445,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Calendar\",\n      \"price\": 0\n    },\n    {\n      \"id\": 2,\n      \"name\": \"To-do List\",\n      \"price\": 0\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Shopping list\",\n      \"price\": 0\n    },\n    {\n      \"id\": 4,\n      \"name\": \"User Tracking\",\n      \"price\": 6.66\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Poll\",\n      \"price\": 0\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Group Chat\",\n      \"price\": 8.25\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Expenses\",\n      \"price\": 3\n    }\n  ]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -2044,58 +1527,918 @@ define({ "api": [
         }
       ]
     },
-    "error": {
+    "filename": "./routes/plugin.js",
+    "groupTitle": "Plugin"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/poll/add",
+    "title": "Add",
+    "description": "<p>Add a new Poll</p>",
+    "name": "/plugin/poll/add",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
       "fields": {
-        "Error 4xx": [
+        "Header": [
           {
-            "group": "Error 4xx",
-            "type": "400",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "BAD_REQUEST",
-            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
           },
           {
-            "group": "Error 4xx",
-            "type": "401",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "409",
-            "optional": false,
-            "field": "CONFLICT",
-            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
+            "field": "content-type",
+            "description": "<p>application/json</p>"
           }
-        ],
-        "Error 5xx": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
           {
-            "group": "Error 5xx",
-            "type": "500",
+            "group": "Parameter",
+            "type": "int",
             "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "startOn",
+            "description": "<p>Start datetime (yyyy-MM-dd HH:MM:SS)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "endOn",
+            "description": "<p>End datetime (yyyy-MM-dd HH:MM:SS)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n \"question\": \"Who took the cookie from the cookie jar?\",\n \"startOn\": \"2020-06-12 00:00:00\",\n \"endOn\": \"2020-06-19 23:59:59\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>of the New Poll</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Example",
-          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n },\n \"data\": {\n   \"id\": 1\n }\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "./routes/plugin.js",
-    "groupTitle": "Plugin"
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/poll/addAnswer",
+    "title": "Add Answer",
+    "description": "<p>Add a new answer to an existing Poll</p>",
+    "name": "/plugin/poll/addAnswer",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pollId",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Answer</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n 'pollId\": 1,\n \"answer\": \"Panda\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>of the New Poll</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n },\n \"data\": {\n   \"id\": 1\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/poll/addVote",
+    "title": "Add Answer",
+    "description": "<p>Add a new vote to an Answer</p>",
+    "name": "/plugin/poll/addVote",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pollId",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "answerId",
+            "description": "<p>Answer Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n 'pollId\": 1,\n \"answerId\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>of the New Poll</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/poll/edit",
+    "title": "Edit",
+    "description": "<p>Edit an existing question</p>",
+    "name": "/plugin/poll/edit",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Question</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "startOn",
+            "description": "<p>Start datetime (yyyy-MM-dd HH:MM:SS)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "endOn",
+            "description": "<p>End datetime (yyyy-MM-dd HH:MM:SS)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1,\n \"question\": \"Who took the cookie from the cookie jar?\",\n \"startOn\": \"2020-06-12 00:00:00\",\n \"endOn\": \"2020-06-19 23:59:59\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "put",
+    "url": "/plugin/poll/editAnswer",
+    "title": "Edit Answer",
+    "description": "<p>Edit an existing Answer</p>",
+    "name": "/plugin/poll/editAnswer",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pollId",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Answer Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Answer</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1,\n \"question\": \"Who took the cookie from the cookie jar?\",\n \"startOn\": \"2020-06-12 00:00:00\",\n \"endOn\": \"2020-06-19 23:59:59\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/poll/getActiveAnswers",
+    "title": "Active Answers",
+    "description": "<p>Get all active answers</p>",
+    "name": "/plugin/poll/getActiveAnswers",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Poll Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n \"id\": 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"answer\": \"Panda\",\n      \"totalVotes\": 0\n    },\n    {\n      \"id\": 2,\n      \"answer\": \"Rabbit\",\n      \"totalVotes\": 0\n    },\n    {\n      \"id\": 3,\n      \"answer\": \"Bear\",\n      \"totalVotes\": 0\n    },\n    {\n      \"id\": 4,\n      \"answer\": \"Penguin\",\n      \"totalVotes\": 0\n    },\n    {\n      \"id\": 5,\n      \"answer\": \"Kangaroo\",\n      \"totalVotes\": 0\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/poll/getActives",
+    "title": "Active Polls",
+    "description": "<p>Get all active polls</p>",
+    "name": "/plugin/poll/getActives",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"id\": 1,\n      \"question\": \"Who took the cookie from the cookie jar?\",\n      \"createdOn\": \"2020-06-13T04:42:13.000Z\",\n      \"createdBy\": \"First Name Last Name\",\n      \"periodStartOn\": \"2020-06-12T07:00:00.000Z\",\n      \"periodEndOn\": \"2020-06-27T06:59:59.000Z\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/poll/getValidPolls",
+    "title": "Valid Polls",
+    "description": "<p>Get all valid polls in the last month</p>",
+    "name": "/plugin/poll/getValidPolls",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/poll/getVotes",
+    "title": "Get Voltes",
+    "description": "<p>Get all votes in a Poll</p>",
+    "name": "/plugin/poll/getVotes",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Poll Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"circleId\": 1,\n \"id\": 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": [\n    {\n      \"answerId\": 1,\n      \"createdOn\": \"2020-06-13T05:26:09.000Z\",\n      \"createdBy\": \"First Name Last Name\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "delete",
+    "url": "/plugin/poll/remove",
+    "title": "Remove",
+    "description": "<p>Remove an existing question</p>",
+    "name": "/plugin/poll/remove",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
+  },
+  {
+    "type": "delete",
+    "url": "/plugin/poll/removeAnswer",
+    "title": "Remove Answer",
+    "description": "<p>Remove an existing Answer</p>",
+    "name": "/plugin/poll/removeAnswer",
+    "group": "Poll",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pollId",
+            "description": "<p>Poll Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Answer Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Answer</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"id\": 1,\n \"circleId\": 1,\n \"question\": \"Who took the cookie from the cookie jar?\",\n \"startOn\": \"2020-06-12 00:00:00\",\n \"endOn\": \"2020-06-19 23:59:59\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/poll.js",
+    "groupTitle": "Poll"
   },
   {
     "type": "post",
@@ -2103,7 +2446,7 @@ define({ "api": [
     "title": "Add",
     "description": "<p>Create a new Shopping List item</p>",
     "name": "/plugin/shoppingList/add",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2179,44 +2522,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "get",
@@ -2224,7 +2531,7 @@ define({ "api": [
     "title": "List",
     "description": "<p>Get all active shopping list itens</p>",
     "name": "/plugin/shoppingList/list",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2282,44 +2589,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "put",
@@ -2327,7 +2598,7 @@ define({ "api": [
     "title": "Mark as purchased",
     "description": "<p>Mark an existing item as purchased</p>",
     "name": "/plugin/shoppingList/markAsPurchased",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2399,44 +2670,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "get",
@@ -2444,7 +2679,7 @@ define({ "api": [
     "title": "Photo",
     "description": "<p>Return a photo &quot;file&quot;</p>",
     "name": "/plugin/shoppingList/photo",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2502,44 +2737,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "delete",
@@ -2547,7 +2746,7 @@ define({ "api": [
     "title": "Delete",
     "description": "<p>Delete an existing item</p>",
     "name": "/plugin/shoppingList/remove",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2612,44 +2811,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "put",
@@ -2657,7 +2820,7 @@ define({ "api": [
     "title": "Set Photo",
     "description": "<p>Set a photo to an existing item</p>",
     "name": "/plugin/shoppingList/setPhotoPath?circleId",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2722,44 +2885,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "put",
@@ -2767,7 +2894,7 @@ define({ "api": [
     "title": "Update",
     "description": "<p>Update an existing item</p>",
     "name": "/plugin/shoppingList/update",
-    "group": "PluginShoppingList",
+    "group": "Shopping_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2839,44 +2966,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/shoppingList.js",
-    "groupTitle": "PluginShoppingList"
+    "groupTitle": "Shopping_List"
   },
   {
     "type": "post",
@@ -2884,7 +2975,7 @@ define({ "api": [
     "title": "Add a new To-do",
     "description": "<p>Create a new To-do item</p>",
     "name": "/plugin/todo/add",
-    "group": "PluginTodo",
+    "group": "To-do_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -2960,44 +3051,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/todo.js",
-    "groupTitle": "PluginTodo"
+    "groupTitle": "To-do_List"
   },
   {
     "type": "get",
@@ -3005,7 +3060,7 @@ define({ "api": [
     "title": "Get all to-dos",
     "description": "<p>Get a list of actives to-dos</p>",
     "name": "/plugin/todo/list",
-    "group": "PluginTodo",
+    "group": "To-do_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -3063,44 +3118,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/todo.js",
-    "groupTitle": "PluginTodo"
+    "groupTitle": "To-do_List"
   },
   {
     "type": "put",
@@ -3108,7 +3127,7 @@ define({ "api": [
     "title": "Mark as Done",
     "description": "<p>Mark an existing to-do as done</p>",
     "name": "/plugin/todo/markAsDone",
-    "group": "PluginTodo",
+    "group": "To-do_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -3166,44 +3185,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/todo.js",
-    "groupTitle": "PluginTodo"
+    "groupTitle": "To-do_List"
   },
   {
     "type": "delete",
@@ -3211,7 +3194,7 @@ define({ "api": [
     "title": "Delete",
     "description": "<p>Delete an existing to-do</p>",
     "name": "/plugin/todo/remove",
-    "group": "PluginTodo",
+    "group": "To-do_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -3269,44 +3252,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/todo.js",
-    "groupTitle": "PluginTodo"
+    "groupTitle": "To-do_List"
   },
   {
     "type": "put",
@@ -3314,7 +3261,7 @@ define({ "api": [
     "title": "Update",
     "description": "<p>Update an existing to-do</p>",
     "name": "/plugin/todo/update",
-    "group": "PluginTodo",
+    "group": "To-do_List",
     "version": "1.0.0",
     "header": {
       "fields": {
@@ -3379,44 +3326,8 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"To-do Id is required\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/plugins/todo.js",
-    "groupTitle": "PluginTodo"
+    "groupTitle": "To-do_List"
   },
   {
     "type": "post",
@@ -3496,42 +3407,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -3628,35 +3503,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n      \"Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/user.js",
     "groupTitle": "User"
   },
@@ -3728,35 +3574,6 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "./routes/user.js",
     "groupTitle": "User"
   },
@@ -3824,35 +3641,6 @@ define({ "api": [
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"E-mail already in use\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]

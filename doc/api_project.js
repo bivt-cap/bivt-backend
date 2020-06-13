@@ -1,24 +1,33 @@
 define({
-  "name": "bivt-backend",
+  "name": "Kovan API",
   "version": "1.0.0",
-  "description": "BIVT Back-End API Documentation",
-  "title": "BIVT Back-End",
+  "description": "Kovan API Documentation",
+  "title": "Kovan",
   "url": "",
   "template": {
     "withCompare": false,
     "withGenerator": true
   },
+  "header": {
+    "title": "General",
+    "content": "<p>Kovan is a one stop application for all the group management needs. Our team’s goal is to create the best possible mobile application to manage people, families, and many other types of groups. The idea is to provide the easiest solution to organize people and keep everyone in the loop. The app will house various advanced features, such as creating groups, tracking group members, expense management, event management, to-do list, poll system, shopping list, etc. Kovan is the goto solution for all the group requirements.</p>\n<p>People install multiple applications to manage their groups, teams etc. With Kovan our team is bringing all the features, which a group may need, under one umbrella. Which means that the users will not have to install multiple applications on their phones to manage groups, they can install Kovan and manage everything from one single application. Kovan is designed in a modular way such that it has a marketplace with a lot of plugins. Users will be able to add or remove different plugins according to their group needs. For example - A family group may need a member tracking feature where as a group of sports fans has no real use of such a feature. Kovan will be versatile and customisable and different types of groups can use it by adding or removing plugins according to their group requirements.</p>\n<p>Manage, connect, take care, and be productive. Kovan is the one place app for all your group needs. Never miss an important date, always know what you and your group needs to do, be always connected with your beloved ones or be prepared and control all your group expenses, Kovan helps users to achieve your goals.</p>\n"
+  },
+  "footer": {
+    "title": "Errors",
+    "content": "<hr />\n<h1>Errors</h1>\n<p>Default error Types for all endpoints</p>\n<h2>Error 4xx</h2>\n<table>\n    <thead>\n        <tr>\n        <th style=\"width: 30%\">Name</th>\n        <th style=\"width: 10%\">Type</th>\n        <th style=\"width: 60%\">Description</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td class=\"code\">BAD_REQUEST</td>\n            <td>400</td>\n            <td>\n                <p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>\n            </td>\n        </tr>\n        <tr>\n            <td class=\"code\">UNAUTHORIZED</td>\n            <td>401</td>\n            <td>\n                <p>Authentication is required and has failed or has not yet been provided.</p>\n            </td>\n        </tr>\n        <tr>\n            <td class=\"code\">NOT_FOUND</td>\n            <td>404</td>\n            <td>\n                <p>The requested resource could not be found but may be available in the future.</p>\n            </td>\n        </tr>\n        <tr>\n            <td class=\"code\">CONFLICT</td>\n            <td>409</td>\n            <td>\n                <p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>\n            </td>\n        </tr>\n        <tr>\n            <td class=\"code\">UNPROCESSABLE_ENTITY</td>\n            <td>422</td>\n            <td>\n                <p>The request was well-formed but was unable to be followed due to  semantic errors.</p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<h2>Error 5xx</h2>\n<table>\n    <thead>\n        <tr>\n            <th style=\"width: 30%\">Name</th>\n            <th style=\"width: 10%\">Type</th>\n            <th style=\"width: 60%\">Description</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td class=\"code\">INTERNAL_SERVER_ERROR</td>\n            <td>500</td>\n            <td>\n                <p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<ul class=\"nav nav-tabs nav-tabs-examples\">\n    <li class=\"active\"><a href=\"javascript:void(0);\">Example</a></li>\n</ul>\n<div class=\"tab-content\">\n    <div class=\"tab-pane active\">\n        \t<pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 400 Bad Request\n{\n    \"status\": {\n        \"errors\": [\n            \"Bad Request\",\n        ],\n        \"id\": 400\n    }\n}\n            </code>\n        </pre>\n        <pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 401 Unauthorized\n{\n    \"status\": {\n        \"errors\": [\n            \"Unauthorized\",\n        ],\n        \"id\": 401\n    }\n}\n            </code>\n        </pre>\n        <pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 404 Not Found\n{\n    \"status\": {\n        \"errors\": [\n            \"Not Found\",\n        ],\n        \"id\": 404\n    }\n}\n            </code>\n        </pre>\n        <pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 409 Conflict\n{\n    \"status\": {\n        \"errors\": [\n            \"Conflict\",\n        ],\n        \"id\": 409\n    }\n}\n            </code>\n        </pre>\n        <pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 422 Unprocessable Entity\n{\n    \"status\": {\n        \"errors\": [\n            \"Id is required\",\n        ],\n        \"id\": 422\n    }\n}\n            </code>\n        </pre>\n        <pre class=\"prettyprint language-json\" data-type=\"json\">\n            <code>\nHTTP/1.1 500 Internal Server Error\n{\n    \"status\": {\n        \"errors\": [\n            \"Internal Server Error\",\n        ],\n        \"id\": 500\n    }\n}\n            </code>\n        </pre>\n    </div>\n</div>\n"
+  },
   "order": [
     "Auth",
     "User",
-    "Circle"
+    "Circle",
+    "Plugin"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-06-09T16:15:22.809Z",
+    "time": "2020-06-12T22:32:39.069Z",
     "url": "http://apidocjs.com",
     "version": "0.23.0"
   }

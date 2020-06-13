@@ -32,7 +32,7 @@ const Transport = require('../../models/transport/transport');
  * @api {post} /plugin/todo/add Add a new To-do
  * @apiDescription Create a new To-do item
  * @apiName /plugin/todo/add
- * @apiGroup PluginTodo
+ * @apiGroup To-do List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -61,44 +61,6 @@ const Transport = require('../../models/transport/transport');
  *  "data": {
  *    "id": 1
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(
@@ -143,7 +105,7 @@ router.post(
  * @api {put} /plugin/todo/markAsDone Mark as Done
  * @apiDescription Mark an existing to-do as done
  * @apiName /plugin/todo/markAsDone
- * @apiGroup PluginTodo
+ * @apiGroup To-do List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -166,44 +128,6 @@ router.post(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "To-do Id is required",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.put(
@@ -239,7 +163,7 @@ router.put(
  * @api {delete} /plugin/todo/remove Delete
  * @apiDescription Delete an existing to-do
  * @apiName /plugin/todo/remove
- * @apiGroup PluginTodo
+ * @apiGroup To-do List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -262,44 +186,6 @@ router.put(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "To-do Id is required",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.delete(
@@ -335,7 +221,7 @@ router.delete(
  * @api {put} /plugin/todo/update Update
  * @apiDescription Update an existing to-do
  * @apiName /plugin/todo/update
- * @apiGroup PluginTodo
+ * @apiGroup To-do List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -360,44 +246,6 @@ router.delete(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "To-do Id is required",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.put(
@@ -437,7 +285,7 @@ router.put(
  * @api {get} /plugin/todo/list Get all to-dos
  * @apiDescription Get a list of actives to-dos
  * @apiName /plugin/todo/list
- * @apiGroup PluginTodo
+ * @apiGroup To-do List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -481,44 +329,6 @@ router.put(
  *    }
  *  ]
  *}
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "To-do Id is required",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.get(
   '/list',

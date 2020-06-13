@@ -63,32 +63,6 @@ const Transport = require('../models/transport/transport');
  *    "errors": null
  *  }
  * }
- *
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "E-mail already in use",
- *       "Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.post(
   '/create',
@@ -206,31 +180,6 @@ router.get(
  *    "errors": null
  *  }
  * }
- *
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "E-mail already in use",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.post(
   '/resendValidationEmail',
@@ -278,31 +227,6 @@ router.post(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "E-mail already in use",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(
@@ -472,44 +396,6 @@ router.post(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "Password requires one lower case letter, one upper case letter, one digit, 6-13 length, and no spaces",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(

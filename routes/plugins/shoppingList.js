@@ -72,7 +72,7 @@ const multerUpload = multer({
  * @api {post} /plugin/shoppingList/add Add
  * @apiDescription Create a new Shopping List item
  * @apiName /plugin/shoppingList/add
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -101,44 +101,6 @@ const multerUpload = multer({
  *  "data": {
  *    "id": 1
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.post(
@@ -183,7 +145,7 @@ router.post(
  * @api {put} /plugin/shoppingList/setPhotoPath?circleId=??&id=?? Set Photo
  * @apiDescription Set a photo to an existing item
  * @apiName /plugin/shoppingList/setPhotoPath?circleId
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -204,44 +166,6 @@ router.post(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "To-do Id is required",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.put(
@@ -306,7 +230,7 @@ router.put(
  * @api {put} /plugin/shoppingList/update Update
  * @apiDescription Update an existing item
  * @apiName /plugin/shoppingList/update
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -333,44 +257,6 @@ router.put(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.put(
@@ -419,7 +305,7 @@ router.put(
  * @api {put} /plugin/shoppingList/markAsPurchased Mark as purchased
  * @apiDescription Mark an existing item as purchased
  * @apiName /plugin/shoppingList/markAsPurchased
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -446,44 +332,6 @@ router.put(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.put(
@@ -532,7 +380,7 @@ router.put(
  * @api {delete} /plugin/shoppingList/remove Delete
  * @apiDescription Delete an existing item
  * @apiName /plugin/shoppingList/remove
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -557,44 +405,6 @@ router.put(
  *    "id": 200,
  *    "errors": null
  *  }
- * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
  * }
  */
 router.delete(
@@ -642,7 +452,7 @@ router.delete(
  * @api {get} /plugin/shoppingList/list List
  * @apiDescription Get all active shopping list itens
  * @apiName /plugin/shoppingList/list
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -703,44 +513,6 @@ router.delete(
  *     }
  *   ]
  * }
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.get(
   '/list',
@@ -790,7 +562,7 @@ router.get(
  * @api {get} /plugin/shoppingList/photo Photo
  * @apiDescription Return a photo "file"
  * @apiName /plugin/shoppingList/photo
- * @apiGroup PluginShoppingList
+ * @apiGroup Shopping List
  * @apiVersion 1.0.0
  *
  * @apiHeader {String} authorization bearer + 'Authorization token'
@@ -808,44 +580,6 @@ router.get(
  *
  * @apiSuccessExample {file} Example
  * HTTP/1.1 200 OK
- *
- * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
- * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
- * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
- * @apiErrorExample {json} Example
- * HTTP/1.1 401 Unauthorized
- * {
- *   "status": {
- *     "errors": [
- *       "Unauthorized",
- *     ],
- *     "id": 401
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 422 Unprocessable Entity
- * {
- *   "status": {
- *     "errors": [
- *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
- *     ],
- *     "id": 422
- *   }
- * }
- *
- * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
- *
- * HTTP/1.1 500 Internal Server Error
- * {
- *   "status": {
- *     "errors": [
- *       "Internal Server Error"
- *     ],
- *     "id": 500
- *   }
- * }
  */
 router.get(
   '/photo/:id',

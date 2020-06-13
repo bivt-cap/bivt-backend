@@ -1,12 +1,20 @@
 {
-  "name": "bivt-backend",
+  "name": "Kovan API",
   "version": "1.0.0",
-  "description": "BIVT Back-End API Documentation",
-  "title": "BIVT Back-End",
+  "description": "Kovan API Documentation",
+  "title": "Kovan",
   "url": "",
   "template": {
     "withCompare": false,
     "withGenerator": true
   },
-  "order": ["Auth", "User", "Circle"]
+  "header": {
+    "title": "General",
+    "filename": "doc-header.md"
+  },
+  "footer": {
+    "title": "Errors",
+    "filename": "doc-footer.md"
+  },
+  "order": ["Auth", "User", "Circle", "Plugin"]
 }
