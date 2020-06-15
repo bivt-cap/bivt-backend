@@ -524,14 +524,7 @@
             "description": "<p>Circle of the Id</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"circleId\": 1,\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "fields": {
@@ -1533,7 +1526,7 @@
   {
     "type": "post",
     "url": "/plugin/poll/add",
-    "title": "Add",
+    "title": "Add Poll",
     "description": "<p>Add a new Poll</p>",
     "name": "/plugin/poll/add",
     "group": "Poll",
@@ -1724,7 +1717,7 @@
   {
     "type": "post",
     "url": "/plugin/poll/addVote",
-    "title": "Add Answer",
+    "title": "Add Vote",
     "description": "<p>Add a new vote to an Answer</p>",
     "name": "/plugin/poll/addVote",
     "group": "Poll",
@@ -1816,7 +1809,7 @@
   {
     "type": "put",
     "url": "/plugin/poll/edit",
-    "title": "Edit",
+    "title": "Edit Poll",
     "description": "<p>Edit an existing question</p>",
     "name": "/plugin/poll/edit",
     "group": "Poll",
@@ -2281,7 +2274,7 @@
   {
     "type": "delete",
     "url": "/plugin/poll/remove",
-    "title": "Remove",
+    "title": "Remove Poll",
     "description": "<p>Remove an existing question</p>",
     "name": "/plugin/poll/remove",
     "group": "Poll",
@@ -3328,6 +3321,140 @@
     },
     "filename": "./routes/plugins/todo.js",
     "groupTitle": "To-do_List"
+  },
+  {
+    "type": "get",
+    "url": "/plugin/tracking/getPositions",
+    "title": "Get Positions",
+    "description": "<p>Get the position of all users in a circle</p>",
+    "name": "/plugin/tracking/getPositions",
+    "group": "Trancking_Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n },\n \"data\": [\n   {\n    \"userId\": 1,\n    \"userExtId\": \"HSUAHDUAHU46797\",\n    \"email\": \"email@email.com\",\n    \"userFirstName\": \"First Name\",\n    \"userLastName\": \"Last Name\",\n    \"photoUrl\": null,\n    \"latitude\": 49.246292,\n    \"longitude\": -123.116226,\n    \"lastUpdatedOn\": \"2020-06-16T05:48:04.000Z\"\n   },\n   {\n    \"userId\": 2,\n    \"userExtId\": \"HSUAHDUAHU46797\",\n    \"email\": \"email2@email.com\",\n    \"userFirstName\": \"First Name 2\",\n    \"userLastName\": \"Last Name 2\",\n    \"photoUrl\": null,\n    \"latitude\": 49.246291,\n    \"longitude\": -123.116226,\n    \"lastUpdatedOn\": \"2020-06-16T05:48:04.000Z\"\n   }\n ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/trackingSystem.js",
+    "groupTitle": "Trancking_Plugin"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/tracking/setPosition",
+    "title": "Set Position",
+    "description": "<p>Set the user Position</p>",
+    "name": "/plugin/tracking/setPosition",
+    "group": "Trancking_Plugin",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "decimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>Latitude - decimal(11,8)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "decimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>Longitude - decimal(11,8)</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n \"latitude\": 49.246292,\n \"longitude\": -123.116226\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Example",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./routes/plugins/trackingSystem.js",
+    "groupTitle": "Trancking_Plugin"
   },
   {
     "type": "post",

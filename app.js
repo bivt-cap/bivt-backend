@@ -58,6 +58,7 @@ app.use('/plugin/expenses', require('./routes/plugins/expenses'));
 app.use('/plugin/todo', require('./routes/plugins/todo'));
 app.use('/plugin/shoppingList', require('./routes/plugins/shoppingList'));
 app.use('/plugin/poll', require('./routes/plugins/poll'));
+app.use('/plugin/tracking', require('./routes/plugins/trackingSystem'));
 
 // Start listening
 app.listen(config.port, () => {

@@ -32,7 +32,7 @@ const PollService = require('../../services/plugins/pollService');
 const Transport = require('../../models/transport/transport');
 
 /**
- * @api {post} /plugin/poll/add Add
+ * @api {post} /plugin/poll/add Add Poll
  * @apiDescription Add a new Poll
  * @apiName /plugin/poll/add
  * @apiGroup Poll
@@ -127,7 +127,7 @@ router.post(
 );
 
 /**
- * @api {put} /plugin/poll/edit Edit
+ * @api {put} /plugin/poll/edit Edit Poll
  * @apiDescription Edit an existing question
  * @apiName /plugin/poll/edit
  * @apiGroup Poll
@@ -220,7 +220,7 @@ router.put(
 );
 
 /**
- * @api {delete} /plugin/poll/remove Remove
+ * @api {delete} /plugin/poll/remove Remove Poll
  * @apiDescription Remove an existing question
  * @apiName /plugin/poll/remove
  * @apiGroup Poll
@@ -733,7 +733,7 @@ router.get(
 );
 
 /**
- * @api {post} /plugin/poll/addVote Add Answer
+ * @api {post} /plugin/poll/addVote Add Vote
  * @apiDescription Add a new vote to an Answer
  * @apiName /plugin/poll/addVote
  * @apiGroup Poll

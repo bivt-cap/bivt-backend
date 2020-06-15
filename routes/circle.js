@@ -506,10 +506,6 @@ router.get(
  * content-type: application/json
  *
  * @apiParam {int} circleId Circle of the Id
- * @apiParamExample {json} Request-Example:
- * {
- *  "circleId": 1,
- * }
  *
  * @apiSuccess {object} List Members
  * @apiSuccessExample {json} Example
@@ -557,7 +553,7 @@ router.get(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { circleId } = req.body;
+    const { circleId } = req.query;
 
     // Service Layer
     const sCircle = new CircleService();
