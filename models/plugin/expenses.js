@@ -123,6 +123,114 @@ class Expenses {
         throw error;
       });
   }
+
+  // ***************************************************************//
+  /**
+   * methods concerning the budget below:
+   */
+  // ***************************************************************//
+
+  /**
+   * Adds a budget
+   * @param circleId
+   * @param userId
+   * @param budgetName
+   * @param budgetAmount
+   * @param budgetStartDate
+   * @param budgetEndDate
+   */
+  async addBudget(
+    circleId,
+    userId,
+    budgetName,
+    budgetAmount,
+    budgetStartDate,
+    budgetEndDate
+  ) {
+    return await query(
+      `INSERT INTO tb_plugin_expenses_budget
+          ( circleId,
+            userId,
+            budgetName,
+            budgetAmount,
+            budgetStartDate,
+            budgetEndDate) 
+        VALUES 
+          (?, ?, ?, ?, ?, ?)`,
+      [
+        circleId,
+        userId,
+        budgetName,
+        budgetAmount,
+        budgetStartDate,
+        budgetEndDate,
+      ]
+    )
+      .then((result) => {
+        if (result != null) {
+          return parseInt(result.insertId);
+        } else {
+          return 0;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
+   * Get all the available budgets for the group
+   * @param userId
+   * @param circleId
+   * @return {object} List of Budgets
+   */
+  async getBudgets(userId, circleId) {
+    return await query(
+      `SELECT 
+              PEB.id, PEB.budgetName, PEB.budgetAmount, PEB.budgetStartDate, PEB.budgetEndDate
+              FROM 
+              tb_plugin_expenses_budget AS PEB INNER JOIN tb_circle_member AS CM 
+              on PEB.circleId = CM.circleId WHERE CM.userId = ? AND CM.circleId = ? ORDER BY PEB.budgetStartDate DESC`,
+      [userId, circleId]
+    )
+      .then((budgets) => {
+        // Check if has result
+        if (budgets != null && budgets.length >= 0) {
+          // Return the budgets
+          return budgets.map((item) => {
+            return { ...item };
+          });
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  /**
+   * Removes a budget
+   * @param userId
+   * @param budgetId
+   * @param circleId
+   */
+  async removeBudget(userId, budgetId, circleId) {
+    return await query(
+      `DELETE from tb_plugin_expenses_budget WHERE id = ? AND circleId=?`,
+      [budgetId, circleId]
+    )
+      .then((result) => {
+        if (result != null) {
+          return parseInt(result.affectedRows);
+        } else {
+          return 0;
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
 
 // Export
