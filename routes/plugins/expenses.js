@@ -255,7 +255,7 @@ router.post(
     // Service Layer
     const sExpensesService = new ExpensesService();
 
-    // get all bill categories
+    // get all bills
     sExpensesService
       .getBills(authUser.id, circleId)
       .then((result) => {
@@ -395,7 +395,7 @@ router.post(
       .isNumeric()
       .toInt(),
     check('billDate').custom((value) => {
-      if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      if (!value.match(/^\d{4}-\d{2}-\d{2}.*/)) {
         throw new Error('Enter a valid date');
       } else {
         return true;
@@ -552,6 +552,443 @@ router.post(
       .then((resultId) => {
         if (resultId <= 0) {
           throw new BvitError(400, 'There was a problem deleting the bill');
+        } else {
+          const transport = new Transport(200, null);
+          delete transport.data;
+          return res.json(transport);
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+// ***************************************************************//
+/**
+ * APIS concerning the budget below:
+ */
+// ***************************************************************//
+
+/**
+ * @api {post} /plugin/expenses/addBudget Adds a new Budget
+ * @apiDescription Adds a Budget
+ * @apiName  /plugin/expenses/addBudget
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {int} circleId Circle Id
+ * @apiParam {string} budgetName Name of the budget
+ * @apiParam {int} budgetAmount Amount of the budget
+ * @apiParam {date} budgetStartDate start date of the budget
+ * @apiParam {date} billEndDate end date of the budget
+ * @apiParamExample {json} Request-Example:
+ * {
+ *   circleId: 1,
+ *   budgetName: Food,
+ *   budgetAmount: 1000,
+ *   budgetStartDate: 2020-06-15 12:13:04,
+ *   budgetEndDate: 2020-07-15 12:13:04,
+ * }
+ *
+ * @apiSuccess {null} There is no result
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {400} BAD_REQUEST The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {409} CONFLICT Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 400 Bad Request
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Bad Request",
+ *     ],
+ *     "id": 400
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 409 Conflict
+ * {
+ *   "status": {
+ *     "id": 409,
+ *     "errors": [
+ *       "Conflict"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/addBudget',
+  [
+    check('circleId', 'A valid circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+    check(
+      'budgetName',
+      'The budget must have a minimum of 3 characters and a maximum of 56 characters'
+    ).isLength({ min: 3, max: 56 }),
+    check('budgetAmount', 'A valid budget amount is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toFloat(),
+    check('budgetStartDate').custom((value) => {
+      if (!value.match(/^\d{4}-\d{2}-\d{2}.*/)) {
+        throw new Error('Enter a valid start date');
+      } else {
+        return true;
+      }
+    }),
+    check('budgetEndDate').custom((value) => {
+      if (!value.match(/^\d{4}-\d{2}-\d{2}.*/)) {
+        throw new Error('Enter a valid end date');
+      } else {
+        return true;
+      }
+    }),
+  ],
+  mdwHasErrors(),
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    // Get the values from the body
+    const {
+      circleId,
+      budgetName,
+      budgetAmount,
+      budgetStartDate,
+      budgetEndDate,
+    } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // Call service to add budget to DB
+    sExpensesService
+      .addBudget(
+        circleId,
+        authUser.id,
+        budgetName,
+        budgetAmount,
+        budgetStartDate,
+        budgetEndDate
+      )
+      .then((resultId) => {
+        if (resultId <= 0) {
+          throw new BvitError(400, 'There was a problem saving the budget');
+        } else {
+          const transport = new Transport(200, null);
+          delete transport.data;
+          return res.json(transport);
+        }
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {post}  /plugin/expenses/budgets List of all the budgets
+ * @apiDescription Return the list of all the available budgets
+ * @apiName /plugin/expenses/budgets
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParam {id} circleId circle ID
+ * @apiParamExample {json} Request-Example:
+ * {
+ *   circleId: 1,
+ * }
+ *
+ * @apiSuccess {array} bills List of budgets
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   },
+ *   "data": {
+ *     "budgets": [
+ *       {
+ *         "id": 1,
+ *         "budgetName": "Food",
+ *         "budgetAmount": 100,
+ *         "budgetStartDate": 2020-06-15 12:13:04,
+ *         "budgetEndDate": 2020-07-15 12:13:04,
+ *       },
+ *     ]
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/budgets',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('circleId', 'A valid circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
+  ],
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // get all budgets
+    sExpensesService
+      .getBudgets(authUser.id, circleId)
+      .then((result) => {
+        if (result === null) {
+          throw new BvitError(400, 'There was a problem fetching budgets.');
+        }
+        return res.json(new Transport(200, null, { budgets: result }));
+      })
+      .catch((error) => {
+        return formatReturnError(res, error, ErrorReturnType.JSON);
+      });
+  }
+);
+
+/**
+ * @api {post}  /plugin/expenses/removeBudget Removes budget
+ * @apiDescription Removes a budget based on the budget id
+ * @apiName /plugin/expenses/removeBudget
+ * @apiGroup Expenses
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} authorization bearer + 'Authorization token'
+ * @apiHeader {String} content-type application/json
+ *
+ * @apiHeaderExample Header-Example:
+ * Authorization: bearer eyJhbGc...token
+ * content-type: application/json
+ *
+ * @apiParamExample {json} Request-Example:
+ * {
+ *   circleId: 1,
+ *   budgetId: 1,
+ * }
+ *
+ * @apiSuccessExample {json} Example
+ * HTTP/1.1 200 OK
+ * {
+ *   "status": {
+ *     "id": 200,
+ *     "errors": null
+ *   }
+ * }
+ *
+ * @apiError {401} UNAUTHORIZED Authentication is required and has failed or has not yet been provided.
+ * @apiError {404} NOT_FOUND The requested resource could not be found but may be available in the future.
+ * @apiError {422} UNPROCESSABLE_ENTITY The request was well-formed but was unable to be followed due to semantic errors.
+ * @apiError (Error 5xx) {500} INTERNAL_SERVER_ERROR A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+ * @apiErrorExample {json} Example
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Unauthorized",
+ *     ],
+ *     "id": 401
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "status": {
+ *     "id": 404,
+ *     "errors": [
+ *       "Not Found"
+ *     ]
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "The name must have a minimum of 3 characters and a maximum of 56 characters",
+ *     ],
+ *     "id": 422
+ *   }
+ * }
+ *
+ * -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+ *
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "status": {
+ *     "errors": [
+ *       "Internal Server Error"
+ *     ],
+ *     "id": 500
+ *   }
+ * }
+ */
+router.post(
+  '/removebudget',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('budgetId', 'A valid Budget Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt(),
+    check('circleId', 'A valid circle Id is required')
+      .not()
+      .isEmpty()
+      .isNumeric()
+      .toInt()
+      .custom((value, { req }) => checkIfUserBelongsCircle(value, req.user)),
+  ],
+  mdwHasErrors(),
+  (req, res) => {
+    // Get the values from the body
+    const { budgetId, circleId } = req.body;
+
+    //  Authenticated user
+    const authUser = req.user;
+
+    // Service Layer
+    const sExpensesService = new ExpensesService();
+
+    // delete a budget
+    sExpensesService
+      .removeBudget(authUser.id, budgetId, circleId)
+      .then((resultId) => {
+        if (resultId <= 0) {
+          throw new BvitError(400, 'There was a problem deleting the budget');
         } else {
           const transport = new Transport(200, null);
           delete transport.data;

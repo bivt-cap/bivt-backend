@@ -98,6 +98,81 @@ class ExpensesService {
         throw new BvitError(500, 'Error occured, please try again');
       });
   }
+
+  // ***************************************************************//
+  /**
+   * methods concerning the budget below:
+   */
+  // ***************************************************************//
+
+  /**
+   * Adds a new budget
+   * @param  circleId
+   * @param  userId
+   * @param  billName
+   * @param  billAmount
+   * @param  billCategory
+   * @param  billDate
+   */
+  async addBudget(
+    circleId,
+    userId,
+    budgetName,
+    budgetAmount,
+    budgetStartDate,
+    budgetEndDate
+  ) {
+    return await this.ExpensesModel.addBudget(
+      circleId,
+      userId,
+      budgetName,
+      budgetAmount,
+      budgetStartDate,
+      budgetEndDate
+    )
+      .then((result) => {
+        return result;
+      })
+      .catch(() => {
+        throw new BvitError(500, 'Error occured, please try again');
+      });
+  }
+
+  /**
+   * Get all the available budgets for the group
+   * @param userId
+   * @param circleId
+   * @return List of Bills
+   */
+  async getBudgets(userId, circleId) {
+    return await this.ExpensesModel.getBudgets(userId, circleId)
+      .then((result) => {
+        if (result != null && result.length >= 0) {
+          return result;
+        } else {
+          return null;
+        }
+      })
+      .catch(() => {
+        throw new BvitError(500, 'An error occurred, please try again later.');
+      });
+  }
+
+  /**
+   * removes a budget
+   * @param userId
+   * @param budgerId
+   * @param circleId
+   */
+  async removeBudget(userId, budgetId, circleId) {
+    return await this.ExpensesModel.removeBudget(userId, budgetId, circleId)
+      .then((result) => {
+        return result;
+      })
+      .catch(() => {
+        throw new BvitError(500, 'Error occured, please try again');
+      });
+  }
 }
 
 // Export the service class
