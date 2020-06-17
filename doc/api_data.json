@@ -843,52 +843,108 @@
         }
       ]
     },
-    "error": {
+    "filename": "./routes/plugins/expenses.js",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/expenses/addBudget",
+    "title": "Adds a new Budget",
+    "description": "<p>Adds a Budget</p>",
+    "name": "/plugin/expenses/addBudget",
+    "group": "Expenses",
+    "version": "1.0.0",
+    "header": {
       "fields": {
-        "Error 4xx": [
+        "Header": [
           {
-            "group": "Error 4xx",
-            "type": "400",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "BAD_REQUEST",
-            "description": "<p>The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing.</p>"
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
           },
           {
-            "group": "Error 4xx",
-            "type": "401",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "409",
-            "optional": false,
-            "field": "CONFLICT",
-            "description": "<p>Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.</p>"
+            "field": "content-type",
+            "description": "<p>application/json</p>"
           }
-        ],
-        "Error 5xx": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
           {
-            "group": "Error 5xx",
-            "type": "500",
+            "group": "Parameter",
+            "type": "int",
             "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+            "field": "circleId",
+            "description": "<p>Circle Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "budgetName",
+            "description": "<p>Name of the budget</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "budgetAmount",
+            "description": "<p>Amount of the budget</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "date",
+            "optional": false,
+            "field": "budgetStartDate",
+            "description": "<p>start date of the budget</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "date",
+            "optional": false,
+            "field": "billEndDate",
+            "description": "<p>end date of the budget</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  circleId: 1,\n  budgetName: Food,\n  budgetAmount: 1000,\n  budgetStartDate: 2020-06-15 12:13:04,\n  budgetEndDate: 2020-07-15 12:13:04,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "null",
+            "optional": false,
+            "field": "There",
+            "description": "<p>is no result</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Example",
-          "content": "HTTP/1.1 400 Bad Request\n{\n  \"status\": {\n    \"errors\": [\n      \"Bad Request\",\n    ],\n    \"id\": 400\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 409 Conflict\n{\n  \"status\": {\n    \"id\": 409,\n    \"errors\": [\n      \"Conflict\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
           "type": "json"
         }
       ]
@@ -947,49 +1003,6 @@
         {
           "title": "Example",
           "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"categories\": [\n      {\n        \"id\": 1,\n        \"name\": \"Food\",\n      },\n      {\n        \"id\": 2,\n        \"name\": \"Other\",\n      }\n    ]\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "401",
-            "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "404",
-            "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
           "type": "json"
         }
       ]
@@ -1072,45 +1085,80 @@
         }
       ]
     },
-    "error": {
+    "filename": "./routes/plugins/expenses.js",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/expenses/budgets",
+    "title": "List of all the budgets",
+    "description": "<p>Return the list of all the available budgets</p>",
+    "name": "/plugin/expenses/budgets",
+    "group": "Expenses",
+    "version": "1.0.0",
+    "header": {
       "fields": {
-        "Error 4xx": [
+        "Header": [
           {
-            "group": "Error 4xx",
-            "type": "401",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
           },
           {
-            "group": "Error 4xx",
-            "type": "404",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
+            "field": "content-type",
+            "description": "<p>application/json</p>"
           }
-        ],
-        "Error 5xx": [
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
           {
-            "group": "Error 5xx",
-            "type": "500",
+            "group": "Parameter",
+            "type": "id",
             "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+            "field": "circleId",
+            "description": "<p>circle ID</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  circleId: 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "bills",
+            "description": "<p>List of budgets</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  },\n  \"data\": {\n    \"budgets\": [\n      {\n        \"id\": 1,\n        \"budgetName\": \"Food\",\n        \"budgetAmount\": 100,\n        \"budgetStartDate\": 2020-06-15 12:13:04,\n        \"budgetEndDate\": 2020-07-15 12:13:04,\n      },\n    ]\n  }\n}",
           "type": "json"
         }
       ]
@@ -1171,45 +1219,58 @@
         }
       ]
     },
-    "error": {
+    "filename": "./routes/plugins/expenses.js",
+    "groupTitle": "Expenses"
+  },
+  {
+    "type": "post",
+    "url": "/plugin/expenses/removeBudget",
+    "title": "Removes budget",
+    "description": "<p>Removes a budget based on the budget id</p>",
+    "name": "/plugin/expenses/removeBudget",
+    "group": "Expenses",
+    "version": "1.0.0",
+    "header": {
       "fields": {
-        "Error 4xx": [
+        "Header": [
           {
-            "group": "Error 4xx",
-            "type": "401",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "UNAUTHORIZED",
-            "description": "<p>Authentication is required and has failed or has not yet been provided.</p>"
+            "field": "authorization",
+            "description": "<p>bearer + 'Authorization token'</p>"
           },
           {
-            "group": "Error 4xx",
-            "type": "404",
+            "group": "Header",
+            "type": "String",
             "optional": false,
-            "field": "NOT_FOUND",
-            "description": "<p>The requested resource could not be found but may be available in the future.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "422",
-            "optional": false,
-            "field": "UNPROCESSABLE_ENTITY",
-            "description": "<p>The request was well-formed but was unable to be followed due to semantic errors.</p>"
-          }
-        ],
-        "Error 5xx": [
-          {
-            "group": "Error 5xx",
-            "type": "500",
-            "optional": false,
-            "field": "INTERNAL_SERVER_ERROR",
-            "description": "<p>A generic error message, given when an unexpected condition was encountered and no more specific message is suitable</p>"
+            "field": "content-type",
+            "description": "<p>application/json</p>"
           }
         ]
       },
       "examples": [
         {
+          "title": "Header-Example:",
+          "content": "Authorization: bearer eyJhbGc...token\ncontent-type: application/json",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  circleId: 1,\n  budgetId: 1,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
           "title": "Example",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": {\n    \"errors\": [\n      \"Unauthorized\",\n    ],\n    \"id\": 401\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 404 Not Found\n{\n  \"status\": {\n    \"id\": 404,\n    \"errors\": [\n      \"Not Found\"\n    ]\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 422 Unprocessable Entity\n{\n  \"status\": {\n    \"errors\": [\n      \"The name must have a minimum of 3 characters and a maximum of 56 characters\",\n    ],\n    \"id\": 422\n  }\n}\n\n-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\nHTTP/1.1 500 Internal Server Error\n{\n  \"status\": {\n    \"errors\": [\n      \"Internal Server Error\"\n    ],\n    \"id\": 500\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": {\n    \"id\": 200,\n    \"errors\": null\n  }\n}",
           "type": "json"
         }
       ]
