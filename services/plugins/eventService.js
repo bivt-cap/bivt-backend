@@ -260,7 +260,7 @@ class EventService {
    * @return {string} PhotoPath
    */
   async getPhotoPath(photoId, userId) {
-    return await this.EventModel.getPhotoPath(photoId, userId
+    return await this.EventModel.getPhotoPath(photoId, userId)
       .then((photo) => {
         if (photo != null) {
           return photo;
