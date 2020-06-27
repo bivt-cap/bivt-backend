@@ -2401,14 +2401,7 @@ define({ "api": [
             "description": "<p>Circle id</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"circleId\": 1\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "fields": {
