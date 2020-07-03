@@ -3996,14 +3996,7 @@ define({ "api": [
             "description": "<p>Circle Id</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"circleId\": 1\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -4063,14 +4056,7 @@ define({ "api": [
             "description": "<p>To-do id</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"id\": 1\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -4130,14 +4116,7 @@ define({ "api": [
             "description": "<p>To-do id</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"id\": 1\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -4194,7 +4173,7 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>To-do id</p>"
+            "description": "<p>To-do id (querystring)</p>"
           },
           {
             "group": "Parameter",
@@ -4208,7 +4187,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n \"id\": 1,\n \"description\": \"Play soccer with my son\"\n}",
+          "content": "{\n \"description\": \"Play soccer with my son\"\n}",
           "type": "json"
         }
       ]

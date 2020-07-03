@@ -116,10 +116,6 @@ router.post(
  * content-type: application/json
  *
  * @apiParam {int} id To-do id
- * @apiParamExample {json} Request-Example:
- * {
- *  "id": 1
- * }
  *
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
@@ -137,7 +133,7 @@ router.put(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id } = req.body;
+    const { id } = req.query;
 
     // Service Layer
     const sTodo = new TodoService();
@@ -174,10 +170,6 @@ router.put(
  * content-type: application/json
  *
  * @apiParam {int} id To-do id
- * @apiParamExample {json} Request-Example:
- * {
- *  "id": 1
- * }
  *
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
@@ -195,7 +187,7 @@ router.delete(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id } = req.body;
+    const { id } = req.query;
 
     // Service Layer
     const sTodo = new TodoService();
@@ -231,11 +223,10 @@ router.delete(
  * Authorization: bearer eyJhbGc...token
  * content-type: application/json
  *
- * @apiParam {int} id To-do id
+ * @apiParam {int} id To-do id (querystring)
  * @apiParam {string} description Description of the to-do
  * @apiParamExample {json} Request-Example:
  * {
- *  "id": 1,
  *  "description": "Play soccer with my son"
  * }
  *
@@ -259,7 +250,8 @@ router.put(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id, description } = req.body;
+    const { id } = req.query;
+    const { description } = req.body;
 
     // Service Layer
     const sTodo = new TodoService();
@@ -296,10 +288,6 @@ router.put(
  * content-type: application/json
  *
  * @apiParam {int} circleId Circle Id
- * @apiParamExample {json} Request-Example:
- * {
- *  "circleId": 1
- * }
  *
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
@@ -343,7 +331,7 @@ router.get(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { circleId } = req.body;
+    const { circleId } = req.query;
 
     // Service Layer
     const sTodo = new TodoService();
