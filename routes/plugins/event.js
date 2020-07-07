@@ -159,7 +159,7 @@ router.post(
     sEventService
       .add(circleId, title, startOn, endOn, note, authUser.id)
       .then((id) => {
-        return res.json(Transport(200, null, { id }));
+        return res.json(new Transport(200, null, { id }));
       })
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);
