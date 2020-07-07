@@ -105,7 +105,7 @@ class EventService {
    * @return {array} Events
    */
   async getEvents(circleId, startOn, endOn) {
-    return await this.EventModel.getAll(circleId, startOn, endOn)
+    return await this.EventModel.getEvents(circleId, startOn, endOn)
       .then((events) => {
         if (events != null && events.length > 0) {
           return events;

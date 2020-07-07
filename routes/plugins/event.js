@@ -345,13 +345,8 @@ router.delete(
  * content-type: application/json
  *
  * @apiParam {int} circleId Circle Id
- * @apiParam {int} id Event Id
- * @apiParamExample {json} Request-Example:
- * {
- *  "circleId": 1,
- *  "startOn": "2020-06-12 00:00:00",
- *  "endOn": "2020-06-19 23:59:59"
- * }
+ * @apiParam {string} startOn Start Date (YYYY-MM-DD HH:MM:SS)
+ * @apiParam {string} endOn End Date (YYYY-MM-DD HH:MM:SS)
  *
  * @apiSuccessExample {json} Example
  * HTTP/1.1 200 OK
@@ -410,7 +405,7 @@ router.get(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { circleId, startOn, endOn } = req.body;
+    const { circleId, startOn, endOn } = req.query;
 
     // Service Layer
     const sEventService = new EventService();

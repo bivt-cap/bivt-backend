@@ -827,7 +827,7 @@
       "examples": [
         {
           "title": "Example",
-          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n \"status\": {\n   \"id\": 200,\n   \"errors\": null\n },\n \"data\": {\n   \"id\": 1\n }\n}",
           "type": "json"
         }
       ]
@@ -1037,20 +1037,20 @@
           },
           {
             "group": "Parameter",
-            "type": "int",
+            "type": "string",
             "optional": false,
-            "field": "id",
-            "description": "<p>Event Id</p>"
+            "field": "startOn",
+            "description": "<p>Start Date (YYYY-MM-DD HH:MM:SS)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "endOn",
+            "description": "<p>End Date (YYYY-MM-DD HH:MM:SS)</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n \"circleId\": 1,\n \"startOn\": \"2020-06-12 00:00:00\",\n \"endOn\": \"2020-06-19 23:59:59\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
