@@ -153,10 +153,8 @@ router.post(
     // Create a new Todo
     sEventService
       .add(circleId, title, startOn, endOn, note, authUser.id)
-      .then(() => {
-        const transport = new Transport(200, null, null);
-        delete transport.data;
-        return res.json(transport);
+      .then((id) => {
+        return res.json(Transport(200, null, { id }));
       })
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);
