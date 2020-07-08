@@ -181,7 +181,7 @@ class Event {
           tb_plugin_event_member AS PEM
           INNER JOIN tb_user AS U ON PEM.userId = U.id
       WHERE
-        PEM.userId = ?,
+          PEM.eventId = ?
           AND PEM.removedOn IS NULL
           AND U.emailValidatedOn IS NOT NULL`,
       [eventId]

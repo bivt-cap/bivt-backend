@@ -42,7 +42,7 @@ class CircleMember {
   async getMemberOfACircle(circleId) {
     return await query(
       `SELECT 
-          CM.id,
+          CM.userId AS id,
           U.extId,
           CM.email,
           U.firstName AS userFirstName,

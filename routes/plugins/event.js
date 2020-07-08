@@ -471,7 +471,7 @@ router.post(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { circleId, id, userId } = req.body;
+    const { id, userId } = req.body;
 
     // Service Layer
     const sEventService = new EventService();
@@ -481,7 +481,7 @@ router.post(
 
     // Create a new Todo
     sEventService
-      .addMember(circleId, id, userId, authUser.id)
+      .addMember(id, userId, authUser.id)
       .then(() => {
         const transport = new Transport(200, null, null);
         delete transport.data;
