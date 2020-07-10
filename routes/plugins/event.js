@@ -678,7 +678,7 @@ router.post(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id } = req.params;
+    const { id } = req.query;
 
     multerUpload(req, res, (errorMulter) => {
       // Check if has a error

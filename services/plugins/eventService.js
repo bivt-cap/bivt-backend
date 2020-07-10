@@ -46,7 +46,7 @@ class EventService {
         }
       })
       .then(async (eventId) => {
-        //await this.EventModel.addMember(eventId, createdBy, createdBy);
+        // await this.EventModel.addMember(eventId, createdBy, createdBy);
         return eventId;
       })
       .catch((error) => {
