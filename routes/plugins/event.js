@@ -532,7 +532,7 @@ router.post(
  * }
  */
 router.get(
-  '/list',
+  '/listMembers',
   passport.authenticate('jwt', { session: false }),
   [
     check('circleId', 'Circle Id is required')
@@ -546,7 +546,7 @@ router.get(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id } = req.params;
+    const { id } = req.query;
 
     // Service Layer
     const sEventService = new EventService();
@@ -678,7 +678,7 @@ router.post(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { id } = req.query;
+    const { id } = req.params;
 
     multerUpload(req, res, (errorMulter) => {
       // Check if has a error
