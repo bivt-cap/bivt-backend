@@ -66,7 +66,8 @@ class Event {
     )
       .then((result) => {
         // Check if has result
-        return result != null && result.changedRows > 0;
+        //return result != null && result.changedRows > 0;
+        return true;
       })
       .catch((error) => {
         throw error;
@@ -91,7 +92,8 @@ class Event {
     )
       .then((result) => {
         // Check if has result
-        return result != null && result.changedRows > 0;
+        //return result != null && result.changedRows > 0;
+        return true;
       })
       .catch((error) => {
         throw error;
@@ -223,7 +225,8 @@ class Event {
     )
       .then((result) => {
         // Check if has result
-        return result != null && result.changedRows > 0;
+        //return result != null && result.changedRows > 0;
+        return true;
       })
       .catch((error) => {
         throw error;
