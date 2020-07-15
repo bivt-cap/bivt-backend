@@ -298,7 +298,9 @@ class User {
       [emailValidationHash, userId]
     )
       .then((result) => {
-        return result != null && result.changedRows > 0;
+        return result != null && result.changedRows > 0
+          ? emailValidationHash
+          : null;
       })
       .catch((error) => {
         throw error;

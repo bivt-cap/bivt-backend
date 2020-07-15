@@ -594,7 +594,7 @@ router.get(
  *  }
  * }
  */
-router.delete(
+router.put(
   '/removeMember',
   passport.authenticate('jwt', { session: false }),
   [

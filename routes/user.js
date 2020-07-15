@@ -193,8 +193,8 @@ router.post(
     const sUser = new UserService();
     sUser
       .resendValidationEmail(email, `${req.protocol}://${req.get('host')}`)
-      .then((emailToken) => {
-        return res.json(new Transport(200, null, { emailToken }));
+      .then(() => {
+        return res.json(new Transport(200, null, null));
       })
       .catch((error) => {
         return formatReturnError(res, error, ErrorReturnType.JSON);

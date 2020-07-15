@@ -105,7 +105,12 @@ class UserService {
     );
 
     // Send email to check if is a real email
-    return await sendEmail(user.email, 'Verify your account', '', emailTemplate)
+    return await sendEmail(
+      user.email,
+      'KOVAN - Verify your account',
+      '',
+      emailTemplate
+    )
       .then(() => {
         return `${baseUrl}/user/validateEmail?token=${user.emailValidationHash}`;
       })
@@ -134,8 +139,15 @@ class UserService {
         }
       })
       .then(async (user) => {
-        if (this.UserModel.regenerateEmailValidationHash(user.id)) {
-          return user;
+        const emailValidationHash = await this.UserModel.regenerateEmailValidationHash(
+          user.id
+        );
+        if (emailValidationHash) {
+          const newUser = {
+            ...user,
+            emailValidationHash,
+          };
+          return newUser;
         } else {
           throw new BvitError(
             404,
@@ -220,7 +232,7 @@ class UserService {
         // Send email to check if is a real email
         await sendEmail(
           result.user.email,
-          'Forgot Password',
+          'KOVAN - Forgot Password',
           '',
           emailTemplate
         );
