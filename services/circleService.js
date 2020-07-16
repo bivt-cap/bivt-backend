@@ -30,8 +30,8 @@ class CircleService {
    * @param name {string} Name of the new Circle
    * @return {int} id of the new Circle
    */
-  async addNewCircle(ownerId, ownerEmail, name) {
-    return await this.CircleModel.add(name, ownerId)
+  async addNewCircle(ownerId, ownerEmail, name, image) {
+    return await this.CircleModel.add(name, ownerId, image)
       .then((result) => {
         // The user was not created
         if (result === 0) {

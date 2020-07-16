@@ -78,7 +78,7 @@ router.post(
   mdwHasErrors(),
   (req, res) => {
     // Get the values from the body
-    const { name } = req.body;
+    const { name, image } = req.body;
 
     // Service Layer
     const sCircle = new CircleService();
@@ -97,7 +97,9 @@ router.post(
           throw new BvitError(422, 'You reached the free account limit.');
         }
       })
-      .then(() => sCircle.addNewCircle(authUser.id, authUser.email, name))
+      .then(() =>
+        sCircle.addNewCircle(authUser.id, authUser.email, name, image)
+      )
       .then((circleId) => {
         return res.json(new Transport(200, null, { circleId }));
       })

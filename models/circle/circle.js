@@ -100,10 +100,10 @@ class Circle {
    * @param createdBy {int} The user (id) who created the Circle
    * @return {int} Id of the new Circle
    */
-  async add(name, createdBy) {
+  async add(name, createdBy, image) {
     return await query(
-      `INSERT INTO tb_circle (name, createdBy) VALUES (?, ?)`,
-      [name, createdBy]
+      `INSERT INTO tb_circle (name, createdBy, image) VALUES (?, ?, ?)`,
+      [name, createdBy, image]
     )
       .then((result) => {
         // Check if has result
