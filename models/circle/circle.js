@@ -71,7 +71,7 @@ class Circle {
           CASE WHEN C.createdBy = CM.userId THEN 1 ELSE 0 END AS isOwner,
           CM.joinedOn,
           CASE WHEN CM.setAsAdminOn IS NOT NULL THEN 1 ELSE 0 END AS isAdmin,
-          CM.image
+          C.image
       FROM 
           tb_circle_member AS CM
           INNER JOIN tb_circle AS C ON CM.circleId = C.id
