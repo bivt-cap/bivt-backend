@@ -70,7 +70,7 @@ class Circle {
           C.name,
           CASE WHEN C.createdBy = CM.userId THEN 1 ELSE 0 END AS isOwner,
           CM.joinedOn,
-          CASE WHEN CM.setAsAdminOn IS NOT NULL THEN 1 ELSE 0 END AS isAdmin
+          CASE WHEN CM.setAsAdminOn IS NOT NULL THEN 1 ELSE 0 END AS isAdmin,
           CM.image
       FROM 
           tb_circle_member AS CM
