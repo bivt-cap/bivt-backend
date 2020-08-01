@@ -1,6 +1,8 @@
 # BIVT Back-End
 
-One Paragraph of project description goes here
+Manage, connect, take care, and be productive. Kovan is the one place app for all your group needs. Never miss an important date, always know what you and your group needs to do, be always connected with your beloved ones or be prepared and control all your group expenses, Kovan helps users to achieve your goals.
+Kovan is multiplatform hybrid application for all your group management needs.
+Learn more about the app at: [Kovan](https://kovanapp.com/)
 
 ## Getting Started
 
@@ -116,7 +118,7 @@ See also the list of [contributors](https://github.com/bivt-cap/bivt-backend/con
 
 ## License
 
-This project is licensed under the GNU GENERAL PUBLIC License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU GENERAL PUBLIC License - see the [LICENSE.md](https://github.com/bivt-cap/bivt-backend/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 
